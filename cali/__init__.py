@@ -33,4 +33,8 @@ def create_app(test_config= None):
     from . import authentication
     app.register_blueprint(authentication.blueprint)
 
+    from . import dashboard
+    app.register_blueprint(dashboard.blueprint)
+    app.add_url_rule('/', endpoint='index')
+
     return app
