@@ -2,6 +2,11 @@
 <html lang="es">
 	<head>
 		<meta charset="UTF-8">
+		<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+
 		<title>{% block title %}{% endblock %} - Cali </title>
 
 		<!--Bootstrap-->
@@ -39,9 +44,6 @@
 		</nav>
 
 		<section class="content">
-			<header>
-				{% block header %}{% endblock %}
-			</header>
 			{% for message in get_flashed_messages() %}
 				<div class="flash">{{ message }}</div>
 			{% endfor %}

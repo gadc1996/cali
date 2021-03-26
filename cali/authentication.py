@@ -39,7 +39,7 @@ def register():
                 )
             )
             db.commit()
-            return redirect(url_for('auth.login'))
+            return redirect(url_for('authentication.login'))
 
         flash(error)
 
