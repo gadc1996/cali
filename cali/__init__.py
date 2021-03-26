@@ -30,4 +30,7 @@ def create_app(test_config= None):
     from . import db
     db.init_app(app)
 
+    from . import authentication
+    app.register_blueprint(authentication.blueprint)
+
     return app
