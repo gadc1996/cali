@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS branch;
 
 CREATE TABLE branch(
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	name TEXT UNIQUE NOT NULL
+	branch_name TEXT UNIQUE NOT NULL
 );
 
 CREATE TABLE user(
@@ -17,5 +17,11 @@ CREATE TABLE user(
 	FOREIGN KEY (branch_id) REFERENCES branch(branch_id)
 ); 
 
+-- Default values
 INSERT INTO branch VALUES(0, 'Chihuahua');
 INSERT INTO branch VALUES(1, 'Madera');
+
+INSERT INTO user VALUES(0, 'Alex', '1234', 1, 1, 0);
+INSERT INTO user VALUES(1, 'Ale', '1234', 0, 1, 0);
+INSERT INTO user VALUES(2, 'Karla', '1234', 0, 1, 1);
+
