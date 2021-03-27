@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS branch;
-
+DROP TABLE IF EXISTS test;
 
 CREATE TABLE branch(
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -12,12 +12,32 @@ CREATE TABLE user(
 	username TEXT UNIQUE NOT NULL,
 	password INTEGER NOT NULL,
 	is_super  INTEGER NOT NULL,
-	can_discount BIT NOT NULL,
-	branch_id BIT NOT NULL,
+	can_discount INTEGER NOT NULL,
+	branch_id INTEGER NOT NULL,
 	FOREIGN KEY (branch_id) REFERENCES branch(branch_id)
 ); 
 
--- Default values
+CREATE TABLE category(
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	category_name TEXT NOT NULL
+);
+
+CREATE TABLE article( 
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	name TEXT UNIQUE NOT NULL,
+	category_id INTEGER NOT NULL,
+	description TEXT,
+	image_path TEXT,
+	price REAL,
+	SKU TEXT,
+	stock INTEGER,
+	on_branch_1 INTEGER,
+	on_branch_2 INTEGER,
+	is_regular INTEGER,
+	FOREIGN KEY (category_id) REFERENCES category(id)
+);
+
+--Default values
 INSERT INTO branch VALUES(0, 'Chihuahua');
 INSERT INTO branch VALUES(1, 'Madera');
 
