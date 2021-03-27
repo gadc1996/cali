@@ -13,10 +13,15 @@ blueprint = Blueprint('authentication', __name__, url_prefix='/authentication')
 def register():
     if request.method == 'POST':
         database_query = """
-        INSERT INTO user (username, password) VALUES(?, ?)
+        INSERT INTO user (username, password) 
+        VALUES(?, ?)
         """
         username = request.form['username']
         password = request.form['password']
+        is_super = request.form['is_super']
+        #can_discount = request.form['can_discount']
+        #branch_id = request.form['branch_id']
+
         db = get_db()
         error = None
 

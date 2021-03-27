@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}Search{% endblock %}
+{% block content %}
+<div class="text-center">
+	{% for user in users %}
+		<p>{%user%}</p>
+	{% endif %}
+</div>
+{% endblock %}

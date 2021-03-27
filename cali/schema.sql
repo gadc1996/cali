@@ -1,7 +1,17 @@
 DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS branch;
 
 CREATE TABLE user(
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
 	username TEXT UNIQUE NOT NULL,
 	password TEXT NOT NULL
+	--is_super BIT NOT NULL,
+	--can_discount BIT NOT NULL,
+	--branch_id BIT NOT NULL,
+	--FOREIGN KEY (branch_id) REFERENCES branch(branch_id)
 ); 
+
+CREATE TABLE branch(
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	name VARCHAR(20) UNIQUE NOT NULL
+);
