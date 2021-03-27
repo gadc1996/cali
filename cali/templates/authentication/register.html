@@ -6,10 +6,31 @@
   <h1 class="h3 mb-3 font-weight-normal">{% block title %}Register{% endblock %}</h1>
 
   <label for="username" class="sr-only">Email address</label>
-  <input type="text" name="username" id="username" class="form-control" placeholder="Name" required autofocus>
+  <input type="text" name="username" id="username" class="form-control my-2" placeholder="Name" required autofocus>
 
   <label for="password" class="sr-only">Password</label>
-  <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+  <input type="password" name="password" id="password" class="form-control my-2" placeholder="Password" required>
+
+  <label for="is_super" class="sr-only">Is Super?</label>
+	<select name="is_super" id="is_super" class="form-select my-2 col-12" aria-label="Default select example">
+		<option selected>Is Super?</option>
+		<option value="0">No</option>
+		<option value="1">Yes</option>
+	</select>
+
+  <label for="can_discount" class="sr-only">Can discount?</label>
+	<select name="can_discount" id="can_discount" class="form-select my-2 col-12" aria-label="Default select example">
+		<option selected>Can discount?</option>
+		<option value="0">No</option>
+		<option value="1">Yes</option>
+	</select>
+
+  <label for="branch_id" class="sr-only">Is Super?</label>
+	<select name="branch_id" id="branch_id" class="form-select my-2 col-12" aria-label="Default select example">
+		<option selected>Branch<option>
+		<option value="0">Chihuahua</option>
+		<option value="1">Madera</option>
+	</select>
 
   <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
 </form>

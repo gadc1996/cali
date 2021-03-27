@@ -13,14 +13,14 @@ blueprint = Blueprint('authentication', __name__, url_prefix='/authentication')
 def register():
     if request.method == 'POST':
         database_query = """
-        INSERT INTO user (username, password) 
-        VALUES(?, ?)
+        INSERT INTO user (username, password, is_super, can_discount, branch_id) 
+        VALUES(?, ?, ?, ?, ?)
         """
         username = request.form['username']
         password = request.form['password']
         is_super = request.form['is_super']
-        #can_discount = request.form['can_discount']
-        #branch_id = request.form['branch_id']
+        can_discount = request.form['can_discount']
+        branch_id = request.form['branch_id']
 
         db = get_db()
         error = None
@@ -30,6 +30,12 @@ def register():
             error = 'Username is required.'
         elif not password:
             error = 'Password is required.'
+        elif not is_super:
+            error = 'Is super is required.'
+        elif not can_discount:
+            error = 'Can discount is required.'
+        elif not branch_id:
+            error = 'Branch is required.'
         elif db.execute(
             'SELECT id FROM user WHERE username = ?', (username,)
         ).fetchone() is not None:
@@ -40,7 +46,10 @@ def register():
                 database_query,
                 (
                     username,
-                    generate_password_hash(password)
+                    generate_password_hash(password),
+                    is_super,
+                    can_discount,
+                    branch_id
                 )
             )
             db.commit()

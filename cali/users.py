@@ -17,6 +17,5 @@ def search():
         'SELECT * FROM user'
     ).fetchall()
 
-    # data validation
     return render_template('users/search.html', users=users)
 

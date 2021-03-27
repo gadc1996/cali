@@ -1,9 +1,46 @@
 {% extends 'base.html' %}
-{% block title %}Search{% endblock %}
 {% block content %}
-<div class="text-center">
-	{% for user in users %}
-		<p>{%user%}</p>
-	{% endif %}
+<h1>{% block title %}Search User{% endblock %}</h1>
+<div class="container-fluid">
+  <form class="form-inline">
+    <label for="id" class="m-2">id</label>
+    <input name="id" type="text" class="form-control m-2" id="username">
+
+    <label for="username" class="m-2">Name</label>
+    <input name="username" type="text" class="form-control m-2" id="username">
+
+    <label for="branch" class="m-2">Branch</label>
+    <select name="branch" id="is_super" class="form-select m-2" aria-label="Default select example">
+      <option value="0">Chihuahua</option>
+      <option value="1">Madera</option>
+    </select>
+
+    <button type="submit" class="btn btn-primary m-2">Submit</button>
+  </form>
+</div>
+
+<div class="text-center col-9">
+	<table class="table mt-4">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Branch</th>
+      <th scope="col">Is Super</th>
+      <th scope="col">Can_discount</th>
+    </tr>
+  </thead>
+  <tbody>
+		{% for user in users %}
+			<tr>
+				<th scope="row">{{ user.id }}</th>
+				<td>{{ user.username}}</td>
+				<td>{{ user.branch_id}}</td>
+				<td>{{ user.is_super}}</td>
+				<td>{{ user.can_discount}}</td>
+			</tr>
+		{% endfor %}
+  </tbody>
+</table>
 </div>
 {% endblock %}
