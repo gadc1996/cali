@@ -11,6 +11,7 @@ blueprint = Blueprint('authentication', __name__, url_prefix='/authentication')
 
 @blueprint.route('/register', methods=('GET', 'POST'))
 def register():
+    error = None
     if request.method == 'POST':
         database_query = """
         INSERT INTO user (username, password, is_super, can_discount, branch_id) 
@@ -23,7 +24,6 @@ def register():
         branch_id = request.form['branch_id']
 
         db = get_db()
-        error = None
 
         # data validation
         if not username:
@@ -53,11 +53,10 @@ def register():
                 )
             )
             db.commit()
-            return redirect(url_for('authentication.login'))
 
-        flash(error)
+            return render_template('authentication/register.html', registerSucceded=True)
 
-    return render_template('authentication/register.html')
+    return render_template('authentication/register.html', error=error)
 
 @blueprint.route('/login', methods=('GET', 'POST'))
 def login():

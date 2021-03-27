@@ -1,8 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="text-center">
- <form class="form-signin col-6 offset-3" method="post">
+<div class="text-center col-6 offset-3">
+	{% if registerSucceded %}
+	<div class="alert alert-success" role="alert">
+		Register Succesfull
+	</div>
+	{% endif %}
+	{% if error %}
+	<div class="alert alert-danger" role="alert">
+		{{ error }}
+	</div>
+		{% set error = None %}
+	{% endif %}
+ <form class="form-signin" method="post">
   <h1 class="h3 mb-3 font-weight-normal">{% block title %}Register{% endblock %}</h1>
 
   <label for="username" class="sr-only">Email address</label>
