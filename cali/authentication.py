@@ -74,7 +74,9 @@ def login():
         # data validation
         if user is None:
             error = 'Incorrect username.'
-        elif not check_password_hash(user['password'], password):
+        elif not user['password'] == int(password):
+        #Uncomment when in prodduction
+        #elif not check_password_hash(user['password'], password):
             error = 'Incorrect password.'
 
         if error is None:
@@ -83,6 +85,8 @@ def login():
             return redirect(url_for('index'))
 
         flash(error)
+        flash(type(password))
+        flash(type(user['password']))
 
     return render_template('authentication/login.html')
 
