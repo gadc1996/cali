@@ -48,4 +48,4 @@ INSERT INTO user VALUES(2, 'Karla', 1234, 0, 1, 1);
 INSERT INTO category VALUES(0, 'Vestidos');
 INSERT INTO category VALUES(1, 'Falda');
 
-INSERT INTO article VALUES(0, 'Vestido Negro', 0, 'Vestido Negro sencillo',  100, "vs1", 3, 2, 1, 1);
+INSERT INTO article VALUES(0, 'Vestido Negro', 0, 'Vestido Negro sencillo',  100, "1", 3, 2, 1, 1);

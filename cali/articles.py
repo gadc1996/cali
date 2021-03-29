@@ -12,40 +12,6 @@ blueprint = Blueprint('articles', __name__, url_prefix='/articles')
 @blueprint.route('/search', methods=('GET','POST'))
 def search():
     db = get_db()
-    #if request.method == 'POST':
-    #    id = request.form['id']
-    #    username = request.form['username']
-    #    branch = request.form['branch']
-
-    #    if id:
-    #        users = db.execute("""
-    #                 SELECT * FROM user
-    #                 JOIN branch on user.branch_id = branch.id
-    #                 WHERE user.id=?
-    #                 """,
-    #                (int(id),)
-    #                ).fetchall()
-    #        return render_template('users/search.html', users=users)
-
-    #    elif username:
-    #        users = db.execute("""
-    #                    SELECT * FROM user
-    #                    JOIN branch on user.branch_id = branch.id
-    #                    WHERE username=?
-    #                    """,
-    #                    (username,)
-    #                    ).fetchall()
-    #        return render_template('users/search.html', users=users)
-
-    #    else:
-    #        users = db.execute("""
-    #                    SELECT * FROM user
-    #                    JOIN branch on user.branch_id = branch.id
-    #                    WHERE branch_id=?
-    #                    """,
-    #                    (branch,)
-    #                    ).fetchall()
-    #        return render_template('users/search.html', users=users)
 
     articles = db.execute("""
         SELECT * FROM article
