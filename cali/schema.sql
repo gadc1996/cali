@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS branch;
-DROP TABLE IF EXISTS test;
+DROP TABLE IF EXISTS category;
+DROP TABLE IF EXISTS article;
 
 CREATE TABLE branch(
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -27,7 +28,6 @@ CREATE TABLE article(
 	name TEXT UNIQUE NOT NULL,
 	category_id INTEGER NOT NULL,
 	description TEXT,
-	image_path TEXT,
 	price REAL,
 	SKU TEXT,
 	stock INTEGER,
@@ -45,3 +45,7 @@ INSERT INTO user VALUES(0, 'Alex', 1234, 1, 1, 0);
 INSERT INTO user VALUES(1, 'Ale', 1234, 0, 1, 0);
 INSERT INTO user VALUES(2, 'Karla', 1234, 0, 1, 1);
 
+INSERT INTO category VALUES(0, 'Vestidos');
+INSERT INTO category VALUES(1, 'Falda');
+
+INSERT INTO article VALUES(0, 'Vestido Negro', 0, 'Vestido Negro sencillo',  100, "vs1", 3, 2, 1, 1);

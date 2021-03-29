@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1 class="text-center mt-4">{% block title %}Search User{% endblock %}</h1>
+<h1 class="text-center mt-4">{% block title %}Search Article{% endblock %}</h1>
+<!---
 <div class="container-fluid">
   <form class="form-inline" method="post">
     <label for="id" class="m-2">id</label>
@@ -19,40 +20,15 @@
     <button type="submit" class="btn btn-primary m-2">Submit</button>
   </form>
 </div>
-
+-->
 <div class="text-center container-fluid">
-	<table class="table mt-4">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Name</th>
-      <th scope="col">Branch</th>
-      <th scope="col">Is Super</th>
-      <th scope="col">Can_discount</th>
-    </tr>
-  </thead>
-  <tbody>
-		{% for user in users %}
-			<tr>
-				<th scope="row">{{ user.id }}</th>
-				<td>{{ user.username}}</td>
-				<td>{{ user.branch_name }}</td>
-
-
-        {% if user.is_super%}
-          <td>Yes</td>
-        {% else %}
-          <td>No</td>
-        {% endif %}
-
-        {% if user.can_discount%}
-          <td>Yes</td>
-        {% else %}
-          <td>No</td>
-        {% endif %}
-			</tr>
-		{% endfor %}
-  </tbody>
-</table>
+  <div class="card" style="width: 18rem;">
+  <img class="card-img-top" src="../../static/img/1.jpg" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">Card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+  </div>
+</div>
 </div>
 {% endblock %}
