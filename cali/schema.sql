@@ -25,7 +25,7 @@ CREATE TABLE category(
 
 CREATE TABLE article( 
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	name TEXT UNIQUE NOT NULL,
+	name TEXT  NOT NULL,
 	category_id INTEGER NOT NULL,
 	description TEXT,
 	price REAL,
@@ -49,3 +49,8 @@ INSERT INTO category VALUES(0, 'Vestidos');
 INSERT INTO category VALUES(1, 'Falda');
 
 INSERT INTO article VALUES(0, 'Vestido Negro', 0, 'Vestido Negro sencillo',  100, "1", 3, 2, 1, 1);
+INSERT INTO article VALUES(1, 'Vestido Negro', 0, 'Vestido Negro sencillo',  100, "2", 3, 2, 1, 1);
+INSERT INTO article VALUES(2, 'Vestido Negro', 0, 'Vestido Negro sencillo',  100, "3", 3, 2, 1, 1);
+INSERT INTO article VALUES(3, 'Vestido Negro', 0, 'Vestido Negro sencillo',  100, "4", 3, 2, 1, 1);
+INSERT INTO article VALUES(4, 'Vestido Negro', 0, 'Vestido Negro sencillo',  100, "5", 3, 2, 1, 1);
+INSERT INTO article VALUES(5, 'Vestido Negro', 0, 'Vestido Negro sencillo',  100, "6", 3, 2, 1, 1);
