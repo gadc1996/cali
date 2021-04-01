@@ -49,8 +49,8 @@ INSERT INTO category VALUES(0, 'Vestidos');
 INSERT INTO category VALUES(1, 'Falda');
 
 INSERT INTO article VALUES(0, 'Vestido Negro', 0, 'Vestido Negro sencillo',  100, "1", 3, 2, 1, 1);
-INSERT INTO article VALUES(1, 'Vestido Negro', 0, 'Vestido Negro sencillo',  100, "2", 3, 2, 1, 1);
-INSERT INTO article VALUES(2, 'Vestido Negro', 0, 'Vestido Negro sencillo',  100, "3", 3, 2, 1, 1);
-INSERT INTO article VALUES(3, 'Vestido Negro', 0, 'Vestido Negro sencillo',  100, "4", 3, 2, 1, 1);
-INSERT INTO article VALUES(4, 'Vestido Negro', 0, 'Vestido Negro sencillo',  100, "5", 3, 2, 1, 1);
-INSERT INTO article VALUES(5, 'Vestido Negro', 0, 'Vestido Negro sencillo',  100, "6", 3, 2, 1, 1);
+INSERT INTO article VALUES(1, 'Vestido flamingo', 0, 'Vestido con dibujos de flamingos',  100, "2", 3, 2, 1, 1);
+INSERT INTO article VALUES(2, 'Falda Negra', 1, 'Falda Negra sencilla',  100, "3", 3, 2, 1, 1);
+INSERT INTO article VALUES(3, 'Falda Verde', 1, 'Falda Verde sencilla',  100, "4", 3, 2, 1, 1);
+INSERT INTO article VALUES(4, 'Vestido Azul', 0, 'Vestido con falda azul',  100, "5", 3, 2, 1, 1);
+INSERT INTO article VALUES(5, 'Vestido Blanco', 0, 'Vestido blanco con mono',  100, "6", 3, 2, 1, 1);

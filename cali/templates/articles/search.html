@@ -1,33 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1 class="text-center mt-4">{% block title %}Search Article{% endblock %}</h1>
-<!---
-<div class="container-fluid">
-  <form class="form-inline" method="post">
-    <label for="id" class="m-2">id</label>
-    <input name="id" type="text" class="form-control m-2" id="username">
-
-    <label for="username" class="m-2">Name</label>
-    <input name="username" type="text" class="form-control m-2" id="username">
-
-    <label for="branch" class="m-2">Branch</label>
-    <select name="branch" id="is_super" class="form-select m-2" aria-label="Default select example">
-      <option value="" selected>Select a branch</option>
-      <option value="0">Chihuahua</option>
-      <option value="1">Madera</option>
-    </select>
-
-    <button type="submit" class="btn btn-primary m-2">Submit</button>
-  </form>
-</div>
--->
+<h1 class="text-center my-4">{% block title %}Search Article{% endblock %}</h1>
 <div class="text-center container-fluid">
   <div class="card-deck">
 
+
     {% for article in articles %}
       <div class="col-3 mb-4">
-        <div class="card" style="">
-          <img class="card-img-top" src="../../static/img/{{ article.SKU }}.jpg" alt="{{ article.name }}">
+        <div class="card" >
+          <img class="card-img-top" src="../../static/img/{{ article.SKU }}.jpg" alt="{{ article.name }}" >
           <div class="card-body">
             <h5 class="card-title">{{ article.name }}</h5>
             <p class="card-text">{{ article.description }}</p>
@@ -36,7 +17,6 @@
         </div>
       </div>
     {% endfor %}
-
   </div>
 </div>
 {% endblock %}
