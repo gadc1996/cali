@@ -1,4 +1,3 @@
-
 import functools
 
 from flask import (
@@ -6,53 +5,49 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from cali.db import get_db
+from cali.db import get_db, get_all_users, get_filtered_users, delete_user, get_single_user
+from cali.lib.user import User
 
 blueprint = Blueprint('users', __name__, url_prefix='/users')
 
 @blueprint.route('/search', methods=('GET','POST'))
 def search():
-    db = get_db()
     if request.method == 'POST':
-        id = request.form['id']
-        username = request.form['username']
-        branch = request.form['branch']
+        users = get_filtered_users(request.form) 
+        return render_template('users/search.html', users=users)
 
-        if id:
-            users = db.execute("""
-                     SELECT * FROM user
-                     JOIN branch on user.branch_id = branch.id
-                     WHERE user.id=?
-                     """,
-                    (int(id),)
-                    ).fetchall()
-            return render_template('users/search.html', users=users)
+    else:
+        users = get_all_users()
+        return render_template('users/search.html', users=users)
 
-        elif username:
-            users = db.execute("""
-                        SELECT * FROM user
-                        JOIN branch on user.branch_id = branch.id
-                        WHERE username=?
-                        """,
-                        (username,)
-                        ).fetchall()
-            return render_template('users/search.html', users=users)
+@blueprint.route('/create', methods=('GET', 'POST'))
+def create():
+    if request.method == 'POST':
+        db = get_db()
+        user = User(request.form)
+        db.execute(user.create_user())
+        db.commit()
+        return redirect(url_for('users.search'))
 
-        else:
-            users = db.execute("""
-                        SELECT * FROM user
-                        JOIN branch on user.branch_id = branch.id
-                        WHERE branch_id=?
-                        """,
-                        (branch,)
-                        ).fetchall()
-            return render_template('users/search.html', users=users)
+    return render_template('users/create.html')
 
-    users = db.execute("""
-        SELECT * FROM user
-        JOIN branch on user.branch_id = branch.id
-        """
-    ).fetchall()
+@blueprint.route('/<int:id>/delete', methods=('GET',))
+def delete(id):
+    db = get_db()
+    user = User(get_single_user(id))
+    db.execute(user.delete_user(id))
+    db.commit()
 
-    return render_template('users/search.html', users=users)
+    return redirect(url_for('users.search'))
 
+@blueprint.route('<int:id>/update', methods=('GET', 'POST'))
+def update(id):
+    if request.method == 'POST':
+        db = get_db()
+        user = User(request.form)
+        db.execute(user.update_user(id))
+        db.commit()
+    else:
+        user = get_single_user(id)
+
+    return render_template('users/update.html', user=user)
