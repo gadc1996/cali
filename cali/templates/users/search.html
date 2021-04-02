@@ -9,8 +9,8 @@
     <label for="username" class="m-2">Name</label>
     <input name="username" type="text" class="form-control m-2" id="username">
 
-    <label for="branch" class="m-2">Branch</label>
-    <select name="branch" id="is_super" class="form-select m-2" aria-label="Default select example">
+    <label for="branch_id" class="m-2">Branch</label>
+    <select name="branch_id" id="branch" class="form-select m-2" aria-label="Default select example">
       <option value="" selected>Select a branch</option>
       <option value="0">Chihuahua</option>
       <option value="1">Madera</option>
@@ -29,6 +29,7 @@
       <th scope="col">Branch</th>
       <th scope="col">Is Super</th>
       <th scope="col">Can_discount</th>
+      <th scope="col">Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -50,6 +51,15 @@
           <td>No</td>
         {% endif %}
 
+        <td>
+          <a type="button" role="button" class="btn btn-danger" aria-pressed="true">
+            <i class="fa fa-trash"></i>
+          </a>
+
+          <a type="button" role="button" class="btn btn-info" aria-pressed="true">
+            <i class="fa fa-edit"></i>
+          </a>
+        </td>
 			</tr>
 		{% endfor %}
   </tbody>

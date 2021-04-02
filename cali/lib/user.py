@@ -17,3 +17,4 @@ class User:
     def create_user(self):
         return "INSERT INTO user (username, password, is_super, can_discount, branch_id) " \
         f"VALUES('{self.username}', '{self.password}', {self.isSuper}, {self.canDiscount}, {self.branchId})"
+
