@@ -52,7 +52,7 @@
         {% endif %}
 
         <td>
-          <a type="button" role="button" class="btn btn-danger" aria-pressed="true">
+          <a href="{{ url_for('users.delete', id=user.id) }}" type="button" role="button" class="btn btn-danger" aria-pressed="true">
             <i class="fa fa-trash"></i>
           </a>
 

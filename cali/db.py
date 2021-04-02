@@ -35,7 +35,7 @@ def get_all_users():
     ).fetchall()
     return users
 
-def search_users(form):
+def get_filtered_users(form):
     db = get_db()
     for key,value in form.items():
         if value is '':
@@ -54,6 +54,11 @@ def search_users(form):
                 f'WHERE user.{key}="{value}" '
                 ).fetchall()
             return users
+
+def delete_user(id):
+    db = get_db()
+    db.execute(f'DELETE FROM user WHERE id={id}')
+    db.commit()
 
 @click.command('init-db')
 @with_appcontext
