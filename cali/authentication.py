@@ -6,56 +6,18 @@ from flask import (
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from cali.db import get_db
+from cali.lib.user import User
 
 blueprint = Blueprint('authentication', __name__, url_prefix='/authentication')
 
 @blueprint.route('/register', methods=('GET', 'POST'))
 def register():
     if request.method == 'POST':
-        database_query = """
-        INSERT INTO user (username, password, is_super, can_discount, branch_id) 
-        VALUES(?, ?, ?, ?, ?)
-        """
-        username = request.form['username']
-        password = request.form['password']
-        is_super = request.form['is_super']
-        can_discount = request.form['can_discount']
-        branch_id = request.form['branch_id']
-
         db = get_db()
-        error = None
-
-        # data validation
-        if not username:
-            error = 'Username is required.'
-        elif not password:
-            error = 'Password is required.'
-        elif not is_super:
-            error = 'Is super is required.'
-        elif not can_discount:
-            error = 'Can discount is required.'
-        elif not branch_id:
-            error = 'Branch is required.'
-        elif db.execute(
-            'SELECT id FROM user WHERE username = ?', (username,)
-        ).fetchone() is not None:
-            error = f'User {username} is already registered'
-
-        if error is None:
-            db.execute(
-                database_query,
-                (
-                    username,
-                    generate_password_hash(password),
-                    is_super,
-                    can_discount,
-                    branch_id
-                )
-            )
-            db.commit()
-            return redirect(url_for('authentication.login'))
-
-        flash(error)
+        user = User(request.form)
+        db.execute(user.create_user())
+        db.commit()
+        return redirect(url_for('authentication.login'))
 
     return render_template('authentication/register.html')
 
@@ -87,7 +49,6 @@ def login():
         flash(error)
         flash(type(password))
         flash(type(user['password']))
-
     return render_template('authentication/login.html')
 
 @blueprint.before_app_request
