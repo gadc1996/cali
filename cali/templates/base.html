@@ -29,17 +29,19 @@
 				<ul class="navbar-nav">
 
 					{% if g.user.is_super %}
-						<li class="nav-item active">
-							<a class="nav-link" href="{{ url_for('users.search') }} ">
-								User Search
-								<span class="sr-only">
-									(current)
-								</span>
+						<div class="dropdown show">
+							<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Users
 							</a>
-						</li>
+
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+									<a class="dropdown-item" href="{{ url_for('users.search') }}">Search Users</a>
+									<a class="dropdown-item" href="{{ url_for('users.create') }}">Create Users</a>
+							</div>
+						</div>
 
 						<li class="nav-item active">
-							<a class="nav-link" href="{{ url_for('authentication.register') }} ">
+							<a class="nav-link" href="{{ url_for('users.create') }} ">
 								Register
 								<span class="sr-only">
 									(current)

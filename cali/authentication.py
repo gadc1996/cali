@@ -10,16 +10,6 @@ from cali.lib.user import User
 
 blueprint = Blueprint('authentication', __name__, url_prefix='/authentication')
 
-@blueprint.route('/register', methods=('GET', 'POST'))
-def register():
-    if request.method == 'POST':
-        db = get_db()
-        user = User(request.form)
-        db.execute(user.create_user())
-        db.commit()
-        return redirect(url_for('authentication.login'))
-
-    return render_template('authentication/register.html')
 
 @blueprint.route('/login', methods=('GET', 'POST'))
 def login():

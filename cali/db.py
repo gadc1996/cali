@@ -26,6 +26,11 @@ def init_db():
     with current_app.open_resource('schema.sql') as file:
         db.executescript(file.read().decode())
 
+def get_single_user(id):
+    db = get_db()
+    user = db.execute(f'SELECT username, password, is_super, can_discount, branch_id FROM user JOIN branch on user.branch_id = branch.id WHERE user.id={id}').fetchone()
+    return user
+
 def get_all_users():
     db = get_db()
     users = db.execute("""

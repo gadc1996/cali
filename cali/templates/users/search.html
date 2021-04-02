@@ -56,7 +56,7 @@
             <i class="fa fa-trash"></i>
           </a>
 
-          <a type="button" role="button" class="btn btn-info" aria-pressed="true">
+          <a href="{{ url_for('users.update', id=user.id) }}" type="button" role="button" class="btn btn-info" aria-pressed="true">
             <i class="fa fa-edit"></i>
           </a>
         </td>
