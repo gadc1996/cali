@@ -26,12 +26,12 @@ def create():
         user = User(request.form)
 
         if user_exist(user):
-            g.message= 'User Exists'
-            g.messageColor= 'danger'
+            g.message = 'User Exists'
+            g.messageColor = 'danger'
             return render_template('users/create.html')
         else:
-            g.message= 'User Created'
-            g.messageColor= 'success'
+            g.message = 'User Created'
+            g.messageColor = 'success'
             db.execute(user.create_user())
             db.commit()
             return render_template('users/create.html')
@@ -52,15 +52,17 @@ def update(id):
     if request.method == 'POST':
         db = get_db()
         user = User(request.form)
+
         if user_exist(user):
-            error = 'User Exists'
-            return render_template('users/update.html', user=user, error=error)
+            g.message = 'User Exists'
+            g.messageColor = 'danger'
+            return render_template('users/update.html', user=user)
         else:
+            g.message = 'User Updated'
+            g.messageColor = 'success'
             db.execute(user.update_user(id))
             db.commit()
-            error = None
-            return render_template('users/update.html', user=user, error=error)
+            return render_template('users/update.html', user=user)
     else:
         user = get_single_user(id)
-
-    return render_template('users/update.html', user=user)
+        return render_template('users/update.html', user=user)
