@@ -65,6 +65,13 @@ def delete_user(id):
     db.execute(f'DELETE FROM user WHERE id={id}')
     db.commit()
 
+def user_exist(user):
+    db = get_db()
+    if db.execute(f"SELECT username FROM user WHERE username='{user.username}'").fetchone() is not None:
+        return True
+    else:
+        return False
+
 @click.command('init-db')
 @with_appcontext
 def init_db_command():

@@ -5,7 +5,7 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from cali.db import get_db, get_all_users, get_filtered_users, delete_user, get_single_user
+from cali.db import get_db, get_all_users, get_filtered_users, delete_user, get_single_user, user_exist
 from cali.lib.user import User
 
 blueprint = Blueprint('users', __name__, url_prefix='/users')
@@ -15,7 +15,6 @@ def search():
     if request.method == 'POST':
         users = get_filtered_users(request.form) 
         return render_template('users/search.html', users=users)
-
     else:
         users = get_all_users()
         return render_template('users/search.html', users=users)
@@ -25,9 +24,17 @@ def create():
     if request.method == 'POST':
         db = get_db()
         user = User(request.form)
-        db.execute(user.create_user())
-        db.commit()
-        return redirect(url_for('users.search'))
+
+        if user_exist(user):
+            g.message= 'User Exists'
+            g.messageColor= 'danger'
+            return render_template('users/create.html')
+        else:
+            g.message= 'User Created'
+            g.messageColor= 'success'
+            db.execute(user.create_user())
+            db.commit()
+            return render_template('users/create.html')
 
     return render_template('users/create.html')
 
@@ -45,8 +52,14 @@ def update(id):
     if request.method == 'POST':
         db = get_db()
         user = User(request.form)
-        db.execute(user.update_user(id))
-        db.commit()
+        if user_exist(user):
+            error = 'User Exists'
+            return render_template('users/update.html', user=user, error=error)
+        else:
+            db.execute(user.update_user(id))
+            db.commit()
+            error = None
+            return render_template('users/update.html', user=user, error=error)
     else:
         user = get_single_user(id)
 

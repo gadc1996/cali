@@ -1,8 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+
 <div class="text-center pt-5">
  <form class="form-signin col-6 offset-3" method="post">
+	{% if g.message %}
+		<div class="alert alert-{{g.messageColor}}" role="alert">
+			{{ g.message }}
+		</div>
+	{% endif %}
+
   <h1 class="h3 mb-3 font-weight-normal">{% block title %}Create User{% endblock %}</h1>
 
   <label for="username" class="sr-only">Email address</label>
