@@ -5,7 +5,7 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from cali.db import get_db
+from cali.lib.db import get_db
 
 blueprint = Blueprint('articles', __name__, url_prefix='/articles')
 

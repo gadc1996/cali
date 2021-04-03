@@ -5,7 +5,7 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from cali.db import get_db
+from cali.lib.db import get_db
 from cali.lib.user import User
 
 blueprint = Blueprint('authentication', __name__, url_prefix='/authentication')

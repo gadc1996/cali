@@ -5,8 +5,8 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from cali.db import get_db, get_all_clients, get_filtered_clients, get_single_client, client_exist
-from cali.lib.client import Client
+from cali.lib.db import get_db
+from cali.lib.client import Client, get_all_clients, get_filtered_clients, get_single_client, client_exist
 
 blueprint = Blueprint('clients', __name__, url_prefix='/clients')
 
