@@ -1,6 +1,8 @@
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS branch;
-DROP TABLE IF EXISTS test;
+DROP TABLE IF EXISTS category;
+DROP TABLE IF EXISTS article;
+DROP TABLE IF EXISTS client;
 
 CREATE TABLE branch(
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -37,6 +39,12 @@ CREATE TABLE article(
 	FOREIGN KEY (category_id) REFERENCES category(id)
 );
 
+CREATE TABLE client(
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	name TEXT UNIQUE NOT NULL,
+	contact_phone INTEGER,
+	has_credit INTEGER
+);
 --Default values
 INSERT INTO branch VALUES(0, 'Chihuahua');
 INSERT INTO branch VALUES(1, 'Madera');
@@ -44,4 +52,9 @@ INSERT INTO branch VALUES(1, 'Madera');
 INSERT INTO user VALUES(0, 'Alex', 1234, 1, 1, 0);
 INSERT INTO user VALUES(1, 'Ale', 1234, 0, 1, 0);
 INSERT INTO user VALUES(2, 'Karla', 1234, 0, 1, 1);
+
+INSERT INTO client VALUES(0, 'Rosa', 718293849, 1);
+INSERT INTO client VALUES(1, 'Maria', 928471928, 0);
+INSERT INTO client VALUES(2, 'Fernanda', 1728394718, 0);
+
 
