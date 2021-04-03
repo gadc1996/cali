@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="text-center my-4">{% block title %}Search Article{% endblock %}</h1>
+<div class="text-center container-fluid">
+  <div class="card-deck">
+
+
+    {% for article in articles %}
+      <div class="col-3 mb-4">
+        <div class="card" >
+          <img class="card-img-top" src="../../static/img/{{ article.SKU }}.jpg" alt="{{ article.name }}" >
+          <div class="card-body">
+            <h5 class="card-title">{{ article.name }}</h5>
+            <p class="card-text">{{ article.description }}</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

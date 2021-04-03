@@ -39,13 +39,14 @@
 				<td>{{ user.username}}</td>
 				<td>{{ user.branch_name }}</td>
 
-        {% if user.can_discount%}
+
+        {% if user.is_super%}
           <td>Yes</td>
         {% else %}
           <td>No</td>
         {% endif %}
 
-        {% if user.is_super%}
+        {% if user.can_discount%}
           <td>Yes</td>
         {% else %}
           <td>No</td>

@@ -26,10 +26,9 @@ CREATE TABLE category(
 
 CREATE TABLE article( 
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	name TEXT UNIQUE NOT NULL,
+	name TEXT  NOT NULL,
 	category_id INTEGER NOT NULL,
 	description TEXT,
-	image_path TEXT,
 	price REAL,
 	SKU TEXT,
 	stock INTEGER,
@@ -57,4 +56,12 @@ INSERT INTO client VALUES(0, 'Rosa', 718293849, 1);
 INSERT INTO client VALUES(1, 'Maria', 928471928, 0);
 INSERT INTO client VALUES(2, 'Fernanda', 1728394718, 0);
 
+INSERT INTO category VALUES(0, 'Vestidos');
+INSERT INTO category VALUES(1, 'Falda');
 
+INSERT INTO article VALUES(0, 'Vestido Negro', 0, 'Vestido Negro sencillo',  100, "1", 3, 2, 1, 1);
+INSERT INTO article VALUES(1, 'Vestido flamingo', 0, 'Vestido con dibujos de flamingos',  100, "2", 3, 2, 1, 1);
+INSERT INTO article VALUES(2, 'Falda Negra', 1, 'Falda Negra sencilla',  100, "3", 3, 2, 1, 1);
+INSERT INTO article VALUES(3, 'Falda Verde', 1, 'Falda Verde sencilla',  100, "4", 3, 2, 1, 1);
+INSERT INTO article VALUES(4, 'Vestido Azul', 0, 'Vestido con falda azul',  100, "5", 3, 2, 1, 1);
+INSERT INTO article VALUES(5, 'Vestido Blanco', 0, 'Vestido blanco con mono',  100, "6", 3, 2, 1, 1);
