@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="text-center pt-5">
+ <form class="form-signin col-6 offset-3" method="post">
+	{% if g.message %}
+		<div class="alert alert-{{g.messageColor}}" role="alert">
+			{{ g.message }}
+		</div>
+	{% endif %}
+  <h1 class="h3 mb-3 font-weight-normal">{% block title %}Update Client{% endblock %}</h1>
+
+  <label for="name" class="sr-only">Name</label>
+	<input value="{{client.name}}" type="text" name="name" id="name" class="form-control my-2" placeholder="Name" autofocus required>
+
+  <label for="contact_phone" class="sr-only">Contact Phone</label>
+  <input value="{{client.contact_phone}}" type="phone" name="contact_phone" id="contact_phone" class="form-control my-2" placeholder="Contact_phone" required>
+
+  <label for="has_credit" class="sr-only">Has credit?</label>
+	<select name="has_credit" class="form-select my-2 col-12" aria-label="Default select example">
+		{% if client.has_credit%}
+			<option value="0">Has no credit</option>
+			<option value="1" selected>Has credit</option>
+		{% else %}
+			<option value="0" selected>Has no credit</option>
+			<option value="1">Has credit</option>
+		{% endif %}
+	</select>
+
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Update</button>
+
+	<a href="{{ url_for('clients.search') }}" class="btn btn-lg btn-danger btn-block">
+		back
+  </a>
+</form>
+</div>
+{% endblock %}

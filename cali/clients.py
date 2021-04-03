@@ -5,8 +5,8 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from cali.db import get_db, get_all_clients, get_filtered_clients
-from cali.lib.user import User
+from cali.db import get_db, get_all_clients, get_filtered_clients, get_single_client, client_exist
+from cali.lib.client import Client
 
 blueprint = Blueprint('clients', __name__, url_prefix='/clients')
 
@@ -23,46 +23,46 @@ def search():
 def create():
     if request.method == 'POST':
         db = get_db()
-        user = User(request.form)
+        client = Client(request.form)
 
-        if user_exist(user):
-            g.message = 'User Exists'
+        if client_exist(client):
+            g.message = 'Client Exists'
             g.messageColor = 'danger'
-            return render_template('users/create.html')
+            return render_template('clients/create.html')
         else:
-            g.message = 'User Created'
+            g.message = 'Client Created'
             g.messageColor = 'success'
-            db.execute(user.create_user())
+            db.execute(client.create_client())
             db.commit()
-            return render_template('users/create.html')
+            return render_template('clients/create.html')
 
-    return render_template('users/create.html')
+    return render_template('clients/create.html')
 
 @blueprint.route('/<int:id>/delete', methods=('GET',))
 def delete(id):
     db = get_db()
-    user = User(get_single_user(id))
-    db.execute(user.delete_user(id))
+    client = Client(get_single_client(id))
+    db.execute(client.delete_client(id))
     db.commit()
 
-    return redirect(url_for('users.search'))
+    return redirect(url_for('clients.search'))
 
 @blueprint.route('<int:id>/update', methods=('GET', 'POST'))
 def update(id):
     if request.method == 'POST':
         db = get_db()
-        user = User(request.form)
+        client = Client(request.form)
 
-        if user_exist(user):
-            g.message = 'User Exists'
+        if client_exist(client):
+            g.message = 'Client Exists'
             g.messageColor = 'danger'
-            return render_template('users/update.html', user=user)
+            return render_template('clients/update.html', client=client)
         else:
-            g.message = 'User Updated'
+            g.message = 'Client Updated'
             g.messageColor = 'success'
-            db.execute(user.update_user(id))
+            db.execute(client.update_client(id))
             db.commit()
-            return render_template('users/update.html', user=user)
+            return render_template('clients/update.html', client=client)
     else:
-        user = get_single_user(id)
-        return render_template('users/update.html', user=user)
+        client = get_single_client(id)
+        return render_template('clients/update.html', client=client)

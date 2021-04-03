@@ -26,6 +26,11 @@ def init_db():
     with current_app.open_resource('schema.sql') as file:
         db.executescript(file.read().decode())
 
+def get_single_client(id):
+    db = get_db()
+    client = db.execute(f'SELECT name, contact_phone, has_credit FROM client WHERE id={id}').fetchone()
+    return client
+
 def get_single_user(id):
     db = get_db()
     user = db.execute(f'SELECT username, password, is_super, can_discount, branch_id FROM user JOIN branch on user.branch_id = branch.id WHERE user.id={id}').fetchone()
@@ -90,6 +95,13 @@ def delete_user(id):
 def user_exist(user):
     db = get_db()
     if db.execute(f"SELECT username FROM user WHERE username='{user.username}'").fetchone() is not None:
+        return True
+    else:
+        return False
+
+def client_exist(client):
+    db = get_db()
+    if db.execute(f"SELECT name FROM client WHERE name='{client.name}'").fetchone() is not None:
         return True
     else:
         return False

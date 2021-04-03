@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="text-center pt-5">
+ <form class="form-signin col-6 offset-3" method="post">
+	{% if g.message %}
+		<div class="alert alert-{{g.messageColor}}" role="alert">
+			{{ g.message }}
+		</div>
+	{% endif %}
+
+  <h1 class="h3 mb-3 font-weight-normal">{% block title %}Create Client{% endblock %}</h1>
+
+  <label for="name" class="sr-only">Name</label>
+  <input type="text" name="name" id="name" class="form-control my-2" placeholder="Name" autofocus required>
+
+  <label for="contact_phone" class="sr-only">Contact Phone</label>
+  <input type="contact_phone" name="contact_phone" id="contact_phone" class="form-control my-2" placeholder="Contact Phone" required>
+
+  <label for="has_credit" class="sr-only">has credit</label>
+	<select name="has_credit" id="has_credit" class="form-select my-2 col-12" aria-label="Default select example">
+		<option selected>has_credit?</option>
+		<option value="0">No</option>
+		<option value="1">Yes</option>
+	</select>
+
+
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Create</button>
+	<a href="{{ url_for('clients.search') }}" class="btn btn-lg btn-danger btn-block">
+		back
+  </a>
+</form>
+</div>
+{% endblock %}
+
