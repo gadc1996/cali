@@ -1,5 +1,5 @@
 class User:
-    """ A simple example class """
+    """ A simple User class """
 
     def __init__(self, iterable):
         self.username = self._is_valid(iterable['username'], 'Username')

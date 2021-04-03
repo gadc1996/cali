@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="text-center mt-4">{% block title %}Search Client{% endblock %}</h1>
+<div class="container-fluid">
+  <form class="form-inline" method="post">
+    <label for="id" class="m-2">id</label>
+    <input name="id" type="text" class="form-control m-2" id="id">
+
+    <label for="name" class="m-2">Name</label>
+    <input name="name" type="text" class="form-control m-2" id="name">
+
+    <button type="submit" class="btn btn-primary m-2">Submit</button>
+  </form>
+</div>
+
+<div class="text-center container-fluid">
+	<table class="table mt-4">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Contact Phone</th>
+      <th scope="col">Has Credit</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+		{% for client in clients%}
+			<tr>
+				<th scope="row">{{ client.id }}</th>
+				<td>{{ client.name}}</td>
+				<td>{{ client.contact_phone}}</td>
+
+        {% if client.has_credit%}
+          <td>Yes</td>
+        {% else %}
+          <td>No</td>
+        {% endif %}
+
+        <td>
+          <a href="{{ url_for('users.delete', id=client.id) }}" type="button" role="button" class="btn btn-danger" aria-pressed="true">
+            <i class="fa fa-trash"></i>
+          </a>
+
+          <a href="{{ url_for('users.update', id=client.id) }}" type="button" role="button" class="btn btn-info" aria-pressed="true">
+            <i class="fa fa-edit"></i>
+          </a>
+        </td>
+			</tr>
+		{% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

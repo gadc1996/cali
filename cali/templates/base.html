@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
 	<head>
-		<meta charset="UTF-8">
 		<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -33,10 +32,19 @@
 							<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								Users
 							</a>
-
 							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 									<a class="dropdown-item" href="{{ url_for('users.search') }}">Search Users</a>
-									<a class="dropdown-item" href="{{ url_for('users.create') }}">Create Users</a>
+									<a class="dropdown-item" href="{{ url_for('users.create') }}">Create User</a>
+							</div>
+						</div>
+
+						<div class="dropdown show">
+							<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Clients
+							</a>
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+									<a class="dropdown-item" href="{{ url_for('clients.search') }}">Search Clients</a>
+									<a class="dropdown-item" href="{{ url_for('clients.create') }}">Create Client</a>
 							</div>
 						</div>
 

@@ -31,6 +31,14 @@ def get_single_user(id):
     user = db.execute(f'SELECT username, password, is_super, can_discount, branch_id FROM user JOIN branch on user.branch_id = branch.id WHERE user.id={id}').fetchone()
     return user
 
+def get_all_clients():
+    db = get_db()
+    clients = db.execute("""
+        SELECT * FROM client
+        """
+    ).fetchall()
+    return clients
+
 def get_all_users():
     db = get_db()
     users = db.execute("""
@@ -40,6 +48,22 @@ def get_all_users():
     ).fetchall()
     return users
 
+def get_filtered_clients(form):
+    db = get_db()
+    for key,value in form.items():
+        if value is '':
+            continue
+
+        if key =='id':
+            clients = db.execute(f'SELECT * FROM client WHERE {key}={value}'
+                ).fetchall()
+            return clients
+
+        else:
+            clients = db.execute(f'SELECT * FROM client WHERE {key}="{value}"'
+                ).fetchall()
+            return clients
+
 def get_filtered_users(form):
     db = get_db()
     for key,value in form.items():
@@ -47,16 +71,14 @@ def get_filtered_users(form):
             continue
 
         if key =='id':
-            users = db.execute('SELECT * FROM user '
-                'JOIN branch on user.branch_id = branch.id '
+            users = db.execute('SELECT * FROM user '\
+                'JOIN branch on user.branch_id = branch.id '\
                 f'WHERE user.{key}={value}'
                 ).fetchall()
             return users
 
         else:
-            users = db.execute('SELECT * FROM user '
-                'JOIN branch on user.branch_id = branch.id '
-                f'WHERE user.{key}="{value}" '
+            users = db.execute(f'SELECT * FROM user JOIN branch on user.branch_id = branch.id WHERE user.{key}="{value}" '
                 ).fetchall()
             return users
 
