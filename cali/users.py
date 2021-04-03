@@ -14,10 +14,10 @@ blueprint = Blueprint('users', __name__, url_prefix='/users')
 def search():
     if request.method == 'POST':
         users = get_filtered_users(request.form) 
-        return render_template('users/search.html', users=users)
     else:
         users = get_all_users()
-        return render_template('users/search.html', users=users)
+
+    return render_template('users/search.html', users=users)
 
 @blueprint.route('/create', methods=('GET', 'POST'))
 def create():

@@ -1,6 +1,29 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1 class="text-center my-4">{% block title %}Search Article{% endblock %}</h1>
+
+<div class="container-fluid">
+  <form class="form-inline" method="post">
+    <label for="id" class="m-2">id</label>
+    <input name="id" type="text" class="form-control m-2" id="username">
+
+    <label for="name" class="m-2">Name</label>
+    <input name="name" type="text" class="form-control m-2" id="name">
+
+    <label for="category_id" class="m-2">Branch</label>
+    <select name="category_id" id="branch" class="form-select m-2" aria-label="Default select example">
+      <option value="" selected>Select a category</option>
+      <option value="0">Vestido</option>
+      <option value="1">Falda</option>
+    </select>
+
+    <label for="sku" class="m-2">Name</label>
+    <input sku="sku" type="text" class="form-control m-2" id="sku">
+
+    <button type="submit" class="btn btn-primary m-2">Submit</button>
+  </form>
+</div>
+
 <div class="text-center container-fluid">
   <div class="card-deck">
 
