@@ -10,14 +10,14 @@
     <label for="name" class="m-2">Name</label>
     <input name="name" type="text" class="form-control m-2" id="name">
 
-    <label for="category_id" class="m-2">Branch</label>
+    <label for="category_id" class="m-2">Category</label>
     <select name="category_id" id="branch" class="form-select m-2" aria-label="Default select example">
       <option value="" selected>Select a category</option>
       <option value="0">Vestido</option>
       <option value="1">Falda</option>
     </select>
 
-    <label for="sku" class="m-2">Name</label>
+    <label for="sku" class="m-2">SKU</label>
     <input sku="sku" type="text" class="form-control m-2" id="sku">
 
     <button type="submit" class="btn btn-primary m-2">Submit</button>
@@ -35,7 +35,12 @@
           <div class="card-body">
             <h5 class="card-title">{{ article.name }}</h5>
             <p class="card-text">{{ article.description }}</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+            <a href="{{ url_for('articles.info', id=article.id) }}" class="btn btn-lg btn-info btn-block">
+              Info
+            </a>
+            <a href="{{ url_for('articles.update', id=article.id) }}" class="btn btn-lg btn-warning btn-block">
+              Update
+            </a>
           </div>
         </div>
       </div>

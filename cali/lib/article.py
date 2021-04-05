@@ -36,8 +36,8 @@ class Article:
 #
 def get_single_article(id):
     db = get_db()
-    client = db.execute(f'SELECT name, contact_phone, has_credit FROM client WHERE id={id}').fetchone()
-    return client
+    article = db.execute(f'SELECT * FROM article WHERE id={id}').fetchone()
+    return article
 
 def get_all_articles():
     db = get_db()

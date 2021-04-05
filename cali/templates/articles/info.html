@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-fluid">
+	<h1 class="text-center my-4">{% block title %}Article Info{% endblock %}</h1>
+	<div class="card-deck">
+
+		<div class="col-4 mb-4">
+			<div class="card" >
+				<img class="card-img-top" src="../../static/img/{{ article.SKU }}.jpg" alt="{{ article.name }}" >
+			</div>
+					<a href="{{ url_for('articles.update', id=article.id) }}" class="btn btn-lg btn-info btn-block my-4">
+						update
+					</a>
+					<a href="{{ url_for('articles.search') }}" class="btn btn-lg btn-danger btn-block">
+						back
+					</a>
+		</div>
+		<div class="col-8 mb-4">
+				<table class="table">
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col">Field</th>
+							<th scope="col">Value</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for key in article.keys() %}
+							<tr>
+								<th scope="row">{{ key }}</th>
+								<td>{{ article[key] }}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+		</div>
+	</div>
+</div>
+{% endblock %}
