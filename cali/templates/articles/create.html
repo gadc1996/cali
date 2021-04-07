@@ -13,7 +13,13 @@
   <label for="name" class="sr-only">Name</label>
 	<input  type="text" name="name" id="name" class="form-control my-2" placeholder="Name" autofocus required>
 
-  <input  type="text" name="category" id="category" class="form-control my-2" placeholder="Category" required>
+	<select name="category_id" id="category" class="form-select col-12" aria-label="Default select example">
+		<option value="" selected>Select a Category</option>
+
+		{% for category_id, category in categories.items() %}
+			<option value="{{category_id}}">{{category}}</option>
+		{% endfor %}
+	</select>
 
   <label for="description" class="sr-only">Description</label>
   <input  type="text" name="description" id="description" class="form-control my-2" placeholder="Description" required>
