@@ -48,14 +48,15 @@
 							</div>
 						</div>
 
-						<li class="nav-item active">
-							<a class="nav-link" href="{{ url_for('articles.search') }} ">
-								Article Search
-								<span class="sr-only">
-									(current)
-								</span>
+						<div class="dropdown show">
+							<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								articles
 							</a>
-						</li>
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+									<a class="dropdown-item" href="{{ url_for('articles.search') }}">Search articles</a>
+									<a class="dropdown-item" href="{{ url_for('articles.create') }}">Create article</a>
+							</div>
+						</div>
 						
 						<li class="nav-item active">
 							<a class="nav-link" href="{{ url_for('authentication.logout') }} ">

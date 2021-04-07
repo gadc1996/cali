@@ -6,7 +6,8 @@ from flask import (
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from cali.lib.db import get_db
-from cali.lib.article import get_all_articles, get_filtered_articles, get_single_article
+from cali.lib.article import Article, get_all_articles, get_filtered_articles, get_single_article, article_exist
+from cali.lib.category import get_single_category, get_all_categories
 
 blueprint = Blueprint('articles', __name__, url_prefix='/articles')
 
@@ -22,55 +23,52 @@ def search():
 
 @blueprint.route('<int:id>/info', methods=('GET',))
 def info(id):
-        article = get_single_article(id)
+        article = Article(get_single_article(id))
         return render_template('articles/info.html', article=article)
 
 @blueprint.route('<int:id>/update', methods=('GET', 'POST'))
 def update(id):
     if request.method == 'POST':
-        pass
-        #db = get_db()
-        #user = User(request.form)
+        db = get_db()
+        article = Article(get_single_article(id))
 
-        #if user_exist(user):
-        #    g.message = 'User Exists'
-        #    g.messageColor = 'danger'
-        #    return render_template('users/update.html', user=user)
-        #else:
-        #    g.message = 'User Updated'
-        #    g.messageColor = 'success'
-        #    db.execute(user.update_user(id))
-        #    db.commit()
-        #    return render_template('users/update.html', user=user)
+        if article_exist(article):
+            g.message = 'article Exists'
+            g.messageColor = 'danger'
+        else:
+            g.message = 'article Updated'
+            g.messageColor = 'success'
+            db.execute(article.update_article(id))
+            db.commit()
     else:
-        article = get_single_article(id)
-        return render_template('articles/update.html', article=article)
+        article = Article(get_single_article(id))
 
-#@blueprint.route('/create', methods=('GET', 'POST'))
-#def create():
-#    if request.method == 'POST':
-#        db = get_db()
-#        user = User(request.form)
-#
-#        if user_exist(user):
-#            g.message = 'User Exists'
-#            g.messageColor = 'danger'
-#            return render_template('users/create.html')
-#        else:
-#            g.message = 'User Created'
-#            g.messageColor = 'success'
-#            db.execute(user.create_user())
-#            db.commit()
-#            return render_template('users/create.html')
-#
-#    return render_template('users/create.html')
-#
-#@blueprint.route('/<int:id>/delete', methods=('GET',))
-#def delete(id):
-#    db = get_db()
-#    user = User(get_single_user(id))
-#    db.execute(user.delete_user(id))
-#    db.commit()
-#
-#    return redirect(url_for('users.search'))
-#
+    categories = get_all_categories()
+    return render_template('articles/update.html', article=article, categories=categories)
+
+@blueprint.route('/create', methods=('GET', 'POST'))
+def create():
+    if request.method == 'POST':
+        db = get_db()
+        article = Article(request.form)
+
+        if article_exist(article):
+            g.message = 'article Exists'
+            g.messageColor = 'danger'
+        else:
+            g.message = 'article Created'
+            g.messageColor = 'success'
+            db.execute(article.create_article())
+            db.commit()
+
+    return render_template('articles/create.html')
+
+
+@blueprint.route('/<int:id>/delete', methods=('GET',))
+def delete(id):
+    db = get_db()
+    article = Article(get_single_article(id))
+    db.execute(article.delete_article(id))
+    db.commit()
+    return redirect(url_for('articles.search'))
+
