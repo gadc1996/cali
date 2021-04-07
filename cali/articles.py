@@ -59,7 +59,6 @@ def create():
         else:
             g.message = 'article Created'
             g.messageColor = 'success'
-            flash(article.create_article())
             db.execute(article.create_article())
             db.commit()
 

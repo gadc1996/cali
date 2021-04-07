@@ -25,7 +25,7 @@ class Article:
 
     def create_article(self):
         return "INSERT INTO article (name, category_id, description, price, SKU, stock, on_branch_1, on_branch_2, is_regular) " \
-        f"VALUES ('{self.name}', {self.category_id}, '{self.description}', {self.price}, {self.sku}, {self.stock}, {self.on_branch_1}, {self.on_branch_2}, {self.is_regular})"
+        f"VALUES ('{self.name}', {self.category_id}, '{self.description}', {self.price}, '{self.sku}', {self.stock}, {self.on_branch_1}, {self.on_branch_2}, {self.is_regular})"
 
     def update_article(self):
         return 'UPDATE article '\
