@@ -1,3 +1,5 @@
+from cali.lib.db import get_db
+
 class User:
     """ A simple User class """
 
@@ -29,3 +31,43 @@ class User:
 
     def delete_user(self, id):
         return f'DELETE FROM user WHERE id={id}'
+
+def get_single_user(id):
+    db = get_db()
+    user = db.execute(f'SELECT username, password, is_super, can_discount, branch_id FROM user JOIN branch on user.branch_id = branch.id WHERE user.id={id}').fetchone()
+    return user
+
+def get_all_users():
+    db = get_db()
+    users = db.execute("""
+        SELECT * FROM user
+        JOIN branch on user.branch_id = branch.id
+        """
+    ).fetchall()
+    return users
+
+def get_filtered_users(form):
+    db = get_db()
+    for key,value in form.items():
+        if value is '':
+            continue
+
+        if key =='id':
+            users = db.execute('SELECT * FROM user '\
+                'JOIN branch on user.branch_id = branch.id '\
+                f'WHERE user.{key}={value}'
+                ).fetchall()
+            return users
+
+        else:
+            users = db.execute(f'SELECT * FROM user JOIN branch on user.branch_id = branch.id WHERE user.{key}="{value}" '
+                ).fetchall()
+            return users
+
+
+def user_exist(user):
+    db = get_db()
+    if db.execute(f"SELECT username FROM user WHERE username='{user.username}'").fetchone() is not None:
+        return True
+    else:
+        return False

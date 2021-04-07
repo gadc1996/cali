@@ -5,8 +5,8 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from cali.db import get_db, get_all_clients, get_filtered_clients, get_single_client, client_exist
-from cali.lib.client import Client
+from cali.lib.db import get_db
+from cali.lib.client import Client, get_all_clients, get_filtered_clients, get_single_client, client_exist
 
 blueprint = Blueprint('clients', __name__, url_prefix='/clients')
 
@@ -14,10 +14,10 @@ blueprint = Blueprint('clients', __name__, url_prefix='/clients')
 def search():
     if request.method == 'POST':
         clients = get_filtered_clients(request.form) 
-        return render_template('clients/search.html', clients=clients)
     else:
         clients = get_all_clients()
-        return render_template('clients/search.html', clients=clients)
+
+    return render_template('clients/search.html', clients=clients)
 
 @blueprint.route('/create', methods=('GET', 'POST'))
 def create():

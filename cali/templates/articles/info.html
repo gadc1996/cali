@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-fluid">
+	<h1 class="text-center my-4">{% block title %}Article Info{% endblock %}</h1>
+	<div class="card-deck">
+
+		<div class="col-4 mb-4">
+			<div class="card" >
+				<img class="card-img-top" src="../../static/img/{{ article.sku }}.jpg" alt="{{ article.name }}" >
+			</div>
+					<a href="{{ url_for('articles.update', id=article.id) }}" class="btn btn-lg btn-info btn-block my-4">
+						update
+					</a>
+					<a href="{{ url_for('articles.search') }}" class="btn btn-lg btn-danger btn-block">
+						back
+					</a>
+		</div>
+		<div class="col-8 mb-4">
+				<table class="table">
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col">Field</th>
+							<th scope="col">Value</th>
+						</tr>
+					</thead>
+					<tbody>
+							<tr>
+								<th scope="row">Id</th>
+								<td>{{article.id}}</td>
+							</tr>
+							<tr>
+								<th scope="row">Name</th>
+								<td>{{article.name}}</td>
+							</tr>
+							<tr>
+								<th scope="row">Category</th>
+								<td>{{article.category}}</td>
+							</tr>
+							<tr>
+								<th scope="row">Description</th>
+								<td>{{article.description}}</td>
+							</tr>
+							<tr>
+								<th scope="row">Price</th>
+								<td>{{article.price}}</td>
+							</tr>
+							<tr>
+								<th scope="row">Sku</th>
+								<td>{{article.sku}}</td>
+							</tr>
+							<tr>
+								<th scope="row">Stock</th>
+								<td>{{article.stock}}</td>
+							</tr>
+							<tr>
+								<th scope="row">On branch 1</th>
+								<td>{{article.on_branch_1}}</td>
+							</tr>
+							<tr>
+								<th scope="row">On branch 2</th>
+								<td>{{article.on_branch_2}}</td>
+							</tr>
+							<tr>
+								<th scope="row">Is regular</th>
+								<td>{{article.is_regular}}</td>
+							</tr>
+					</tbody>
+				</table>
+		</div>
+	</div>
+</div>
+{% endblock %}

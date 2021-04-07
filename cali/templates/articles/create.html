@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="text-center pt-5">
+ <form class="form-signin col-6 offset-3" method="post">
+	{% if g.message %}
+		<div class="alert alert-{{g.messageColor}}" role="alert">
+			{{ g.message }}
+		</div>
+	{% endif %}
+  <h1 class="h3 mb-3 font-weight-normal">{% block title %}Create Article{% endblock %}</h1>
+
+  <label for="name" class="sr-only">Name</label>
+	<input  type="text" name="name" id="name" class="form-control my-2" placeholder="Name" autofocus required>
+
+	<select name="category_id" id="category" class="form-select col-12" aria-label="Default select example">
+		<option value="" selected>Select a Category</option>
+
+		{% for category_id, category in categories.items() %}
+			<option value="{{category_id}}">{{category}}</option>
+		{% endfor %}
+	</select>
+
+  <label for="description" class="sr-only">Description</label>
+  <input  type="text" name="description" id="description" class="form-control my-2" placeholder="Description" required>
+
+  <label for="price" class="sr-only">Price</label>
+  <input  type="number" name="price" id="price" class="form-control my-2" placeholder="Price" required>
+
+  <input  type="text" name="sku" id="sku" class="form-control my-2" placeholder="sku" required>
+  <input  type="text" name="stock" id="stock" class="form-control my-2" placeholder="stock" required>
+  <input  type="text" name="on_branch_1" id="on_branch_1" class="form-control my-2" placeholder="on_branch_1" required>
+  <input  type="text" name="on_branch_2" id="on_branch_2" class="form-control my-2" placeholder="on_branch_2" required>
+  <input  type="text" name="is_regular" id="is_regular" class="form-control my-2" placeholder="is_regular" required>
+
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Update</button>
+
+	<a href="{{ url_for('articles.search') }}" class="btn btn-lg btn-danger btn-block">
+		back
+  </a>
+</form>
+</div>
+{% endblock %}
