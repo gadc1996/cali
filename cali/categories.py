@@ -14,17 +14,18 @@ blueprint = Blueprint('categories', __name__, url_prefix='/categories')
 @blueprint.route('/search', methods=('GET','POST'))
 def search():
     if request.method == 'POST':
-        categories = get_filtered_categories(request.form)
-    else:
-        categories = get_all_categories()
+        pass
+    #    categories = get_filtered_categories(request.form)
+    #else:
+    categories = get_all_categories()
 
     return render_template('categories/search.html', categories=categories)
 
 
 @blueprint.route('<int:id>/info', methods=('GET',))
 def info(id):
-        categorie = categorie(get_single_categorie(id))
-        return render_template('categories/info.html', categorie=categorie)
+        category = Category(get_single_category(id))
+        return render_template('categories/info.html',category=category)
 
 @blueprint.route('<int:id>/update', methods=('GET', 'POST'))
 def update(id):
@@ -68,8 +69,8 @@ def create():
 @blueprint.route('/<int:id>/delete', methods=('GET',))
 def delete(id):
     db = get_db()
-    categorie = categorie(get_single_categorie(id))
-    db.execute(categorie.delete_categorie())
+    category = Category(get_single_category(id))
+    db.execute(category.delete_category())
     db.commit()
     return redirect(url_for('categories.search'))
 

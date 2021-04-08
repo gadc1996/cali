@@ -18,7 +18,7 @@ class Category():
         return f"INSERT INTO category (category_name) VALUES ('{self.category_name}')"
 
     def delete_category(self):
-        pass
+        return f"DELETE FROM category (category_name) VALUES ('{self.category_name}')"
 
     def update_category(self):
         pass

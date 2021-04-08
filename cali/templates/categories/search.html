@@ -1,0 +1,46 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="text-center mt-4">{% block title %}Search Category{% endblock %}</h1>
+<div class="container-fluid">
+  <form class="form-inline" method="post">
+    <label for="id" class="m-2">id</label>
+    <input name="id" type="text" class="form-control m-2" id="id">
+
+    <label for="name" class="m-2">Name</label>
+    <input name="name" type="text" class="form-control m-2" id="name">
+
+    <button type="submit" class="btn btn-primary m-2">Submit</button>
+  </form>
+</div>
+
+<div class="text-center container-fluid">
+	<table class="table mt-4">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+		{% for category in categories %}
+			<tr>
+				<th scope="row">{{ category.id }}</th>
+				<td>{{ category.name}}</td>
+
+        <td>
+          <a href="{{ url_for('categories.delete', id=category.id) }}" type="button" role="button" class="btn btn-danger" aria-pressed="true">
+            <i class="fa fa-trash"></i>
+          </a>
+
+          <a href="{{ url_for('categories.update', id=category.id) }}" type="button" role="button" class="btn btn-info" aria-pressed="true">
+            <i class="fa fa-edit"></i>
+          </a>
+        </td>
+			</tr>
+		{% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}
