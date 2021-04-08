@@ -47,7 +47,6 @@ class Article:
         if article_id is not None:
             return article_id['id']
         else:
-            
             article_id = db.execute(f"SELECT id FROM article").fetchall()
             return article_id[-1]['id'] + 1
 

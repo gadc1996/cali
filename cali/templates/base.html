@@ -50,11 +50,21 @@
 
 						<div class="dropdown show">
 							<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								articles
+								Articles
 							</a>
 							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 									<a class="dropdown-item" href="{{ url_for('articles.search') }}">Search articles</a>
 									<a class="dropdown-item" href="{{ url_for('articles.create') }}">Create article</a>
+							</div>
+						</div>
+						
+						<div class="dropdown show">
+							<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Category
+							</a>
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+									<a class="dropdown-item" href="{{ url_for('categories.search') }}">Search articles</a>
+									<a class="dropdown-item" href="{{ url_for('categories.create') }}">Create article</a>
 							</div>
 						</div>
 						
