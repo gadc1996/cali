@@ -24,17 +24,17 @@
     </tr>
   </thead>
   <tbody>
-		{% for category in categories %}
+		{% for  category_id, category in categories.items() %}
 			<tr>
-				<th scope="row">{{ category.id }}</th>
-				<td>{{ category.name}}</td>
+				<th scope="row">{{ category_id }}</th>
+				<td>{{ category}}</td>
 
         <td>
-          <a href="{{ url_for('categories.delete', id=category.id) }}" type="button" role="button" class="btn btn-danger" aria-pressed="true">
+          <a href="{{ url_for('categories.delete', id=category_id) }}" type="button" role="button" class="btn btn-danger" aria-pressed="true">
             <i class="fa fa-trash"></i>
           </a>
 
-          <a href="{{ url_for('categories.update', id=category.id) }}" type="button" role="button" class="btn btn-info" aria-pressed="true">
+          <a href="{{ url_for('categories.update', id=category_id) }}" type="button" role="button" class="btn btn-info" aria-pressed="true">
             <i class="fa fa-edit"></i>
           </a>
         </td>
