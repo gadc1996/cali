@@ -17,9 +17,6 @@ def search():
     #    categories = get_filtered_categories(request.form)
     #else:
     categories = get_all_categories()
-
-    flash(categories)
-    #return render_template('categories/search.html')
     return render_template('categories/search.html', categories=categories)
 
 @blueprint.route('<int:id>/info', methods=('GET',))

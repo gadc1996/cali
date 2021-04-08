@@ -2,7 +2,7 @@ from cali.lib.db import get_db
 
 class Category():
     def __init__(self, iterable):
-        self.category_name = iterable['name']
+        self.category_name = iterable['category_name']
         self.id = self.get_category_id()
 
     def get_category_id(self):
@@ -18,7 +18,7 @@ class Category():
         return f"INSERT INTO category (category_name) VALUES ('{self.category_name}')"
 
     def delete_category(self):
-        return f"DELETE FROM category (category_name) VALUES ('{self.category_name}')"
+        return f"DELETE FROM category WHERE id={self.id}"
 
     def update_category(self):
         pass
@@ -38,4 +38,4 @@ def get_all_categories():
 def get_single_category(id):
     db = get_db()
     category = db.execute(f'SELECT category_name FROM category WHERE id={id}').fetchone()
-    return category['category_name']
+    return category
