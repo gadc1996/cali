@@ -28,22 +28,22 @@ def info(id):
 def update(id):
     if request.method == 'POST':
         db = get_db()
-        categorie = categorie(get_single_categorie(id))
-        flash(categorie.categorie_exist())
+        category = Category(request.form)
 
-        if categorie.categorie_exist():
-            g.message = 'categorie Exists'
+        flash(category.category_exist())
+        if category.category_exist():
+            g.message = 'Category Exists'
             g.messageColor = 'danger'
         else:
-            g.message = 'categorie Updated'
+            g.message = 'Category Updated'
             g.messageColor = 'success'
-            db.execute(categorie.update_categorie())
+            db.execute(category.update_category(id))
             db.commit()
     else:
-        categorie = categorie(get_single_categorie(id))
+        category = Category(get_single_category(id))
 
-    categories = get_all_categories()
-    return render_template('categories/update.html', categorie=categorie, categories=categories)
+
+    return render_template('categories/update.html', category=category)
 
 @blueprint.route('/create', methods=('GET', 'POST'))
 def create():

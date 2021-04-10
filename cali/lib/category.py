@@ -20,8 +20,10 @@ class Category():
     def delete_category(self):
         return f"DELETE FROM category WHERE id={self.id}"
 
-    def update_category(self):
-        pass
+    def update_category(self, id):
+        return 'UPDATE category '\
+            f'SET category_name="{self.category_name}" '\
+            f'WHERE id={id} '
 
     def category_exist(self):
         db = get_db()

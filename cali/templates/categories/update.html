@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="text-center pt-5">
+ <form class="form-signin col-6 offset-3" method="post">
+	{% if g.message %}
+		<div class="alert alert-{{g.messageColor}}" role="alert">
+			{{ g.message }}
+		</div>
+	{% endif %}
+
+  <h1 class="h3 mb-3 font-weight-normal">{% block title %}Update Category{% endblock %}</h1>
+
+  <label for="category_name" class="sr-only">category_name</label>
+	<input value='{{ category.category_name }}' type="text" name="category_name" id="category_name" class="form-control my-2" placeholder="category_name" autofocus required>
+
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Create</button>
+	<a href="{{ url_for('categories.search') }}" class="btn btn-lg btn-danger btn-block">
+		back
+  </a>
+</form>
+</div>
+{% endblock %}
+
