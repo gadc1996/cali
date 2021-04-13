@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS branch;
 DROP TABLE IF EXISTS category;
 DROP TABLE IF EXISTS article;
 DROP TABLE IF EXISTS client;
+DROP TABLE IF EXISTS cart;
 
 CREATE TABLE branch(
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -44,6 +45,18 @@ CREATE TABLE client(
 	contact_phone INTEGER,
 	has_credit INTEGER
 );
+
+CREATE TABLE cart(
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	name TEXT  NOT NULL,
+	price REAL,
+	SKU TEXT,
+	stock INTEGER,
+	on_branch_1 INTEGER,
+	on_branch_2 INTEGER,
+	is_regular INTEGER
+);
+
 --Default values
 INSERT INTO branch VALUES(0, 'Chihuahua');
 INSERT INTO branch VALUES(1, 'Madera');

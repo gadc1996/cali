@@ -31,7 +31,6 @@ def update(id):
     if request.method == 'POST':
         db = get_db()
         article = Article(get_single_article(id))
-        flash(article.article_exist())
 
         if article.article_exist():
             g.message = 'article Exists'
