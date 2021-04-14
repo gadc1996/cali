@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS category;
 DROP TABLE IF EXISTS article;
 DROP TABLE IF EXISTS client;
 DROP TABLE IF EXISTS cart;
+DROP TABLE IF EXISTS sale;
 
 CREATE TABLE branch(
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -57,6 +58,21 @@ CREATE TABLE cart(
 	is_regular INTEGER
 );
 
+CREATE TABLE sale(
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	user_id INTEGER,
+	client_id INTEGER,
+	total INTEGER,
+	pay_method_id INTEGER,
+	FOREIGN KEY (user_id) REFERENCES user(id),
+	FOREIGN KEY (client_id) REFERENCES client(id),
+	FOREIGN KEY (pay_method_id) REFERENCES pay_method(id)
+);
+
+CREATE TABLE pay_method(
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	name TEXT
+);
 --Default values
 INSERT INTO branch VALUES(0, 'Chihuahua');
 INSERT INTO branch VALUES(1, 'Madera');
@@ -78,3 +94,6 @@ INSERT INTO article VALUES(2, 'Falda Negra', 1, 'Falda Negra sencilla',  100, "3
 INSERT INTO article VALUES(3, 'Falda Verde', 1, 'Falda Verde sencilla',  100, "4", 3, 2, 1, 1);
 INSERT INTO article VALUES(4, 'Vestido Azul', 0, 'Vestido con falda azul',  100, "5", 3, 2, 1, 1);
 INSERT INTO article VALUES(5, 'Vestido Blanco', 0, 'Vestido blanco con mono',  100, "6", 3, 2, 1, 1);
+
+INSERT INTO pay_method VALUES(0, 'Cash');
+INSERT INTO pay_method VALUES(1, 'Card');

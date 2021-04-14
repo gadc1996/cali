@@ -9,6 +9,7 @@ from cali.lib.db import get_db
 from cali.lib.article import get_single_article
 from cali.lib.cart import CartItem, ShoppingCart
 from cali.lib.client import get_all_clients
+from cali.lib.sale import Sale
 
 blueprint = Blueprint('cart', __name__, url_prefix='/cart')
 
@@ -43,7 +44,13 @@ def delete(id):
 
 @blueprint.route('/checkout', methods=('POST',))
 def checkout():
-    flash(request.form)
-    return render_template('cart/checkout.html')
+    cart = ShoppingCart()
+    sale = Sale(request.form)
+    db = get_db()
+    db.execute(sale.create_sale())
+    db.execute(cart.clear_cart())
+    db.commit()
+
+    return render_template('cart/checkout.html', sale=sale)
 
 

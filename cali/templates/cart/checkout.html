@@ -3,5 +3,6 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1 class="text-center my-4">{% block title %}Checkout{% endblock %}</h1>
+<h2 class="text-center my-4">Change: {{ sale.get_change()}}</h2>
 
 {% endblock %}

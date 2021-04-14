@@ -52,4 +52,7 @@ def create_app(test_config= None):
     from . import cart
     app.register_blueprint(cart.blueprint)
 
+    from . import sales
+    app.register_blueprint(sales.blueprint)
+
     return app

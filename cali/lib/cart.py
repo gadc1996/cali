@@ -27,6 +27,9 @@ class ShoppingCart:
         ).fetchall()
         return cart_items
 
+    def clear_cart(self):
+        return "DELETE FROM cart"
+
 class CartItem(ShoppingCart):
     """ A simple cart item class """
 
