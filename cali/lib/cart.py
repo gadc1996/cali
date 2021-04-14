@@ -3,11 +3,23 @@ from cali.lib.category import get_all_categories, get_single_category
 
 class ShoppingCart:
     """ A simple shopping cart class """
-
     def __init__(self):
+        self.price = self.get_cart_total_price()
         self.cart_items = self.get_all_cart_items()
-        
-    def get_all_cart_items():
+
+    def get_cart_total_price(self):
+        price = 0
+        items = self.get_all_cart_items()
+        for item in items:
+            price += item['price']
+
+        return price
+
+    def get_cart_total_items(self):
+        items = self.get_all_cart_items()
+        return len(items)
+
+    def get_all_cart_items(self):
         db = get_db()
         cart_items = db.execute("""
             SELECT * FROM cart

@@ -8,6 +8,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from cali.lib.db import get_db
 from cali.lib.article import get_single_article
 from cali.lib.cart import CartItem, ShoppingCart
+from cali.lib.client import get_all_clients
 
 blueprint = Blueprint('cart', __name__, url_prefix='/cart')
 
@@ -28,8 +29,10 @@ def add(id):
 def info():
     if request.method == 'POST':
         pass
-    cart_items = CartItem.get_all_cart_items()
-    return render_template('cart/info.html', cart_items=cart_items)
+    cart = ShoppingCart()
+    clients = get_all_clients()
+    cart_items = cart.get_all_cart_items()
+    return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients)
 
 @blueprint.route('/<int:id>/delete', methods=('GET',))
 def delete(id):
@@ -38,5 +41,9 @@ def delete(id):
     db.commit()
     return redirect(url_for('cart.info'))
 
+@blueprint.route('/checkout', methods=('POST',))
+def checkout():
+    flash(request.form)
+    return render_template('cart/checkout.html')
 
 

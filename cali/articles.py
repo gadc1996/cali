@@ -61,9 +61,6 @@ def create():
             db.execute(article.create_article())
             db.commit()
 
-    else:
-        article = Article(get_single_article(1))
-
     categories = get_all_categories()
     return render_template('articles/create.html', categories=categories)
 
