@@ -44,26 +44,30 @@ def delete(id):
 
 @blueprint.route('/checkout', methods=('POST',))
 def checkout():
+    db = get_db()
     cart = ShoppingCart()
-    sale = Sale(request.form)
     cart_items = cart.get_all_cart_items()
+    sale = Sale(request.form)
     clients = get_all_clients()
+    branchId = sale.branchId
 
-    flash("if there is enough stock, update items")
-    flash("else, return to previous page with a warning message")
 
-    #if cart.there_is_enought_stock(sale.branchId):
-    if cart.there_is_enought_stock(1):
-        pass
-    else:
+    if not cart.there_is_enought_stock(branchId):
         g.message = 'Not enought stock available'
         g.messageColor = 'danger'
         return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients)
 
-    db = get_db()
-    #db.execute(sale.create_sale())
-    #db.execute(cart.clear_cart())
-    #db.commit()
+    if not sale.cash_is_enough():
+        g.message = 'Not enought cash received'
+        g.messageColor = 'danger'
+        return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients)
+
+    for cartItem in cart_items:
+        db.execute(cart.update_cartItem_stock(cartItem, branchId))
+
+    db.execute(sale.create_sale())
+    db.execute(cart.clear_cart())
+    db.commit()
 
     return render_template('cart/checkout.html', sale=sale)
 

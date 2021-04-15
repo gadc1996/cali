@@ -31,7 +31,7 @@ class ShoppingCart:
         return "DELETE FROM cart"
 
     def there_is_enought_stock(self, branchId):
-        for cartItem in self.get_all_cart_items():
+        for cartItem in self.cart_items:
             stock = self.get_cartItem_stock(cartItem, branchId) 
             if stock == 0:
                 return False
@@ -40,6 +40,12 @@ class ShoppingCart:
 
     def get_cartItem_stock(self, cartItem, branchId):
         return cartItem[f'on_branch_{int(branchId) + 1}']
+
+    def update_cartItem_stock(self, cartItem, branchId):
+        stock = self.get_cartItem_stock(cartItem, branchId)
+        return 'UPDATE article '\
+            f'SET on_branch_{int(branchId) + 1}="{stock - 1}"   '\
+            f'WHERE SKU={cartItem["SKU"]} '\
 
 class CartItem(ShoppingCart):
     """ A simple cart item class """

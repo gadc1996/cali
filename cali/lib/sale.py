@@ -21,6 +21,7 @@ class Sale:
             return float(self.recivedCash) - float(self.total)
         except ValueError:
             return 0
+
     def get_pay_method(self):
         if self.payMethodId == 0:
             return 'Cash'
@@ -35,6 +36,11 @@ class Sale:
         ).fetchall()
         return sales
 
+    def cash_is_enough(self):
+        if self.recivedCash < self.total:
+            return False
+        else:
+            return True
 
 #    def _is_valid(self, field, fieldName):
 #        if field is None:
