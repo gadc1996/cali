@@ -6,15 +6,17 @@ from flask import (
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from cali.lib.db import get_db
+from cali.lib.sale import Sale
 
 blueprint = Blueprint('sales', __name__, url_prefix='/sales')
 
 @blueprint.route('/search', methods=('GET','POST'))
 def search():
     if request.method == 'POST':
-        sales = get_filtered_sales(request.form) 
+        #sales = get_filtered_sales(request.form) 
+        pass
     else:
-        sales = get_all_sales()
+        sales = Sale.get_all_sales()
 
     return render_template('sales/search.html', sales=sales)
 

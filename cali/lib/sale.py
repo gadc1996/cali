@@ -17,6 +17,13 @@ class Sale:
     def get_change(self):
         return float(self.recivedCash) - float(self.total)
 
+    def get_all_sales():
+        db = get_db()
+        sales = db.execute("""
+            SELECT * FROM sale
+            """
+        ).fetchall()
+        return sales
 #    def _is_valid(self, field, fieldName):
 #        if field is None:
 #            raise ValueError(f"{fieldName} Required, value: {field}")
@@ -38,14 +45,7 @@ class Sale:
 #    sale = db.execute(f'SELECT name, contact_phone, has_credit FROM sale WHERE id={id}').fetchone()
 #    return sale
 #
-#def get_all_sales():
-#    db = get_db()
-#    sales = db.execute("""
-#        SELECT * FROM sale
-#        """
-#    ).fetchall()
-#    return sales
-#
+
 #def get_filtered_sales(form):
 #    db = get_db()
 #    for key,value in form.items():

@@ -1,0 +1,7 @@
+[user]
+	email = gadc1996@gmail.com
+	name = Alex Delgado
+[credential]
+	helper = cache
+[core]
+	editor = vim

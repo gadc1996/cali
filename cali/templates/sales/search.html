@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="text-center mt-4">{% block title %}Search Sale{% endblock %}</h1>
+
+<div class="text-center container-fluid">
+	<table class="table mt-4">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">User</th>
+      <th scope="col">Client</th>
+      <th scope="col">total</th>
+      <th scope="col">Pay Method</th>
+    </tr>
+  </thead>
+  <tbody>
+		{% for sale in sales%}
+			<tr>
+				<th scope="row">{{ sale.id }}</th>
+				<td>{{ sale.user_id }}</td>
+				<td>{{ sale.client_id }}</td>
+				<td>${{ sale.total }}</td>
+				<td>{{ sale.pay_method_id }}</td>
+
+
+			</tr>
+		{% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}
