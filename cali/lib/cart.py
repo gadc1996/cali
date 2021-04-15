@@ -30,6 +30,17 @@ class ShoppingCart:
     def clear_cart(self):
         return "DELETE FROM cart"
 
+    def there_is_enought_stock(self, branchId):
+        for cartItem in self.get_all_cart_items():
+            stock = self.get_cartItem_stock(cartItem, branchId) 
+            if stock == 0:
+                return False
+
+        return True
+
+    def get_cartItem_stock(self, cartItem, branchId):
+        return cartItem[f'on_branch_{int(branchId) + 1}']
+
 class CartItem(ShoppingCart):
     """ A simple cart item class """
 

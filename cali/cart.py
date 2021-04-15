@@ -6,7 +6,7 @@ from flask import (
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from cali.lib.db import get_db
-from cali.lib.article import get_single_article
+from cali.lib.article import get_single_article, Article
 from cali.lib.cart import CartItem, ShoppingCart
 from cali.lib.client import get_all_clients
 from cali.lib.sale import Sale
@@ -46,10 +46,24 @@ def delete(id):
 def checkout():
     cart = ShoppingCart()
     sale = Sale(request.form)
+    cart_items = cart.get_all_cart_items()
+    clients = get_all_clients()
+
+    flash("if there is enough stock, update items")
+    flash("else, return to previous page with a warning message")
+
+    #if cart.there_is_enought_stock(sale.branchId):
+    if cart.there_is_enought_stock(1):
+        pass
+    else:
+        g.message = 'Not enought stock available'
+        g.messageColor = 'danger'
+        return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients)
+
     db = get_db()
-    db.execute(sale.create_sale())
-    db.execute(cart.clear_cart())
-    db.commit()
+    #db.execute(sale.create_sale())
+    #db.execute(cart.clear_cart())
+    #db.commit()
 
     return render_template('cart/checkout.html', sale=sale)
 

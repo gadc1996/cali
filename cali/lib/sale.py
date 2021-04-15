@@ -8,14 +8,24 @@ class Sale:
         self.clientId = iterable['client_id']
         self.total = iterable['total']
         self.recivedCash = iterable['recivedCash']
-        self.payMethodId = iterable['PayMethodId']
+        self.payMethodId = int(iterable['PayMethodId'])
+        self.payMethod = self.get_pay_method()
+        self.branchId = iterable['branch_id']
 
     def create_sale(self):
         return "INSERT INTO sale(user_id, client_id, total, pay_method_id) " \
         f"VALUES( {self.userId}, {self.clientId}, {self.total}, {self.payMethodId})"
 
     def get_change(self):
-        return float(self.recivedCash) - float(self.total)
+        try:
+            return float(self.recivedCash) - float(self.total)
+        except ValueError:
+            return 0
+    def get_pay_method(self):
+        if self.payMethodId == 0:
+            return 'Cash'
+        else:
+            return 'Credit Card'
 
     def get_all_sales():
         db = get_db()
@@ -24,6 +34,8 @@ class Sale:
             """
         ).fetchall()
         return sales
+
+
 #    def _is_valid(self, field, fieldName):
 #        if field is None:
 #            raise ValueError(f"{fieldName} Required, value: {field}")
