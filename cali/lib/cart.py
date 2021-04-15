@@ -7,6 +7,7 @@ class ShoppingCart:
     def __init__(self):
         self.price = self.get_cart_total_price()
         self.cart_items = self.get_all_cart_items()
+        self.ticket = self.get_sale_ticket()
 
     def get_cart_total_price(self):
         price = 0
@@ -42,11 +43,10 @@ class ShoppingCart:
     def clear_cart(self):
         return "DELETE FROM cart"
 
-    def there_is_enought_stock(self, ticket, branchId):
-        for sku, quantity in ticket.items():
+    def there_is_enought_stock(self, branchId):
+        for sku, quantity in self.ticket.items():
             cartItem = Article.get_article_by_sku(sku)
             stock = self.get_cartItem_stock(cartItem, branchId) 
-
             if stock < quantity:
                 return False
 
@@ -55,11 +55,12 @@ class ShoppingCart:
     def get_cartItem_stock(self, cartItem, branchId):
         return cartItem[f'on_branch_{int(branchId) + 1}']
 
-    def update_cartItem_stock(self, cartItem, branchId):
-        stock = self.get_cartItem_stock(cartItem, branchId)
+    def update_cartItem_stock(self, sku, quantity, branchId):
+        article = Article.get_article_by_sku(sku)
+        stock = article[f'on_branch_{int(branchId )+ 1}']
         return 'UPDATE article '\
-            f'SET on_branch_{int(branchId) + 1}="{stock - 1}"   '\
-            f'WHERE SKU={cartItem["SKU"]} '\
+            f'SET on_branch_{int(branchId) + 1}="{stock - quantity}"   '\
+            f'WHERE SKU={sku} '\
 
 class CartItem(ShoppingCart):
     """ A simple cart item class """
