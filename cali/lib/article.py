@@ -67,12 +67,12 @@ def get_single_article(id):
 
 def get_all_articles():
     db = get_db()
-    clients = db.execute("""
+    articles = db.execute("""
         SELECT * FROM article
         JOIN category ON article.category_id = category.id
         """
     ).fetchall()
-    return clients
+    return articles
 
 def get_filtered_articles(form):
     db = get_db()

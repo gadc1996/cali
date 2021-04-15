@@ -40,4 +40,4 @@ def get_all_categories():
 def get_single_category(id):
     db = get_db()
     category = db.execute(f'SELECT category_name FROM category WHERE id={id}').fetchone()
-    return category
+    return category['category_name']

@@ -62,7 +62,11 @@
 							</tr>
 							<tr>
 								<th scope="row">Is regular</th>
-								<td>{{article.is_regular}}</td>
+								{% if article.is_regular %}
+								<td>Yes</td>
+								{% else%}
+								<td>No</td>
+								{% endif %}
 							</tr>
 					</tbody>
 				</table>
