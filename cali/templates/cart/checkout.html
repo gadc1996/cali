@@ -3,6 +3,56 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1 class="text-center my-4">{% block title %}Checkout{% endblock %}</h1>
-<h2 class="text-center my-4">Change: {{ sale.get_change()}}</h2>
+<div class="container col-6">
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Field</th>
+      <th scope="col">Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Total Sale</th>
+      <td>${{ sale.total}} </td>
+    </tr>
+    <tr>
+      <th scope="row">Total Articles</th>
+      <td>{{ sale.totalArticles }} </td>
+    </tr>
+    <tr>
+      <th scope="row">Payment Method</th>
+      <td>{{ sale.payMethod }} </td>
+    </tr>
+    {% if sale.payMethod == 'Cash'%}
+    <tr>
+      <th scope="row">Cash Recived</th>
+      <td>${{ sale.recivedCash }} </td>
+    </tr>
+    <tr>
+      <th scope="row">Change</th>
+      <td>${{ sale.change}} </td>
+    </tr>
+    {% endif %}
+    <tr>
+      <th scope="row">Client</th>
+      <td>{{ sale.client }} </td>
+    </tr>
+    <tr>
+      <th scope="row">Employee</th>
+      <td>{{ sale.user }} </td>
+    </tr>
+    <tr>
+      <th scope="row">Branch</th>
+      {% if sale.branchId == 0 %}
+      <td>Chihuahua</td>
+      {% else %}
+      <td>Madera</td>
+      {% endif %}
+
+    </tr>
+  </tbody>
+</table>
+</div>
 
 {% endblock %}

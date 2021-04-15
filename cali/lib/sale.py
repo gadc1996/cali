@@ -1,4 +1,6 @@
 from cali.lib.db import get_db
+from cali.lib.client import get_single_client
+from cali.lib.user import get_single_user
 
 class Sale:
     """ A simple sale class """
@@ -6,11 +8,15 @@ class Sale:
     def __init__(self, iterable):
         self.userId = iterable['user_id']
         self.clientId = iterable['client_id']
+        self.user =  get_single_user(self.userId)['username']
+        self.client = get_single_client(self.clientId)['name']
         self.total = iterable['total']
+        self.totalArticles = iterable['total_articles']
         self.recivedCash = iterable['recivedCash']
         self.payMethodId = int(iterable['PayMethodId'])
         self.payMethod = self.get_pay_method()
         self.branchId = iterable['branch_id']
+        self.change = self.get_change()
 
     def create_sale(self):
         return "INSERT INTO sale(user_id, client_id, total, pay_method_id) " \

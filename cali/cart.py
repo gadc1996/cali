@@ -70,8 +70,9 @@ def checkout():
 
     db.execute(sale.create_sale())
     db.execute(cart.clear_cart())
-    db.commit()
+    #db.commit()
 
+    flash(request.form)
     return render_template('cart/checkout.html', sale=sale)
 
 
