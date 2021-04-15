@@ -50,14 +50,16 @@ def checkout():
     sale = Sale(request.form)
     clients = get_all_clients()
     branchId = sale.branchId
+    ticket = cart.get_sale_ticket()
 
-
-    if not cart.there_is_enought_stock(branchId):
+    flash(cart.there_is_enought_stock(ticket, branchId))
+    
+    if not cart.there_is_enought_stock(ticket, branchId):
         g.message = 'Not enought stock available'
         g.messageColor = 'danger'
         return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients)
 
-    if not sale.cash_is_enough():
+    if sale.payMethod=='Cash' and not sale.cash_is_enough(): 
         g.message = 'Not enought cash received'
         g.messageColor = 'danger'
         return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients)
@@ -67,7 +69,7 @@ def checkout():
 
     db.execute(sale.create_sale())
     db.execute(cart.clear_cart())
-    db.commit()
+    #db.commit()
 
     return render_template('cart/checkout.html', sale=sale)
 

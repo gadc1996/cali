@@ -60,6 +60,11 @@ class Article:
     def get_stock(self):
         return int(self.on_branch_1) + int(self.on_branch_2)
 
+    def get_article_by_sku(sku):
+        db = get_db()
+        article = db.execute(f'SELECT * from article WHERE SKU={sku}').fetchone()
+        return article
+
 def get_single_article(id):
     db = get_db()
     article = db.execute(f'SELECT * FROM article JOIN category on article.category_id = category.id WHERE article.id={id}').fetchone()

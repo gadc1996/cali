@@ -1,5 +1,6 @@
 from cali.lib.db import get_db
 from cali.lib.category import get_all_categories, get_single_category
+from cali.lib.article import Article
 
 class ShoppingCart:
     """ A simple shopping cart class """
@@ -26,14 +27,27 @@ class ShoppingCart:
             """
         ).fetchall()
         return cart_items
+    
+    def get_sale_ticket(self):
+        ticket = {}
+        cartItems = self.get_all_cart_items()
+        for cartItem in cartItems:
+            if cartItem['SKU'] not in ticket:
+                ticket[cartItem['SKU']] = 1
+            else:
+                ticket[cartItem['SKU']] += 1
+
+        return ticket
 
     def clear_cart(self):
         return "DELETE FROM cart"
 
-    def there_is_enought_stock(self, branchId):
-        for cartItem in self.cart_items:
+    def there_is_enought_stock(self, ticket, branchId):
+        for sku, quantity in ticket.items():
+            cartItem = Article.get_article_by_sku(sku)
             stock = self.get_cartItem_stock(cartItem, branchId) 
-            if stock == 0:
+
+            if stock < quantity:
                 return False
 
         return True

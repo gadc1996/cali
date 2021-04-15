@@ -36,20 +36,19 @@
             <th scope="row">Payment Method</th>
             <td>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="PayMethodId" id="PayMethod1" value="0" checked>
-                <label class="form-check-label" for="PayMethod1">
+                <input class="form-check-input" type="radio" name="PayMethodId" value="0" id="flexRadioDefault1">
+                <label class="form-check-label" for="flexRadioDefault1">
                   Cash
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="PayMethod2" id="PayMethod1" value="1" >
-                <label class="form-check-label" for="PayMethod2">
-                  Card
+                <input class="form-check-input" type="radio" name="PayMethodId" value="1" id="flexRadioDefault2" checked>
+                <label class="form-check-label" for="flexRadioDefault2">
+                  Credit Card
                 </label>
               </div>
             </td>
           </tr>
-          <tr>
             <th scope="row">Cash Recived</th>
             <td>
               <input type="number" name="recivedCash" id="recivedCash" class="" placeholder="Recived Cash">
@@ -60,7 +59,7 @@
             <th scope="row">Client</th>
             <td>
 
-              <select name="client_id" id="client" class="form-select col-12" aria-label="Default select example">
+              <select name="client_id" id="client" class="form-select col-12" aria-label="Default select example" required>
                 <option value="" selected>Select a Client</option>
                 {% for client in clients %}
                 <option value="{{client.id}}">{{client.name}}</option>
@@ -81,7 +80,7 @@
             <th scope="row">Branch</th>
             <td>
 
-              <select name="branch_id" id="branch_id" class="form-select col-12" aria-label="Default select example">
+              <select name="branch_id" id="branch_id" class="form-select col-12" aria-label="Default select example" required>
                 <option value="" selected>Select a Branch</option>
                 <option value="0">Chihuahua</option>
                 <option value="1">Madera</option>
