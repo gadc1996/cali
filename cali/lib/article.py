@@ -10,9 +10,9 @@ class Article:
         self.description = self._is_valid(iterable['description'], 'description')
         self.price = self._is_valid(iterable['price'], 'price')
         self.sku = self._is_valid(iterable['sku'], 'sku')
-        self.stock = self._is_valid(iterable['stock'], 'stock')
         self.on_branch_1 = self._is_valid(iterable['on_branch_1'], 'on_branch_1')
         self.on_branch_2 = self._is_valid(iterable['on_branch_2'], 'on_branch_2')
+        self.stock = self.get_stock()
         self.is_regular = self._is_valid(iterable['is_regular'], 'is_regular')
         self.category_id = self._is_valid(iterable['category_id'], 'category_id')
         self.category = get_single_category(self.category_id)
@@ -56,6 +56,9 @@ class Article:
             return True
         else:
             return False
+    
+    def get_stock(self):
+        return int(self.on_branch_1) + int(self.on_branch_2)
 
 def get_single_article(id):
     db = get_db()

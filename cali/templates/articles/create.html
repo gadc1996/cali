@@ -28,10 +28,13 @@
   <input  type="number" name="price" id="price" class="form-control my-2" placeholder="Price" required>
 
   <input  type="text" name="sku" id="sku" class="form-control my-2" placeholder="sku" required>
-  <input  type="text" name="stock" id="stock" class="form-control my-2" placeholder="stock" required>
   <input  type="text" name="on_branch_1" id="on_branch_1" class="form-control my-2" placeholder="on_branch_1" required>
   <input  type="text" name="on_branch_2" id="on_branch_2" class="form-control my-2" placeholder="on_branch_2" required>
-  <input  type="text" name="is_regular" id="is_regular" class="form-control my-2" placeholder="is_regular" required>
+	<select name="is_regular" id="is_regular" class="form-select col-12" aria-label="Default select example">
+		<option value="" selected>Is Regular?</option>
+		<option value="0">No</option>
+		<option value="1">Yes</option>
+	</select>
 
   <button class="btn btn-lg btn-primary btn-block" type="submit">Update</button>
 
