@@ -5,6 +5,8 @@ __pycache__/
 
 instance/
 
+cali/static/tickets/
+
 .pytest_cache/
 .coverage
 htmlcov/

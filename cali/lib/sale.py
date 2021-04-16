@@ -96,7 +96,7 @@ class Sale:
 
     def create_sale_ticket(self, cart_items):
         pageHeight = (len(cart_items) * 10) + 250
-        c = canvas.Canvas(f'./tickets/ticket-{self.id}.pdf', pagesize=(200, pageHeight), bottomup=0)
+        c = canvas.Canvas(f'cali/static/tickets/ticket-{self.id}.pdf', pagesize=(200, pageHeight), bottomup=0)
         
         c.translate(100, 20)
         c.setFont('Helvetica-Bold', 8)
