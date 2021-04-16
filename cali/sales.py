@@ -13,8 +13,8 @@ blueprint = Blueprint('sales', __name__, url_prefix='/sales')
 @blueprint.route('/search', methods=('GET','POST'))
 def search():
     if request.method == 'POST':
-        #sales = get_filtered_sales(request.form) 
-        pass
+        sales = Sale.get_filtered_sales(request.form)
+        flash( Sale.get_filtered_sales(request.form))
     else:
         sales = Sale.get_all_sales()
 

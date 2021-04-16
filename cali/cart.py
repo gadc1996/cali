@@ -1,6 +1,8 @@
 import functools
 from datetime import date
 
+from reportlab.pdfgen import canvas
+
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
@@ -52,6 +54,7 @@ def checkout():
     sale = Sale(request.form)
     clients = get_all_clients()
     branchId = sale.branchId
+    sale.create_sale_ticket()
 
     if not cart.there_is_enought_stock(branchId):
         g.message = 'Not enought stock available'
