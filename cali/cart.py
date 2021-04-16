@@ -54,7 +54,7 @@ def checkout():
     sale = Sale(request.form)
     clients = get_all_clients()
     branchId = sale.branchId
-    sale.create_sale_ticket()
+
 
     if not cart.there_is_enought_stock(branchId):
         g.message = 'Not enought stock available'
@@ -66,12 +66,20 @@ def checkout():
         g.messageColor = 'danger'
         return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients)
 
+    if sale.total == '0': 
+        g.message = 'Empty Sale'
+        g.messageColor = 'danger'
+        return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients)
+
+    sale.create_sale_ticket(cart_items)
+
     for sku, quantity in cart.ticket.items():
         db.execute(cart.update_cartItem_stock(sku, quantity, branchId))
 
     db.execute(sale.create_sale())
     db.execute(cart.clear_cart())
     db.commit()
+
 
     return render_template('cart/checkout.html', sale=sale)
 

@@ -94,8 +94,10 @@ class Sale:
                 sales = db.execute(f'SELECT * FROM sale').fetchall()
                 return sales
 
-    def create_sale_ticket(self):
-        c = canvas.Canvas(f'ticket-{self.id}.pdf', pagesize=(200, 250), bottomup=0)
+    def create_sale_ticket(self, cart_items):
+        pageHeight = (len(cart_items) * 10) + 250
+        c = canvas.Canvas(f'./tickets/ticket-{self.id}.pdf', pagesize=(200, pageHeight), bottomup=0)
+        
         c.translate(100, 20)
         c.setFont('Helvetica-Bold', 8)
         c.drawCentredString(0, 0, 'Creaciones "KENDRA"')
@@ -114,11 +116,13 @@ class Sale:
         c.drawCentredString(0, 20, '------------------------------------------------------------' )
 
         c.translate(-80, 30)
-        c.drawString(0, 0, '1' )
-        c.drawString(10, 0, 'Collar Zebra' )
-        c.drawString(130, 0, '$240' )
+        for count, item in enumerate(cart_items):
+            c.drawString(0, 0, f'{item["id"]}' )
+            c.drawString(10, 0, f'{item["name"]}' )
+            c.drawString(130, 0, f'{item["price"]}' )
+            c.translate(0, 10)
 
-        c.translate(80, 10)
+        c.translate(80, 0)
         c.drawCentredString(0, 0, '------------------------------------------------------------' )
 
         c.translate(-80, 10)
