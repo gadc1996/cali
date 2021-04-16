@@ -1,4 +1,5 @@
 import functools
+from datetime import date
 
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
@@ -33,7 +34,9 @@ def info():
     cart = ShoppingCart()
     clients = get_all_clients()
     cart_items = cart.get_all_cart_items()
-    return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients)
+    today = date.today()
+
+    return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients, today=today)
 
 @blueprint.route('/<int:id>/delete', methods=('GET',))
 def delete(id):
