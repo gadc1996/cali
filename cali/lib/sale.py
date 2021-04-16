@@ -1,3 +1,5 @@
+from datetime import date
+
 from cali.lib.db import get_db
 from cali.lib.client import get_single_client
 from cali.lib.user import get_single_user
@@ -17,16 +19,20 @@ class Sale:
         self.payMethod = self.get_pay_method()
         self.branchId = iterable['branch_id']
         self.change = self.get_change()
+        self.date = self.get_date()
 
     def create_sale(self):
-        return "INSERT INTO sale(user_id, client_id, total, pay_method_id) " \
-        f"VALUES( {self.userId}, {self.clientId}, {self.total}, {self.payMethodId})"
+        return "INSERT INTO sale(user_id, client_id, total, pay_method_id, date) " \
+        f"VALUES( {self.userId}, {self.clientId}, {self.total}, {self.payMethodId}, '{self.date}')"
 
     def get_change(self):
         try:
             return float(self.recivedCash) - float(self.total)
         except ValueError:
             return 0
+    def get_date(self):
+        today = date.today()
+        return  str(today.strftime('%d/%m/%Y'))
 
     def get_pay_method(self):
         if self.payMethodId == 0:

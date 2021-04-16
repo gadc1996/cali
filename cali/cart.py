@@ -34,9 +34,8 @@ def info():
     cart = ShoppingCart()
     clients = get_all_clients()
     cart_items = cart.get_all_cart_items()
-    today = date.today()
 
-    return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients, today=today)
+    return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients)
 
 @blueprint.route('/<int:id>/delete', methods=('GET',))
 def delete(id):
@@ -64,18 +63,13 @@ def checkout():
         g.messageColor = 'danger'
         return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients)
 
-    #for cartItem in cart_items:
-    #    flash(cart.update_cartItem_stock(cartItem, branchId))
-        #db.execute(cart.update_cartItem_stock(cartItem, branchId))
-        #db.commit()
     for sku, quantity in cart.ticket.items():
         db.execute(cart.update_cartItem_stock(sku, quantity, branchId))
 
     db.execute(sale.create_sale())
     db.execute(cart.clear_cart())
-    #db.commit()
+    db.commit()
 
-    flash(request.form)
     return render_template('cart/checkout.html', sale=sale)
 
 

@@ -65,6 +65,7 @@ CREATE TABLE sale(
 	client_id INTEGER,
 	total INTEGER,
 	pay_method_id INTEGER,
+	date TEXT,
 	FOREIGN KEY (user_id) REFERENCES user(id),
 	FOREIGN KEY (client_id) REFERENCES client(id),
 	FOREIGN KEY (pay_method_id) REFERENCES pay_method(id)
