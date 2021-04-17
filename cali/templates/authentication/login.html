@@ -2,13 +2,39 @@
 
 {% block content %}
 <div class="text-center mt-5">
- <form class="form-signin col-6 offset-3" method="post">
-  <h1 class="h3 mb-3 font-weight-normal">{% block title %}Log In{% endblock %}</h1>
-  <label for="username" class="sr-only">Email address</label>
-  <input type="text" name="username" id="username" class="form-control" placeholder="Name" required autofocus>
-  <label for="password" class="sr-only">Password</label>
-  <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
-  <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-</form>
+	<form class="form-signin col-6 offset-3" method="post">
+		<h1 class="h3 mb-3 font-weight-normal">
+			{% block title %}
+			{{ configuration.dictionary['Log In'] }}
+			{% endblock %}
+		</h1>
+
+		<label for="username" class="sr-only">
+			Email address
+		</label>
+		<input 
+			type="text" 
+			name="username" 
+			id="username" 
+			class="form-control mb-3" 
+			placeholder="{{configuration.dictionary['Name']}}" 
+			required 
+			autofocus
+		/>
+
+		<label for="password" class="sr-only">Password</label>
+		<input 
+			type="password" 
+			name="password" 
+			id="password" 
+			class="form-control mb-3" 
+			placeholder="{{configuration.dictionary['Password']}}" 
+			required
+		/>
+
+		<button class="btn btn-lg btn-primary btn-block" type="submit">
+			{{ configuration.dictionary['Log In'] }}
+		</button>
+	</form>
 </div>
 {% endblock %}

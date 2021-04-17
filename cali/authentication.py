@@ -5,6 +5,7 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from config import config
 from cali.lib.db import get_db
 from cali.lib.user import User
 
@@ -12,6 +13,8 @@ blueprint = Blueprint('authentication', __name__, url_prefix='/authentication')
 
 @blueprint.route('/login', methods=('GET', 'POST'))
 def login():
+    configuration = config.Config()
+
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -35,10 +38,7 @@ def login():
             session['user_id'] = user['id']
             return redirect(url_for('index'))
 
-        flash(error)
-        flash(type(password))
-        flash(type(user['password']))
-    return render_template('authentication/login.html')
+    return render_template('authentication/login.html', configuration=configuration)
 
 @blueprint.before_app_request
 def load_logged_in_user():

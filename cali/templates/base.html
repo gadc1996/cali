@@ -20,7 +20,7 @@
 	</head>
 	<body>
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-			<a class="navbar-brand" href="{{ url_for('dashboard.dashboard') }}">Cali</a>
+			<a class="navbar-brand" href="{{ url_for('dashboard.dashboard') }}">{{ configuration.appName}}</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -30,54 +30,70 @@
 					{% if g.user.is_super %}
 						<div class="dropdown show">
 							<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Users
+							 {{ configuration.dictionary['Users'] }}	
 							</a>
 							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-									<a class="dropdown-item" href="{{ url_for('users.search') }}">Search Users</a>
-									<a class="dropdown-item" href="{{ url_for('users.create') }}">Create User</a>
+								<a class="dropdown-item" href="{{ url_for('users.search') }}">
+									{{ configuration.dictionary['Search User'] }}
+								</a>
+								<a class="dropdown-item" href="{{ url_for('users.create') }}">
+									{{ configuration.dictionary['Create User'] }}
+								</a>
 							</div>
 						</div>
 
 						<div class="dropdown show">
 							<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Clients
+								{{ configuration.dictionary['Clients'] }}
 							</a>
 							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-									<a class="dropdown-item" href="{{ url_for('clients.search') }}">Search Clients</a>
-									<a class="dropdown-item" href="{{ url_for('clients.create') }}">Create Client</a>
+									<a class="dropdown-item" href="{{ url_for('clients.search') }}">
+										{{ configuration.dictionary['Search Client'] }}
+									</a>
+									<a class="dropdown-item" href="{{ url_for('clients.create') }}">
+										{{ configuration.dictionary['Create Client'] }}
+									</a>
 							</div>
 						</div>
 
 						<div class="dropdown show">
 							<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Articles
+								{{ configuration.dictionary['Articles'] }}
 							</a>
 							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-									<a class="dropdown-item" href="{{ url_for('articles.search') }}">Search articles</a>
-									<a class="dropdown-item" href="{{ url_for('articles.create') }}">Create article</a>
+									<a class="dropdown-item" href="{{ url_for('articles.search') }}">
+										{{ configuration.dictionary['Search Article'] }}
+									</a>
+									<a class="dropdown-item" href="{{ url_for('articles.create') }}">
+										{{ configuration.dictionary['Create Article'] }}
+									</a>
 							</div>
 						</div>
 						
 						<div class="dropdown show">
 							<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Category
+								{{ configuration.dictionary['Category'] }}
 							</a>
 							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-									<a class="dropdown-item" href="{{ url_for('categories.search') }}">Search Category</a>
-									<a class="dropdown-item" href="{{ url_for('categories.create') }}">Create Category</a>
+									<a class="dropdown-item" href="{{ url_for('categories.search') }}">
+										{{ configuration.dictionary['Search Category'] }}
+									</a>
+									<a class="dropdown-item" href="{{ url_for('categories.create') }}">
+										{{ configuration.dictionary['Create Category'] }}
+									</a>
 							</div>
 						</div>
 
 						<a class="btn btn-secondary" href="{{ url_for('cart.info') }}" Role="button">
-								Cart
+							{{ configuration.dictionary['Cart'] }}
 							</a>
 						
 						<a class="btn btn-secondary" href="{{ url_for('sales.search') }}" Role="button">
-								Sales
+							{{ configuration.dictionary['Sales'] }}
 							</a>
 						<li class="nav-item active">
 							<a class="nav-link" href="{{ url_for('authentication.logout') }} ">
-								Log Out
+								{{ configuration.dictionary['Log Out'] }}
 								<span class="sr-only">
 									(current)
 								</span>
@@ -86,11 +102,17 @@
 					{% elif g.user %}
 
 						<li class="nav-item active">
-							<a class="nav-link" href="{{ url_for('authentication.logout') }} ">Log Out<span class="sr-only">(current)</span></a>
+							<a class="nav-link" href="{{ url_for('authentication.logout') }} ">
+								{{ configuration.dictionary['Log Out'] }}
+								<span class="sr-only">(current)</span>
+							</a>
 						</li>
 					{% else %}
 						<li class="nav-item active">
-							<a class="nav-link" href="{{ url_for('authentication.login') }} ">Log In<span class="sr-only">(current)</span></a>
+							<a class="nav-link" href="{{ url_for('authentication.login') }} ">
+								{{ configuration.dictionary['Log In'] }}
+								<span class="sr-only">(current)</span>
+							</a>
 						</li>
 					{% endif %}
 

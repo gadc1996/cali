@@ -1,0 +1,33 @@
+{
+	"Log In" : "Ingresar",
+	"Log Out" : "Salir",
+	"Welcome back" : "Bienvenido" ,
+
+	"Users" : "Usuarios",
+	"Search User" : "Buscar Usuario",
+	"Create User" : "Crear Usuario",
+
+	"Clients" : "Clientes",
+	"Search Client" : "Buscar Cliente",
+	"Create Client" : "Crear Cliente",
+
+	"Articles" : "Articulos",
+	"Search Article" : "Buscar Articulo",
+	"Create Article" : "Crear Articulo",
+
+	"Category" : "Categorias",
+	"Search Category" : "Buscar Categoria",
+	"Create Category" : "Crear Categoria",
+
+	"Cart" : "Carrito",
+	"Search Cart" : "Buscar Carrito",
+	"Create Cart" : "Crear Carrito",
+
+	"Sales" : "Ventas",
+	"Search Sale" : "Buscar Venta",
+	"Create Sale" : "Crear Venta",
+
+	"Name" : "Nombre",
+	"Password" : "Contrasena",
+	"Create Sale" : "Crear Venta"
+}
