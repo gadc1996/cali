@@ -64,15 +64,68 @@ class Sale:
             SELECT * FROM sale
             """
         ).fetchall()
-        return sales
+        filtered_sale = False
+        return sales, filtered_sale
 
     def get_sales_information(salesList, filtered_sale):
         saleInformation = {}
-        if filtered_sale:
-            saleInforation['date'] = salesList[0]['date']
-        else:
-            saleInformation['date'] = '-'
+
+        saleInformation['date'] = Sale.get_sales_date(salesList, filtered_sale)
+        saleInformation['total sales'] = Sale.get_total_sales(salesList)
+        saleInformation['total'] = Sale.get_sales_total(salesList)
+        saleInformation['cash sales'] = Sale.get_cash_sales(salesList)
+        saleInformation['total cash sales'] = Sale.get_cash_sales_total(salesList)
+        saleInformation['credit card sales'] = Sale.get_credit_card_sales(salesList)
+        saleInformation['total credit card sales'] = Sale.get_total_credit_card_sales(salesList)
+
         return saleInformation
+
+    def get_sales_date(salesList, filtered_sale):
+        if filtered_sale:
+            try:
+                return salesList[0]['date']
+            except IndexError:
+                return '-'
+        else:
+            return '-'
+
+    def get_total_sales(salesList):
+        return len(salesList)
+
+    def get_sales_total(salesList):
+        total = 0
+        for sale in salesList:
+           total += sale['total']
+        return total
+
+    def filter_sale_pay_method(salesList, payMethodId):
+        filteredSales = []
+        for sale in salesList:
+            if sale['pay_method_id'] == payMethodId:
+                filteredSales.append(sale)
+        return filteredSales
+
+    def get_cash_sales(salesList):
+        payMethodId = 0
+        cashSales = Sale.filter_sale_pay_method(salesList, payMethodId)
+        return len(cashSales)
+
+    def get_cash_sales_total(salesList):
+        payMethodId = 0
+        cashSales = Sale.filter_sale_pay_method(salesList, payMethodId)
+        total = Sale.get_sales_total(cashSales)
+        return total
+
+    def get_credit_card_sales(salesList):
+        payMethodId = 1
+        cardSales = Sale.filter_sale_pay_method(salesList, payMethodId)
+        return len(cardSales)
+
+    def get_total_credit_card_sales(salesList):
+        payMethodId = 1
+        cardSales = Sale.filter_sale_pay_method(salesList, payMethodId)
+        total = Sale.get_sales_total(cardSales)
+        return total
 
     def cash_is_enough(self):
         if self.recivedCash < self.total:
@@ -92,16 +145,19 @@ class Sale:
             if key =='id':
                 sales = db.execute(f'SELECT * FROM sale WHERE {key}={value}'
                     ).fetchall()
-                return sales
+                filtered_sale = True
+                return sales, filtered_sale
 
             elif key =='date':
                 sales = db.execute(f'SELECT * FROM sale WHERE {key}="{search_date}"'
                     ).fetchall()
-                return sales
+                filtered_sale = True
+                return sales, filtered_sale
 
         else:
             sales = db.execute(f'SELECT * FROM sale').fetchall()
-            return sales
+            filtered_sale = False
+            return sales, filtered_sale
 
     def create_sale_ticket(self, cart_items):
         pageHeight = (len(cart_items) * 10) + 250
@@ -148,7 +204,63 @@ class Sale:
         c.showPage()
         c.save()
 
-        return 
+        return
+
+    def create_report(salesList, salesInformation):
+        pageHeight = (len(salesList) * 10) + 250
+        pageWidth = 200
+        padding = 20
+
+        c = canvas.Canvas(f'cali/static/reports/sale_report.pdf', pagesize=(pageWidth, pageHeight), bottomup=0)
+
+        c.translate(pageWidth/2, 20)
+        c.setFont('Helvetica-Bold', 8)
+        c.drawCentredString(0, 0, 'Creaciones "KENDRA"')
+        c.drawCentredString(0, 10, 'ALEJANDRINA TORRES RASCON')
+        c.drawCentredString(0, 20, 'TORA-580520-538')
+        c.drawCentredString(0, 30, 'CALLE 5 DE MAYO NO. 6 COL. CENTRO')
+        c.drawCentredString(0, 40, '(652)57-20053')
+        c.translate(0, 60)
+
+        c.drawCentredString(0, 0, 'Reporte de Ventas')
+        c.drawCentredString(0, 10, '------------------------------------------------------------' )
+
+        c.translate(padding-pageWidth/2, 20)
+        c.drawString(0, 0, f'Fecha: {salesInformation["date"]}' )
+        c.drawString(0, 10, f'Ventas Totales: {salesInformation["total sales"]}' )
+        c.drawString(0, 20, f'Ingreso Total: {salesInformation["total"]}' )
+        c.drawString(0, 30, f'Ventas en Efectivo: {salesInformation["cash sales"]}' )
+        c.drawString(0, 40, f'Total Ventas En Efectivo: {salesInformation["total cash sales"]}' )
+        c.drawString(0, 50, f'Ventas Con Tarjeta: {salesInformation["credit card sales"]}' )
+        c.drawString(0, 60, f'Total Ventas Con Tarjeta: {salesInformation["total credit card sales"]}' )
+
+        c.translate(-padding+pageWidth/2, 80)
+        c.drawCentredString(0, 0, 'Ventas')
+        c.drawCentredString(0, 10, '------------------------------------------------------------' )
+
+        c.translate(+padding-pageWidth/2, 20)
+        c.drawString(0, 0, 'Id')
+        c.drawString(10, 0, f'| Usuario' )
+        c.drawString(50, 0, f'| Cliente' )
+        c.drawString(90, 0, f'| Total' )
+        c.drawString(140, 0, f'| Fecha' )
+
+        for sale in salesList:
+            user = get_single_user(sale['user_id'])
+            client = get_single_client(sale['client_id'])
+
+            c.translate(0, 10)
+            c.drawString(0, 0, f'{sale["id"]}' )
+            c.drawString(10, 0, f'| {user["username"]} ' )
+            c.drawString(50, 0, f'| {client["name"]}' )
+            c.drawString(90, 0, f'| {sale["date"]}' )
+            c.drawString(140, 0, f'| ${sale["total"]}' )
+
+        c.translate(-padding+pageWidth/2, 0)
+        c.drawCentredString(0, 10, '------------------------------------------------------------' )
+        c.showPage()
+        c.save()
+        return
 #    def _is_valid(self, field, fieldName):
 #        if field is none:
 #            raise valueerror(f"{fieldName} Required, value: {field}")

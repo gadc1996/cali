@@ -15,14 +15,16 @@ blueprint = Blueprint('sales', __name__, url_prefix='/sales')
 def search():
     configuration = config.Config()
     if request.method == 'POST':
-        sales = Sale.get_filtered_sales(request.form)
-        filtered_sale = True
+        sales, filtered_sale = Sale.get_filtered_sales(request.form)
     else:
-        filtered_sale = False
-        sales = Sale.get_all_sales()
+        sales, filtered_sale = Sale.get_all_sales()
 
     salesInformation = Sale.get_sales_information(sales, filtered_sale)
 
-    return render_template('sales/search.html', sales=sales, configuration=configuration)
+    if salesInformation['date'] is not '-':
+        Sale.create_report(sales, salesInformation)
+    
+    return render_template('sales/search.html', sales=sales, configuration=configuration, salesInformation=salesInformation)
+
 
 
