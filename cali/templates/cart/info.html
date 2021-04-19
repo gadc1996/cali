@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1 class="text-center my-4">{% block title %}Shoping Cart{% endblock %}</h1>
+<h1 class="text-center my-4">
+  {% block title %}
+    {{configuration.dictionary['Cart']}}
+  {% endblock %}
+</h1>
 
 <div class="text-center container-fluid">
   <div class="col mb-4">
@@ -13,54 +17,54 @@
       <table class="table">
         <thead class="thead-dark">
           <tr>
-            <th scope="col">Field</th>
-            <th scope="col">Value</th>
+            <th scope="col">{{configuration.dictionary['Field']}}</th>
+            <th scope="col">{{configuration.dictionary['Value']}}</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <th scope="row">Total Price</th>
+            <th scope="row">{{configuration.dictionary['Total Price']}}</th>
             <td>
               <label for="total" ></label>
               <input name="total" class="form-control col-6 align-right" type="text" value="{{ cart.get_cart_total_price() }}" readonly>
             </td>
           </tr>
           <tr>
-            <th scope="row">Total Articles</th>
+            <th scope="row">{{configuration.dictionary['Total Articles']}}</th>
             <td>
               <label for="total_articles" ></label>
               <input name="total_articles" class="form-control col-6 align-right" type="text" value="{{ cart.get_cart_total_items() }}" readonly>
             </td>
           </tr>
           <tr>
-            <th scope="row">Payment Method</th>
+            <th scope="row">{{configuration.dictionary['Payment Method']}}</th>
             <td>
               <div class="form-check">
                 <input class="form-check-input" type="radio" name="PayMethodId" value="0" id="flexRadioDefault1">
                 <label class="form-check-label" for="flexRadioDefault1">
-                  Cash
+                  {{configuration.dictionary['Cash']}}
                 </label>
               </div>
               <div class="form-check">
                 <input class="form-check-input" type="radio" name="PayMethodId" value="1" id="flexRadioDefault2" checked>
                 <label class="form-check-label" for="flexRadioDefault2">
-                  Credit Card
+                  {{configuration.dictionary['Credit Card']}}
                 </label>
               </div>
             </td>
           </tr>
-            <th scope="row">Cash Recived</th>
+            <th scope="row">{{configuration.dictionary['Cash Recived']}}</th>
             <td>
-              <input type="number" name="recivedCash" id="recivedCash" class="" placeholder="Recived Cash">
+              <input type="number" name="recivedCash" id="recivedCash" class="" placeholder="{{configuration.dictionary['Recived Cash']}}">
             </td>
           </tr>
 
           <tr>
-            <th scope="row">Client</th>
+            <th scope="row">{{configuration.dictionary['Client']}}</th>
             <td>
 
               <select name="client_id" id="client" class="form-select col-12" aria-label="Default select example" required>
-                <option value="" selected>Select a Client</option>
+                <option value="" selected>{{configuration.dictionary['Select a Client']}}</option>
                 {% for client in clients %}
                 <option value="{{client.id}}">{{client.name}}</option>
                 {% endfor %}
@@ -69,7 +73,7 @@
             </td>
           </tr>
           <tr>
-            <th scope="row">Employee</th>
+            <th scope="row">{{configuration.dictionary['User']}}</th>
             <td>
               <label for="user_id"></label>
               <input name="user_id" class="invisible" type="text" value="{{ g.user['id'] }}" readonly>
@@ -77,11 +81,11 @@
             </td>
           </tr>
           <tr>
-            <th scope="row">Branch</th>
+            <th scope="row">{{configuration.dictionary['Branch']}}</th>
             <td>
 
               <select name="branch_id" id="branch_id" class="form-select col-12" aria-label="Default select example" required>
-                <option value="" selected>Select a Branch</option>
+                <option value="" selected>{{configuration.dictionary['Select a Branch']}}</option>
                 <option value="0">Chihuahua</option>
                 <option value="1">Madera</option>
               </select>
@@ -91,7 +95,7 @@
         </tbody>
       </table>
 
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Checkout</button>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">{{configuration.dictionary['Submit']}}</button>
     </form>
   </div>
   <div class="card-deck">
@@ -103,7 +107,7 @@
           <h5 class="card-title">Name: {{ cart_item.name }}</h5>
           <p class="card-text">Price: {{ cart_item.price }}</p>
           <a href="{{ url_for('cart.delete', id=cart_item.id) }}" class="btn btn-lg btn-danger">
-            Delete
+            {{configuration.dictionary['Delete']}}
           </a>
         </div>
       </div>

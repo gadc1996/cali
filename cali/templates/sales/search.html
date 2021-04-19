@@ -1,46 +1,85 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1 class="text-center mt-4">{% block title %}Search Sale{% endblock %}</h1>
-
-<div class="container-fluid">
+<h1 class="text-center mt-4">
+  {% block title %}
+  {{configuration.dictionary['Search Sale']}}
+  {% endblock %}
+</h1>
+<div class="card-deck">
+<div class="col-4 card">
   <form class="form-inline" method="post">
     <label for="id" class="m-2">id</label>
     <input name="id" type="text" class="form-control m-2" id="username">
 
-    <label for="name" class="m-2">Date</label>
+    <label for="name" class="m-2">{{configuration.dictionary['Date']}}</label>
     <input name="date" type="date" class="form-control m-2" id="date">
 
 
-    <button type="submit" class="btn btn-primary m-2">Submit</button>
+    <button type="submit" class="btn btn-primary m-2">{{configuration.dictionary['Submit']}}</button>
   </form>
 
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">{{configuration.dictionary['Field']}}</th>
+        <th scope="col">{{configuration.dictionary['Value']}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">{{configuration.dictionary['Date']}}</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th scope="row">{{configuration.dictionary['Total Sale']}}</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th scope="row">{{configuration.dictionary['Cash Sales']}}</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th scope="row">{{configuration.dictionary['Total Cash Sales']}}</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th scope="row">{{configuration.dictionary['Credit Card Sales']}}</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th scope="row">{{configuration.dictionary['Total Credit Card Sales']}}</th>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
 </div>
-<div class="text-center container-fluid">
-	<table class="table mt-4">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Id</th>
-      <th scope="col">User</th>
-      <th scope="col">Client</th>
-      <th scope="col">total</th>
-      <th scope="col">Pay Method</th>
-      <th scope="col">Date</th>
-    </tr>
-  </thead>
-  <tbody>
-		{% for sale in sales%}
-			<tr>
-				<th scope="row">{{ sale.id }}</th>
-				<td>{{ sale.user_id }}</td>
-				<td>{{ sale.client_id }}</td>
-				<td>${{ sale.total }}</td>
-				<td>{{ sale.pay_method_id }}</td>
-				<td>{{ sale.date }}</td>
+<div class="card text-center col">
+  <table class="table table-hover mt-4">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">{{configuration.dictionary['User']}}</th>
+        <th scope="col">{{configuration.dictionary['Client']}}</th>
+        <th scope="col">{{configuration.dictionary['Total Price']}}</th>
+        <th scope="col">{{configuration.dictionary['Payment Method']}}</th>
+        <th scope="col">{{configuration.dictionary['Date']}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for sale in sales%}
+      <tr>
+        <th scope="row">{{ sale.id }}</th>
+        <td>{{ sale.user_id }}</td>
+        <td>{{ sale.client_id }}</td>
+        <td>${{ sale.total }}</td>
+        <td>{{ sale.pay_method_id }}</td>
+        <td>{{ sale.date }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 
-
-			</tr>
-		{% endfor %}
-  </tbody>
-</table>
 </div>
 {% endblock %}

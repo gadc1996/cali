@@ -1,18 +1,22 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1 class="text-center my-4">{% block title %}Search Article{% endblock %}</h1>
+<h1 class="text-center my-4">
+  {% block title %}
+    {{configuration.dictionary['Search Article']}}
+  {% endblock %}
+</h1>
 
 <div class="container-fluid">
   <form class="form-inline" method="post">
     <label for="id" class="m-2">id</label>
     <input name="id" type="text" class="form-control m-2" id="username">
 
-    <label for="name" class="m-2">Name</label>
+    <label for="name" class="m-2">{{configuration.dictionary['Name']}}</label>
     <input name="name" type="text" class="form-control m-2" id="name">
 
-    <label for="category_id" class="m-2">Category</label>
+    <label for="category_id" class="m-2">{{configuration.dictionary['Category']}}</label>
     <select name="category_id" id="branch" class="form-select m-2" aria-label="Default select example">
-      <option value="" selected>Select a category</option>
+      <option value="" selected>{{configuration.dictionary['Select A Category']}}</option>
       <option value="0">Vestido</option>
       <option value="1">Falda</option>
     </select>
@@ -20,7 +24,7 @@
     <label for="sku" class="m-2">SKU</label>
     <input sku="sku" type="text" class="form-control m-2" id="sku">
 
-    <button type="submit" class="btn btn-primary m-2">Submit</button>
+    <button type="submit" class="btn btn-primary m-2">{{configuration.dictionary['Submit']}}</button>
   </form>
 </div>
 
@@ -36,16 +40,16 @@
             <h5 class="card-title">{{ article.name }}</h5>
             <p class="card-text">{{ article.description }}</p>
             <a href="{{ url_for('articles.info', id=article.id) }}" class="btn btn-info col-5">
-              Info
+              {{configuration.dictionary['Info']}}
             </a>
             <a href="{{ url_for('cart.add', id=article.id) }}" class="btn btn-success col-5">
-              Add
+              {{configuration.dictionary['Add']}}
             </a>
             <a href="{{ url_for('articles.update', id=article.id) }}" class="btn btn-warning col-5">
-              Update
+              {{configuration.dictionary['Update']}}
             </a>
             <a href="{{ url_for('articles.delete', id=article.id) }}" class="btn btn-danger col-5">
-              Delete
+              {{configuration.dictionary['Delete']}}
             </a>
           </div>
         </div>

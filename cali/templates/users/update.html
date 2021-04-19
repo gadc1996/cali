@@ -8,7 +8,11 @@
 			{{ g.message }}
 		</div>
 	{% endif %}
-  <h1 class="h3 mb-3 font-weight-normal">{% block title %}Update User{% endblock %}</h1>
+  <h1 class="h3 mb-3 font-weight-normal">
+		{% block title %}
+			{{configuration.dictionary['Update User']}}
+		{% endblock %}
+	</h1>
 
   <label for="username" class="sr-only">Username</label>
 	<input value="{{user.username}}" type="text" name="username" id="username" class="form-control my-2" placeholder="Name" autofocus required>
@@ -16,29 +20,29 @@
   <label for="password" class="sr-only">Password</label>
   <input value="{{user.password}}" type="password" name="password" id="password" class="form-control my-2" placeholder="Password" required>
 
-  <label for="is_super" class="sr-only">Is Super?</label>
+  <label for="is_super" class="sr-only">{{configuration.dictionary['Is Super']}}?</label>
 	<select name="is_super" id="is_super" class="form-select my-2 col-12" aria-label="Default select example">
 		{% if user.is_super %}
-			<option value="0">Is not Super</option>
-			<option value="1" selected>Is Super</option>
+			<option value="0">{{configuration.dictionary['Is Not Super']}}</option>
+			<option value="1" selected>{{configuration.dictionary['Is Super']}}</option>
 		{% else %}
-			<option value="0" selected>Is not Super</option>
-			<option value="1">Is Super</option>
+			<option value="0" selected>{{configuration.dictionary['Is Not Super']}}</option>
+			<option value="1">{{configuration.dictionary['Is Super']}}</option>
 		{% endif %}
 	</select>
 
-  <label for="can_discount" class="sr-only">Can discount?</label>
+  <label for="can_discount" class="sr-only">{{configuration.dictionary['Can Discount']}}?</label>
 	<select name="can_discount" id="can_discount" class="form-select my-2 col-12" aria-label="Default select example">
 		{% if user.can_discount %}
-			<option value="0">Can not discount</option>
-			<option value="1" selected>Can discount</option>
+			<option value="0">{{configuration.dictionary['Can Not Discount']}}</option>
+			<option value="1" selected>{{configuration.dictionary['Can Discount']}}</option>
 		{% else %}
-			<option value="0" selected>Can not discount</option>
-			<option value="1">Can discount</option>
+			<option value="0" selected>{{configuration.dictionary['Can Not Discount']}}</option>
+			<option value="1">{{configuration.dictionary['Can Discount']}}</option>
 		{% endif %}
 	</select>
 
-  <label for="branch_id" class="sr-only">Branch</label>
+  <label for="branch_id" class="sr-only">{{configuration.dictionary['Branch']}}</label>
 	<select name="branch_id" id="branch_id" class="form-select my-2 col-12" aria-label="Default select example">
 		{% if user.branch_id %}
 			<option value="0">Chihuahua</option>
@@ -49,10 +53,10 @@
 		{% endif %}
 	</select>
 
-  <button class="btn btn-lg btn-primary btn-block" type="submit">Update</button>
+	<button class="btn btn-lg btn-primary btn-block" type="submit">{{configuration.dictionary['Update']}}</button>
 
 	<a href="{{ url_for('users.search') }}" class="btn btn-lg btn-danger btn-block">
-		back
+	 	{{configuration.dictionary['Back']}}
   </a>
 </form>
 </div>

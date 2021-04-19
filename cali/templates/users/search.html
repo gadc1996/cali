@@ -1,22 +1,22 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1 class="text-center mt-4">{% block title %}Search User{% endblock %}</h1>
+<h1 class="text-center mt-4">{% block title %}{{ configuration.dictionary['Search User'] }}{% endblock %}</h1>
 <div class="container-fluid">
   <form class="form-inline" method="post">
     <label for="id" class="m-2">id</label>
     <input name="id" type="text" class="form-control m-2" id="username">
 
-    <label for="username" class="m-2">Name</label>
+    <label for="username" class="m-2">{{ configuration.dictionary['Name'] }}</label>
     <input name="username" type="text" class="form-control m-2" id="username">
 
-    <label for="branch_id" class="m-2">Branch</label>
+    <label for="branch_id" class="m-2">{{configuration.dictionary['Branch']}}</label>
     <select name="branch_id" id="branch" class="form-select m-2" aria-label="Default select example">
-      <option value="" selected>Select a branch</option>
+      <option value="" selected>{{configuration.dictionary['Select a Branch']}}</option>
       <option value="0">Chihuahua</option>
       <option value="1">Madera</option>
     </select>
 
-    <button type="submit" class="btn btn-primary m-2">Submit</button>
+    <button type="submit" class="btn btn-primary m-2">{{configuration.dictionary['Submit']}}</button>
   </form>
 </div>
 
@@ -25,11 +25,11 @@
   <thead class="thead-dark">
     <tr>
       <th scope="col">ID</th>
-      <th scope="col">Name</th>
-      <th scope="col">Branch</th>
-      <th scope="col">Is Super</th>
-      <th scope="col">Can_discount</th>
-      <th scope="col">Actions</th>
+      <th scope="col">{{configuration.dictionary['Name']}}</th>
+      <th scope="col">{{configuration.dictionary['Branch']}}</th>
+      <th scope="col">{{configuration.dictionary['Is Super']}}</th>
+      <th scope="col">{{configuration.dictionary['Can Discount']}}</th>
+      <th scope="col">{{configuration.dictionary['Actions']}}</th>
     </tr>
   </thead>
   <tbody>
@@ -41,15 +41,15 @@
 
 
         {% if user.is_super%}
-          <td>Yes</td>
+          <td>{{configuration.dictionary['Yes']}}</td>
         {% else %}
-          <td>No</td>
+          <td>{{configuration.dictionary['No']}}</td>
         {% endif %}
 
         {% if user.can_discount%}
-          <td>Yes</td>
+          <td>{{configuration.dictionary['Yes']}}</td>
         {% else %}
-          <td>No</td>
+          <td><{{configuration.dictionary['No']}}/td>
         {% endif %}
 
         <td>

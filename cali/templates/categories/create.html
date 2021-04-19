@@ -11,14 +11,18 @@
 		</div>
 	{% endif %}
 
-  <h1 class="h3 mb-3 font-weight-normal">{% block title %}Create Category{% endblock %}</h1>
+  <h1 class="h3 mb-3 font-weight-normal">
+		{% block title %}
+			{{configuration.dictionary['Create Category']}}
+		{% endblock %}
+	</h1>
 
   <label for="category_name" class="sr-only">category_name</label>
-  <input type="text" name="category_name" id="category_name" class="form-control my-2" placeholder="category_name" autofocus required>
+  <input type="text" name="category_name" id="category_name" class="form-control my-2" placeholder="{{configuration.dictionary['Category Name']}}" autofocus required>
 
-  <button class="btn btn-lg btn-primary btn-block" type="submit">Create</button>
+  <button class="btn btn-lg btn-primary btn-block" type="submit">{{configuration.dictionary['Create']}}</button>
 	<a href="{{ url_for('categories.search') }}" class="btn btn-lg btn-danger btn-block">
-		back
+		{{configuration.dictionary['Back']}}
   </a>
 </form>
 </div>

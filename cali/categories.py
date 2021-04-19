@@ -5,6 +5,7 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from config import config
 from cali.lib.db import get_db
 from cali.lib.category import Category, get_single_category, get_all_categories
 
@@ -12,25 +13,26 @@ blueprint = Blueprint('categories', __name__, url_prefix='/categories')
 
 @blueprint.route('/search', methods=('GET','POST'))
 def search():
+    configuration = config.Config()
     if request.method == 'POST':
         pass
     #    categories = get_filtered_categories(request.form)
-    #else:
     categories = get_all_categories()
-    return render_template('categories/search.html', categories=categories)
+    return render_template('categories/search.html', categories=categories, configuration=configuration)
 
 @blueprint.route('<int:id>/info', methods=('GET',))
 def info(id):
-        category = Category(get_single_category(id))
-        return render_template('categories/info.html',category=category)
+    configuration = config.Config()
+    category = Category(get_single_category(id))
+    return render_template('categories/info.html',category=category, configuration=configuration)
 
 @blueprint.route('<int:id>/update', methods=('GET', 'POST'))
 def update(id):
+    configuration = config.Config()
     if request.method == 'POST':
         db = get_db()
         category = Category(request.form)
 
-        flash(category.category_exist())
         if category.category_exist():
             g.message = 'Category Exists'
             g.messageColor = 'danger'
@@ -43,10 +45,11 @@ def update(id):
         category = Category(get_single_category(id))
 
 
-    return render_template('categories/update.html', category=category)
+    return render_template('categories/update.html', category=category, configuration=configuration)
 
 @blueprint.route('/create', methods=('GET', 'POST'))
 def create():
+    configuration = config.Config()
     if request.method == 'POST':
         db = get_db()
         category = Category(request.form)
@@ -60,7 +63,7 @@ def create():
             db.execute(category.create_category())
             db.commit()
 
-    return render_template('categories/create.html')
+    return render_template('categories/create.html', configuration=configuration)
 
 
 @blueprint.route('/<int:id>/delete', methods=('GET',))

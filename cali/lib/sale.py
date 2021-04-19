@@ -66,6 +66,14 @@ class Sale:
         ).fetchall()
         return sales
 
+    def get_sales_information(salesList, filtered_sale):
+        saleInformation = {}
+        if filtered_sale:
+            saleInforation['date'] = salesList[0]['date']
+        else:
+            saleInformation['date'] = '-'
+        return saleInformation
+
     def cash_is_enough(self):
         if self.recivedCash < self.total:
             return False
@@ -76,6 +84,7 @@ class Sale:
         db = get_db()
         search_date = form['date']
         search_date = Sale.format_date(search_date)
+
         for key, value in form.items():
             if value is '':
                 continue
@@ -86,13 +95,13 @@ class Sale:
                 return sales
 
             elif key =='date':
-                sales = db.execute(f'SELECT * FROM sale WHERE {key}="{value}"'
+                sales = db.execute(f'SELECT * FROM sale WHERE {key}="{search_date}"'
                     ).fetchall()
                 return sales
 
-            else:
-                sales = db.execute(f'SELECT * FROM sale').fetchall()
-                return sales
+        else:
+            sales = db.execute(f'SELECT * FROM sale').fetchall()
+            return sales
 
     def create_sale_ticket(self, cart_items):
         pageHeight = (len(cart_items) * 10) + 250

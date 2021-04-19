@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container-fluid">
-	<h1 class="text-center my-4">{% block title %}Article Info{% endblock %}</h1>
+	<h1 class="text-center my-4">
+		{% block title %}
+			{{configuration.dictionary['Article Info']}}
+		{% endblock %}
+	</h1>
 	<div class="card-deck">
 
 		<div class="col-4 mb-4">
@@ -9,18 +13,18 @@
 				<img class="card-img-top" src="../../static/img/{{ article.sku }}.jpg" alt="{{ article.name }}" >
 			</div>
 					<a href="{{ url_for('articles.update', id=article.id) }}" class="btn btn-lg btn-info btn-block my-4">
-						update
+						{{configuration.dictionary['Update']}}
 					</a>
 					<a href="{{ url_for('articles.search') }}" class="btn btn-lg btn-danger btn-block">
-						back
+						{{configuration.dictionary['Back']}}
 					</a>
 		</div>
 		<div class="col-8 mb-4">
 				<table class="table">
 					<thead class="thead-dark">
 						<tr>
-							<th scope="col">Field</th>
-							<th scope="col">Value</th>
+							<th scope="col">{{configuration.dictionary['Field']}}</th>
+							<th scope="col">{{configuration.dictionary['Value']}}</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -29,43 +33,43 @@
 								<td>{{article.id}}</td>
 							</tr>
 							<tr>
-								<th scope="row">Name</th>
+								<th scope="row">{{configuration.dictionary['Name']}}</th>
 								<td>{{article.name}}</td>
 							</tr>
 							<tr>
-								<th scope="row">Category</th>
+								<th scope="row">{{configuration.dictionary['Category']}}</th>
 								<td>{{article.category}}</td>
 							</tr>
 							<tr>
-								<th scope="row">Description</th>
+								<th scope="row">{{configuration.dictionary['Description']}}</th>
 								<td>{{article.description}}</td>
 							</tr>
 							<tr>
-								<th scope="row">Price</th>
+								<th scope="row">{{configuration.dictionary['Price']}}</th>
 								<td>{{article.price}}</td>
 							</tr>
 							<tr>
-								<th scope="row">Sku</th>
+								<th scope="row">{{configuration.dictionary['SKU']}}</th>
 								<td>{{article.sku}}</td>
 							</tr>
 							<tr>
-								<th scope="row">Stock</th>
+								<th scope="row">{{configuration.dictionary['Stock']}}</th>
 								<td>{{article.stock}}</td>
 							</tr>
 							<tr>
-								<th scope="row">On branch 1</th>
+								<th scope="row">{{configuration.dictionary['On Branch']}} 1</th>
 								<td>{{article.on_branch_1}}</td>
 							</tr>
 							<tr>
-								<th scope="row">On branch 2</th>
+								<th scope="row">{{configuration.dictionary['On Branch']}} 2</th>
 								<td>{{article.on_branch_2}}</td>
 							</tr>
 							<tr>
-								<th scope="row">Is regular</th>
+								<th scope="row">{{configuration.dictionary['Is Regular']}}</th>
 								{% if article.is_regular %}
-								<td>Yes</td>
+								<td>{{configuration.dictionary['Yes']}}</td>
 								{% else%}
-								<td>No</td>
+								<td>{{configuration.dictionary['No']}}</td>
 								{% endif %}
 							</tr>
 					</tbody>

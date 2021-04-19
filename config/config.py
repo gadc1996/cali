@@ -2,6 +2,6 @@ import json
 
 class Config():
     appName = 'Cali'
-    language = 'es'
+    language = 'en'
     with open(f'languages/{language}.json') as file:
         dictionary = json.load(file)

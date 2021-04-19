@@ -8,6 +8,7 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from config import config
 from cali.lib.db import get_db
 from cali.lib.article import get_single_article, Article
 from cali.lib.cart import CartItem, ShoppingCart
@@ -31,13 +32,14 @@ def add(id):
 
 @blueprint.route('/info', methods=('GET', 'POST'))
 def info():
+    configuration = config.Config()
     if request.method == 'POST':
         pass
     cart = ShoppingCart()
     clients = get_all_clients()
     cart_items = cart.get_all_cart_items()
 
-    return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients)
+    return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients, configuration=configuration)
 
 @blueprint.route('/<int:id>/delete', methods=('GET',))
 def delete(id):
@@ -54,22 +56,23 @@ def checkout():
     sale = Sale(request.form)
     clients = get_all_clients()
     branchId = sale.branchId
+    configuration = config.Config()
 
 
     if not cart.there_is_enought_stock(branchId):
         g.message = 'Not enought stock available'
         g.messageColor = 'danger'
-        return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients)
+        return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients, configuration=configuration)
 
     if sale.payMethod=='Cash' and not sale.cash_is_enough(): 
         g.message = 'Not enought cash received'
         g.messageColor = 'danger'
-        return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients)
+        return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients, configuration=configuration)
 
     if sale.total == '0': 
         g.message = 'Empty Sale'
         g.messageColor = 'danger'
-        return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients)
+        return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients, configuration=configuration)
 
     sale.create_sale_ticket(cart_items)
 
@@ -81,6 +84,6 @@ def checkout():
     db.commit()
 
 
-    return render_template('cart/checkout.html', sale=sale)
+    return render_template('cart/checkout.html', sale=sale, configuration=configuration)
 
 

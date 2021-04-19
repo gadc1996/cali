@@ -8,29 +8,33 @@
 			{{ g.message }}
 		</div>
 	{% endif %}
-  <h1 class="h3 mb-3 font-weight-normal">{% block title %}Update Article{% endblock %}</h1>
+  <h1 class="h3 mb-3 font-weight-normal">
+		{% block title %}
+			{{configuration.dictionary['Update Article']}}
+		{% endblock %}
+	</h1>
 
-  <label for="name" class="sr-only">Name</label>
-	<input value="{{article.name}}" type="text" name="name" id="name" class="form-control my-2" placeholder="Name" autofocus required>
+  <label for="name" class="sr-only">{{configuration.dictionary['Name']}}</label>
+	<input value="{{article.name}}" type="text" name="name" id="name" class="form-control my-2" placeholder="{{configuration.dictionary['Name']}}" autofocus required>
 
-  <input value="{{article.category}}" type="text" name="category" id="category" class="form-control my-2" placeholder="text" required>
+  <input value="{{article.category}}" type="text" name="category" id="category" class="form-control my-2" placeholder="{{configuration.dictionary['Category']}}" required>
 
-  <label for="description" class="sr-only">Description</label>
-  <input value="{{article.description}}" type="text" name="description" id="description" class="form-control my-2" placeholder="Password" required>
+  <label for="description" class="sr-only">{{configuration.dictionary['Description']}}</label>
+  <input value="{{article.description}}" type="text" name="description" id="description" class="form-control my-2" placeholder="{{configuration.dictionary['Password']}}" required>
 
-  <label for="price" class="sr-only">Price</label>
+  <label for="price" class="sr-only">{{configuration.dictionary['Price']}}</label>
   <input value="{{article.price}}" type="number" name="price" id="price" class="form-control my-2" placeholder="Password" required>
 
-  <input value="{{article.sku}}" type="text" name="sku" id="sku" class="form-control my-2" placeholder="sku" required>
+  <input value="{{article.sku}}" type="text" name="sku" id="sku" class="form-control my-2" placeholder="{{configuration.dictionary['sku']}}" required>
   <input value="{{article.stock}}" type="text" name="stock" id="stock" class="form-control my-2" placeholder="stock" required>
   <input value="{{article.on_branch_1}}" type="text" name="on_branch_1" id="on_branch_1" class="form-control my-2" placeholder="on_branch_1" required>
   <input value="{{article.on_branch_2}}" type="text" name="on_branch_2" id="on_branch_2" class="form-control my-2" placeholder="on_branch_2" required>
   <input value="{{article.is_regular}}" type="text" name="is_regular" id="is_regular" class="form-control my-2" placeholder="is_regular" required>
 
-  <button class="btn btn-lg btn-primary btn-block" type="submit">Update</button>
+  <button class="btn btn-lg btn-primary btn-block" type="submit">{{configuration.dictionary['Update']}}</button>
 
 	<a href="{{ url_for('articles.search') }}" class="btn btn-lg btn-danger btn-block">
-		back
+		{{configuration.dictionary['Back']}}
   </a>
 </form>
 </div>
