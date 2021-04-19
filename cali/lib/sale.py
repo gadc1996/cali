@@ -62,6 +62,9 @@ class Sale:
         db = get_db()
         sales = db.execute("""
             SELECT * FROM sale
+            JOIN user on sale.user_id = user.id
+            JOIN client on sale.client_id = client.id
+            JOIN pay_method on sale.pay_method_id = pay_method.id
             """
         ).fetchall()
         filtered_sale = False

@@ -56,7 +56,7 @@
       </tbody>
     </table>
     <a href="../../static/reports/sale_report.pdf" class="btn btn-lg btn-info btn-block my-4">
-      {{configuration.dictionary['Update']}}
+      {{configuration.dictionary['Report']}}
     </a>
 
   </div>
@@ -77,10 +77,10 @@
         {% for sale in sales%}
         <tr>
           <th scope="row">{{ sale.id }}</th>
-          <td>{{ sale.user_id }}</td>
-          <td>{{ sale.client_id }}</td>
+          <td>{{ sale.username }}</td>
+          <td>{{ sale.name }}</td>
           <td>${{ sale.total }}</td>
-          <td>{{ sale.pay_method_id }}</td>
+          <td>{{ sale[-1]}}</td>
           <td>{{ sale.date }}</td>
           <td>
             <a href="../../static/tickets/ticket-{{sale.id}}.pdf" type="button" role="button" class="btn btn-info" aria-pressed="true">
