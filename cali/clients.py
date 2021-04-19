@@ -35,6 +35,7 @@ def create():
         else:
             g.message = 'Client Created'
             g.messageColor = 'success'
+
             db.execute(client.create_client())
             db.commit()
             return render_template('clients/create.html', configuration=configuration)

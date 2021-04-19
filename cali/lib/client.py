@@ -16,7 +16,7 @@ class Client:
 
     def create_client(self):
         return "INSERT INTO client (name, contact_phone, has_credit) " \
-        f"VALUES( {self.name}, {self.contactPhone}, {self.hasCredit})"
+        f"VALUES( '{self.name}', {self.contactPhone}, {self.hasCredit})"
 
     def update_client(self, id):
         return 'UPDATE client '\

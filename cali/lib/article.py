@@ -95,3 +95,7 @@ def get_filtered_articles(form):
                 ).fetchall()
             return articles
 
+    articles = db.execute(f'SELECT * FROM article'
+        ).fetchall()
+    return articles
+
