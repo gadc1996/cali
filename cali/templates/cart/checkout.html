@@ -24,6 +24,10 @@
         <th scope="row">{{configuration.dictionary['Payment Method']}}</th>
         <td>{{ sale.payMethod }} </td>
       </tr>
+      <tr>
+        <th scope="row">{{configuration.dictionary['Operation Type']}}</th>
+        <td>{{ sale.operationType }} </td>
+      </tr>
       {% if sale.payMethod == 'Cash'%}
       <tr>
         <th scope="row">{{configuration.dictionary['Cash Recived']}}</th>

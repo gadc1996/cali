@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS client;
 DROP TABLE IF EXISTS cart;
 DROP TABLE IF EXISTS sale;
 DROP TABLE IF EXISTS pay_method;
+DROP TABLE IF EXISTS credit;
 
 CREATE TABLE branch(
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -66,6 +67,20 @@ CREATE TABLE sale(
 	total INTEGER,
 	pay_method_id INTEGER,
 	date TEXT,
+	FOREIGN KEY (user_id) REFERENCES user(id),
+	FOREIGN KEY (client_id) REFERENCES client(id),
+	FOREIGN KEY (pay_method_id) REFERENCES pay_method(id)
+);
+
+CREATE TABLE credit(
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	user_id INTEGER,
+	client_id INTEGER,
+	total INTEGER,
+	payed INTEGER,
+	pay_method_id INTEGER,
+	date TEXT,
+	credit_time INTEGER,
 	FOREIGN KEY (user_id) REFERENCES user(id),
 	FOREIGN KEY (client_id) REFERENCES client(id),
 	FOREIGN KEY (pay_method_id) REFERENCES pay_method(id)

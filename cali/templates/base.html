@@ -2,9 +2,9 @@
 <html lang="es">
 	<head>
 		<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
 
 		<title>{% block title %}{% endblock %} - Cali </title>
 
@@ -28,92 +28,103 @@
 				<ul class="navbar-nav">
 
 					{% if g.user.is_super %}
-						<div class="dropdown show">
-							<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							 {{ configuration.dictionary['Users'] }}	
+					<div class="dropdown show">
+						<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							{{ configuration.dictionary['Users'] }}	
+						</a>
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<a class="dropdown-item" href="{{ url_for('users.search') }}">
+								{{ configuration.dictionary['Search User'] }}
 							</a>
-							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-								<a class="dropdown-item" href="{{ url_for('users.search') }}">
-									{{ configuration.dictionary['Search User'] }}
-								</a>
-								<a class="dropdown-item" href="{{ url_for('users.create') }}">
-									{{ configuration.dictionary['Create User'] }}
-								</a>
-							</div>
+							<a class="dropdown-item" href="{{ url_for('users.create') }}">
+								{{ configuration.dictionary['Create User'] }}
+							</a>
 						</div>
+					</div>
 
-						<div class="dropdown show">
-							<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								{{ configuration.dictionary['Clients'] }}
+					<div class="dropdown show">
+						<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							{{ configuration.dictionary['Clients'] }}
+						</a>
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<a class="dropdown-item" href="{{ url_for('clients.search') }}">
+								{{ configuration.dictionary['Search Client'] }}
 							</a>
-							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-									<a class="dropdown-item" href="{{ url_for('clients.search') }}">
-										{{ configuration.dictionary['Search Client'] }}
-									</a>
-									<a class="dropdown-item" href="{{ url_for('clients.create') }}">
-										{{ configuration.dictionary['Create Client'] }}
-									</a>
-							</div>
+							<a class="dropdown-item" href="{{ url_for('clients.create') }}">
+								{{ configuration.dictionary['Create Client'] }}
+							</a>
 						</div>
+					</div>
 
-						<div class="dropdown show">
-							<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								{{ configuration.dictionary['Articles'] }}
+					<div class="dropdown show">
+						<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							{{ configuration.dictionary['Articles'] }}
+						</a>
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<a class="dropdown-item" href="{{ url_for('articles.search') }}">
+								{{ configuration.dictionary['Search Article'] }}
 							</a>
-							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-									<a class="dropdown-item" href="{{ url_for('articles.search') }}">
-										{{ configuration.dictionary['Search Article'] }}
-									</a>
-									<a class="dropdown-item" href="{{ url_for('articles.create') }}">
-										{{ configuration.dictionary['Create Article'] }}
-									</a>
-							</div>
-						</div>
-						
-						<div class="dropdown show">
-							<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								{{ configuration.dictionary['Category'] }}
+							<a class="dropdown-item" href="{{ url_for('articles.create') }}">
+								{{ configuration.dictionary['Create Article'] }}
 							</a>
-							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-									<a class="dropdown-item" href="{{ url_for('categories.search') }}">
-										{{ configuration.dictionary['Search Category'] }}
-									</a>
-									<a class="dropdown-item" href="{{ url_for('categories.create') }}">
-										{{ configuration.dictionary['Create Category'] }}
-									</a>
-							</div>
 						</div>
+					</div>
 
-						<a class="btn btn-secondary" href="{{ url_for('cart.info') }}" Role="button">
-							{{ configuration.dictionary['Cart'] }}
+					<div class="dropdown show">
+						<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							{{ configuration.dictionary['Category'] }}
+						</a>
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<a class="dropdown-item" href="{{ url_for('categories.search') }}">
+								{{ configuration.dictionary['Search Category'] }}
 							</a>
-						
-						<a class="btn btn-secondary" href="{{ url_for('sales.search') }}" Role="button">
-							{{ configuration.dictionary['Sales'] }}
+							<a class="dropdown-item" href="{{ url_for('categories.create') }}">
+								{{ configuration.dictionary['Create Category'] }}
 							</a>
-						<li class="nav-item active">
-							<a class="nav-link" href="{{ url_for('authentication.logout') }} ">
-								{{ configuration.dictionary['Log Out'] }}
-								<span class="sr-only">
-									(current)
-								</span>
+						</div>
+					</div>
+
+					<a class="btn btn-secondary" href="{{ url_for('cart.info') }}" Role="button">
+						{{ configuration.dictionary['Cart'] }}
+					</a>
+
+					<div class="dropdown show">
+						<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							{{ configuration.dictionary['Category'] }}
+						</a>
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<a class="btn btn-secondary" href="{{ url_for('sales.search') }}" >
+								{{ configuration.dictionary['Sales'] }}
 							</a>
-						</li>
+							<a class="dropdown-item" href="{{ url_for('credits.search') }}">
+								{{ configuration.dictionary['Credit'] }}
+							</a>
+						</div>
+					</div>
+
+					<li class="nav-item active">
+						<a class="nav-link" href="{{ url_for('authentication.logout') }} ">
+							{{ configuration.dictionary['Log Out'] }}
+							<span class="sr-only">
+								(current)
+							</span>
+						</a>
+					</li>
 					{% elif g.user %}
 
-						<li class="nav-item active">
-							<a class="nav-link" href="{{ url_for('authentication.logout') }} ">
-								{{ configuration.dictionary['Log Out'] }}
-								<span class="sr-only">(current)</span>
-							</a>
-						</li>
+					<li class="nav-item active">
+						<a class="nav-link" href="{{ url_for('authentication.logout') }} ">
+							{{ configuration.dictionary['Log Out'] }}
+							<span class="sr-only">(current)</span>
+						</a>
+					</li>
 					{% else %}
-						<li class="nav-item active">
-							<a class="nav-link" href="{{ url_for('authentication.login') }} ">
-								{{ configuration.dictionary['Log In'] }}
-								<span class="sr-only">(current)</span>
-							</a>
-						</li>
+					<li class="nav-item active">
+						<a class="nav-link" href="{{ url_for('authentication.login') }} ">
+							{{ configuration.dictionary['Log In'] }}
+							<span class="sr-only">(current)</span>
+						</a>
+					</li>
 					{% endif %}
 
 				</ul>
@@ -122,7 +133,7 @@
 
 		<section class="content">
 			{% for message in get_flashed_messages() %}
-				<div class="flash">{{ message }}</div>
+			<div class="flash">{{ message }}</div>
 			{% endfor %}
 			{% block content %}{% endblock %}
 		</section>

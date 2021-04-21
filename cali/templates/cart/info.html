@@ -53,6 +53,7 @@
               </div>
             </td>
           </tr>
+          <tr>
             <th scope="row">{{configuration.dictionary['Cash Recived']}}</th>
             <td>
               <input type="number" name="recivedCash" id="recivedCash" class="" placeholder="{{configuration.dictionary['Recived Cash']}}">
@@ -70,6 +71,30 @@
                 {% endfor %}
               </select>
 
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">{{configuration.dictionary['Operation Type']}}</th>
+            <td>
+              <select name="operation_type" id="operation_type" class="form-select col-12" aria-label="Default select example" required>
+                <option value="" selected>{{configuration.dictionary['Select a Client']}}</option>
+                <option value="sale">{{configuration.dictionary['Sale']}}</option>
+                <option value="credit">{{configuration.dictionary['Credit']}}</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">{{configuration.dictionary['Credit Time']}}</th>
+            <td>
+              <select name="creditTime" id="creditTime" class="form-select col-12" aria-label="Default select example" required>
+                <option value="" selected>{{configuration.dictionary['Select a Client']}}</option>
+                <option value="10">10 {{configuration.dictionary['Days']}}</option>
+                <option value="20">20 {{configuration.dictionary['Days']}}</option>
+                <option value="30">30 {{configuration.dictionary['Days']}}</option>
+                <option value="40">40 {{configuration.dictionary['Days']}}</option>
+                <option value="50">50 {{configuration.dictionary['Days']}}</option>
+                <option value="10">60 {{configuration.dictionary['Days']}}</option>
+              </select>
             </td>
           </tr>
           <tr>

@@ -52,4 +52,7 @@ def create_app(test_config= None):
     from . import sales
     app.register_blueprint(sales.blueprint)
 
+    from . import credits
+    app.register_blueprint(credits.blueprint)
+
     return app

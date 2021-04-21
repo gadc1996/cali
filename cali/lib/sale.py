@@ -17,22 +17,33 @@ class Sale:
         self.client = get_single_client(self.clientId)['name']
         self.total = iterable['total']
         self.totalArticles = iterable['total_articles']
-        self.recivedCash = iterable['recivedCash']
+        self.recivedCash = self.get_recived_cash(iterable) 
         self.payMethodId = int(iterable['PayMethodId'])
         self.payMethod = self.get_pay_method()
         self.branchId = iterable['branch_id']
         self.change = self.get_change()
         self.date = self.get_date()
+        self.operationType = iterable['operation_type']
+        self.creditTime = iterable['creditTime']
 
     def create_sale(self):
-        return "INSERT INTO sale(user_id, client_id, total, pay_method_id, date) " \
-        f"VALUES( {self.userId}, {self.clientId}, {self.total}, {self.payMethodId}, '{self.date}')"
-
+        if self.operationType == 'credit':
+            return "INSERT INTO credit(user_id, client_id, total, payed, pay_method_id, date, credit_time ) " \
+            f"VALUES( {self.userId}, {self.clientId}, {self.total}, {self.recivedCash}, {self.payMethodId}, '{self.date}', {self.creditTime})"
+        else:
+            return "INSERT INTO sale(user_id, client_id, total, pay_method_id, date) " \
+            f"VALUES( {self.userId}, {self.clientId}, {self.total}, {self.payMethodId}, '{self.date}')"
     def get_change(self):
         try:
             return float(self.recivedCash) - float(self.total)
         except ValueError:
             return 0
+
+    def get_recived_cash(self, iterable):
+        if iterable['recivedCash'] == '':
+            return 0
+        else:
+            return iterable['recivedCash']
 
     def get_id(self):
         db = get_db()
@@ -72,7 +83,6 @@ class Sale:
 
     def get_sales_information(salesList, filtered_sale):
         saleInformation = {}
-
         saleInformation['date'] = Sale.get_sales_date(salesList, filtered_sale)
         saleInformation['total sales'] = Sale.get_total_sales(salesList)
         saleInformation['total'] = Sale.get_sales_total(salesList)
