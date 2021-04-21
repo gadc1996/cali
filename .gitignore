@@ -5,7 +5,9 @@ __pycache__/
 
 instance/
 
+
 cali/static/tickets/
+cali/static/reports/
 
 .pytest_cache/
 .coverage
