@@ -26,13 +26,40 @@ class Sale:
         self.operationType = iterable['operation_type']
         self.creditTime = iterable['creditTime']
 
-    def create_sale(self):
+    def create_sale(self, cartItems):
         if self.operationType == 'credit':
+            self.create_items_database(cartItems)
             return "INSERT INTO credit(user_id, client_id, total, payed, pay_method_id, date, credit_time ) " \
             f"VALUES( {self.userId}, {self.clientId}, {self.total}, {self.recivedCash}, {self.payMethodId}, '{self.date}', {self.creditTime})"
         else:
             return "INSERT INTO sale(user_id, client_id, total, pay_method_id, date) " \
             f"VALUES( {self.userId}, {self.clientId}, {self.total}, {self.payMethodId}, '{self.date}')"
+
+    def create_items_database(self, cartItems):
+        db = get_db()
+        tableQuery = self.get_items_database_query(cartItems)
+        itemsQuery = self.get_items_query(cartItems)
+        db.execute(tableQuery)
+        db.execute(itemsQuery)
+        db.commit
+        return
+
+    def get_items_database_query(self, cartItems):
+        tableQuery = f'CREATE TABLE credit_{self.id}_items('
+        for count, item in enumerate(cartItems):
+            tableQuery += f'item_{count}_sku TEXT, ' 
+        tableQuery = tableQuery[:-2]
+        tableQuery += ')'
+        return tableQuery
+
+    def get_items_query(self, cartItems):
+        itemsQuery = f'INSERT INTO credit_{self.id}_items VALUES ('
+        for item in cartItems:
+            itemsQuery += f'{item["SKU"]}, '
+        itemsQuery = itemsQuery[:-2]
+        itemsQuery += ')'
+        return itemsQuery
+
     def get_change(self):
         try:
             return float(self.recivedCash) - float(self.total)

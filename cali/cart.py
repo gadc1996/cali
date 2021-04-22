@@ -74,7 +74,7 @@ def checkout():
         return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients, configuration=configuration)
 
     sale.create_sale_ticket(cart_items)
-    db.execute(sale.create_sale())
+    db.execute(sale.create_sale(cart_items))
     db.execute(cart.clear_cart())
 
     for sku, quantity in cart.ticket.items():
