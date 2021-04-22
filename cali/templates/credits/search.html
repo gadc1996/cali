@@ -2,7 +2,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="card-deck">
-  <div class="col-4 card">
+  <div class="col-2 card">
     <h1 class="text-center mt-4">
       {% block title %}
       {{configuration.dictionary['Search Credit']}}
@@ -18,9 +18,6 @@
       <button type="submit" class="btn btn-primary m-2">{{configuration.dictionary['Submit']}}</button>
     </form>
 
-    <a href="../../static/reports/credit_report.pdf" class="btn btn-lg btn-info btn-block my-4">
-      {{configuration.dictionary['Report']}}
-    </a>
 
   </div>
   <div class="card text-center col">
@@ -31,20 +28,27 @@
           <th scope="col">{{configuration.dictionary['User']}}</th>
           <th scope="col">{{configuration.dictionary['Client']}}</th>
           <th scope="col">{{configuration.dictionary['Total Price']}}</th>
+          <th scope="col">{{configuration.dictionary['Payed']}}</th>
           <th scope="col">{{configuration.dictionary['Payment Method']}}</th>
           <th scope="col">{{configuration.dictionary['Date']}}</th>
+          <th scope="col">{{configuration.dictionary['Credit Time']}}</th>
+          <th scope="col">{{configuration.dictionary['Remaining Time']}}</th>
           <th scope="col">{{configuration.dictionary['Ticket']}}</th>
         </tr>
       </thead>
       <tbody>
+
         {% for credit in credits%}
         <tr>
           <th scope="row">{{ credit.id }}</th>
           <td>{{ credit.username }}</td>
           <td>{{ credit.name }}</td>
           <td>${{ credit.total }}</td>
+          <td>${{ credit.payed }}</td>
           <td>{{ credit[-1]}}</td>
           <td>{{ credit.date }}</td>
+          <td>{{ credit.credit_time}}</td>
+          <td>{{ Credit.get_remaining_time(credit) }}</td>
           <td>
             <a href="../../static/tickets/ticket-{{credit.id}}.pdf" type="button" role="button" class="btn btn-info" aria-pressed="true">
               <i class="fa fa-edit"></i>

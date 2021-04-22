@@ -1,4 +1,5 @@
 from cali.lib.db import get_db
+import datetime
 
 class Credit:
     """ A simple credit class """
@@ -47,3 +48,12 @@ class Credit:
             credits = db.execute(f'SELECT * FROM credit').fetchall()
             filtered_credit = False
             return credits, filtered_credit
+
+    def get_remaining_time(credit):
+        format = '%d/%m/%Y'
+        creditDate = datetime.datetime.strptime(credit['date'], format) 
+        today = datetime.datetime.now()
+
+        creditTime = credit['credit_time']
+
+        return (today - creditDate).days + creditTime

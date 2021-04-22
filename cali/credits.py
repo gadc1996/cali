@@ -20,12 +20,20 @@ def search():
     else:
         credits, filtered_credit = Credit.get_all_credits()
 
-    #creditsInformation = credit.get_credits_information(credits, filtered_credit)
+    # Check if date is 0
+    # if date is 0 remove the item
+    for credit in credits:
+        remainigTime = Credit.get_remaining_time(credit)
+        if remainigTime == 30:
 
-    #if creditsInformation['date'] is not '-':
-    #    credit.create_report(credits, creditsInformation)
+            # Delete credit
+            # Save As sale
+            # return items to inventory
+            pass
 
-    return render_template('credits/search.html', credits=credits, configuration=configuration)
+    # Check if it is fully payed
+
+    return render_template('credits/search.html', credits=credits, configuration=configuration, Credit=Credit)
 
 
 

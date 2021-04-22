@@ -156,19 +156,31 @@ class Sale:
                 continue
 
             if key =='id':
-                sales = db.execute(f'SELECT * FROM sale WHERE {key}={value}'
+                sales = db.execute('SELECT * FROM sale '
+                                   'JOIN user on sale.user_id = user.id '
+                                   'JOIN client on sale.client_id = client.id '
+                                   'JOIN pay_method on sale.pay_method_id = pay_method.id '
+                                   f'WHERE {key}={value}'
                     ).fetchall()
                 filtered_sale = True
                 return sales, filtered_sale
 
             elif key =='date':
-                sales = db.execute(f'SELECT * FROM sale WHERE {key}="{search_date}"'
+                sales = db.execute('SELECT * FROM sale '
+                                   'JOIN user on sale.user_id = user.id '
+                                   'JOIN client on sale.client_id = client.id '
+                                   'JOIN pay_method on sale.pay_method_id = pay_method.id '
+                                   f'WHERE {key}="{search_date}"'
                     ).fetchall()
                 filtered_sale = True
                 return sales, filtered_sale
 
         else:
-            sales = db.execute(f'SELECT * FROM sale').fetchall()
+            sales = db.execute(f'SELECT * FROM sale '
+                                'JOIN user on sale.user_id = user.id '
+                                'JOIN client on sale.client_id = client.id '
+                                'JOIN pay_method on sale.pay_method_id = pay_method.id '
+                               ).fetchall()
             filtered_sale = False
             return sales, filtered_sale
 
