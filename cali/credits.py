@@ -21,15 +21,11 @@ def search():
         credits, filtered_credit = Credit.get_all_credits()
 
     # Check if date is 0
-    # if date is 0 remove the item
     for credit in credits:
-        remainigTime = Credit.get_remaining_time(credit)
-        if remainigTime == 30:
-
-            # Delete credit
-            # Save As sale
-            # return items to inventory
-            pass
+        remainingTime = Credit.get_remaining_time(credit)
+        Credit.return_overdue_credit_items(remainingTime, credit)
+        Credit.save_overdue_credit_as_sale(remainingTime, credit)
+        Credit.delete_credit(remainingTime, credit)
 
     # Check if it is fully payed
 

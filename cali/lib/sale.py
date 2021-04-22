@@ -5,6 +5,7 @@ from reportlab.pdfgen import canvas
 from cali.lib.db import get_db
 from cali.lib.client import get_single_client
 from cali.lib.user import get_single_user
+from cali.lib.credit import Credit
 
 class Sale:
     """ A simple sale class """
@@ -39,12 +40,17 @@ class Sale:
         db = get_db()
         tableQuery = self.get_items_database_query(cartItems)
         itemsQuery = self.get_items_query(cartItems)
-        db.execute(tableQuery)
+        try:
+            db.execute(tableQuery)
+        except: 
+            db.execute(f'DROP TABLE credit_{self.id}_items')
+            db.execute(tableQuery)
         db.execute(itemsQuery)
         db.commit
         return
 
     def get_items_database_query(self, cartItems):
+        creditId = Credit.get_id()
         tableQuery = f'CREATE TABLE credit_{self.id}_items('
         for count, item in enumerate(cartItems):
             tableQuery += f'item_{count}_sku TEXT, ' 
