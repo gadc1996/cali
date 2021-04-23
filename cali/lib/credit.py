@@ -66,7 +66,7 @@ class Credit:
         branchId = credit['branch_id']
         creditItemsSkus = Credit.get_credit_items(creditId)
         Credit.return_credit_items_to_inventory(creditItemsSkus, branchId)
-        Credit.drop_credit_database(creditId)
+        return
 
 
     def get_credit_items(creditId):
