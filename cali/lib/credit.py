@@ -96,7 +96,6 @@ class Credit:
 
     def drop_credit_database(creditId):
         db = get_db()
-        db.execute(f'DROP TABLE credit_{creditId}_items')
         db.commit()
         return
 
@@ -104,6 +103,7 @@ class Credit:
         creditId = credit['id']
         db = get_db()
         db.execute(f'DELETE FROM credit WHERE id={creditId}')
+        db.execute(f'DROP TABLE credit_{creditId}_items')
         db.commit()
         return
 

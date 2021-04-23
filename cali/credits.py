@@ -26,12 +26,10 @@ def search():
             Credit.return_overdue_credit_items(credit)
             Credit.save_credit_as_sale(credit)
             Credit.delete_credit(credit)
-            Credit.drop_credit_database(creditId)
 
         if Credit.is_fully_payed(credit):
             Credit.save_credit_as_sale(credit)
             Credit.delete_credit(credit)
-            Credit.drop_credit_database(creditId)
 
     return render_template('credits/search.html', credits=credits, configuration=configuration, Credit=Credit)
 
