@@ -30,8 +30,8 @@ class Sale:
     def create_sale(self, cartItems):
         if self.operationType == 'credit':
             self.create_items_database(cartItems)
-            return "INSERT INTO credit(user_id, client_id, total, payed, pay_method_id, date, credit_time ) " \
-            f"VALUES( {self.userId}, {self.clientId}, {self.total}, {self.recivedCash}, {self.payMethodId}, '{self.date}', {self.creditTime})"
+            return "INSERT INTO credit(user_id, branch_id, client_id, total, payed, pay_method_id, date, credit_time ) " \
+            f"VALUES( {self.userId},{self.branchId}, {self.clientId}, {self.total}, {self.recivedCash}, {self.payMethodId}, '{self.date}', {self.creditTime})"
         else:
             return "INSERT INTO sale(user_id, client_id, total, pay_method_id, date) " \
             f"VALUES( {self.userId}, {self.clientId}, {self.total}, {self.payMethodId}, '{self.date}')"

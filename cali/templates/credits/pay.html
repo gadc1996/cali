@@ -1,0 +1,29 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="text-center pt-5">
+ <form class="form-signin col-6 offset-3" method="post">
+	{% if g.message %}
+		<div class="alert alert-{{g.messageColor}}" role="alert">
+			{{ g.message }}
+		</div>
+	{% endif %}
+  <h1 class="h3 mb-3 font-weight-normal">
+		{% block title %}
+			{{configuration.dictionary['Update credit']}}
+		{% endblock %}
+	</h1>
+
+  <label for="pay" class="sr-only">{{configuration.dictionary['Pay']}}</label>
+	<input  type="text" name="pay" id="pay" class="form-control my-2" placeholder="{{configuration.dictionary['Pay']}}" autofocus required>
+
+
+  <button class="btn btn-lg btn-primary btn-block" type="submit">{{configuration.dictionary['Pay']}}</button>
+
+	<a href="{{ url_for('credits.search') }}" class="btn btn-lg btn-danger btn-block">
+		{{configuration.dictionary['Back']}}
+  </a>
+</form>
+</div>
+{% endblock %}

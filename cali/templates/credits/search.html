@@ -33,7 +33,7 @@
           <th scope="col">{{configuration.dictionary['Date']}}</th>
           <th scope="col">{{configuration.dictionary['Credit Time']}}</th>
           <th scope="col">{{configuration.dictionary['Remaining Time']}}</th>
-          <th scope="col">{{configuration.dictionary['Ticket']}}</th>
+          <th scope="col">{{configuration.dictionary['Pay']}}</th>
         </tr>
       </thead>
       <tbody>
@@ -50,7 +50,7 @@
           <td>{{ credit.credit_time}}</td>
           <td>{{ Credit.get_remaining_time(credit) }}</td>
           <td>
-            <a href="../../static/tickets/ticket-{{credit.id}}.pdf" type="button" role="button" class="btn btn-info" aria-pressed="true">
+            <a href="{{ url_for('credits.pay', id=credit.id) }}" type="button" role="button" class="btn btn-info" aria-pressed="true">
               <i class="fa fa-edit"></i>
             </a>
           </td>

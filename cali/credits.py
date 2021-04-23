@@ -20,16 +20,37 @@ def search():
     else:
         credits, filtered_credit = Credit.get_all_credits()
 
-    # Check if date is 0
     for credit in credits:
         remainingTime = Credit.get_remaining_time(credit)
-        Credit.return_overdue_credit_items(remainingTime, credit)
-        Credit.save_overdue_credit_as_sale(remainingTime, credit)
-        Credit.delete_credit(remainingTime, credit)
+        if remainingTime <= 0:
+            Credit.return_overdue_credit_items(credit)
+            Credit.save_credit_as_sale(credit)
+            Credit.delete_credit(credit)
 
-    # Check if it is fully payed
+        if Credit.is_fully_payed(credit):
+            Credit.save_credit_as_sale(credit)
+            Credit.delete_credit(credit)
 
     return render_template('credits/search.html', credits=credits, configuration=configuration, Credit=Credit)
 
 
+@blueprint.route('<int:id>/pay', methods=('GET','POST'))
+def pay(id):
+    configuration = config.Config()
+    credit = Credit.get_single_credit(id)
+    total = credit['total']
+    payed = credit['payed']
+    if request.method == 'POST':
+        try:
+            pay = int(request.form['pay'])
+        except:
+            pay = 0
+        if Credit.is_pay_valid(total, payed, pay):
+            payed += pay
+            Credit.update_payed(id, payed)
+        #credit = Credit.is_pay_valid(total, payed, pay)
+        pass
+    else:
+        pass
+    return render_template('credits/pay.html', credits=credits, configuration=configuration)
 

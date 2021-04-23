@@ -1,3 +1,4 @@
+from flask import g
 from cali.lib.db import get_db
 from cali.lib.article import Article
 import datetime
@@ -59,14 +60,13 @@ class Credit:
 
         return creditTime - (today - creditDate).days
 
-    def return_overdue_credit_items(remainingTime, credit):
+    def return_overdue_credit_items(credit):
         db = get_db()
         creditId = credit['id']
-        if remainingTime <= 0:
-            creditItemsSkus = Credit.get_credit_items(creditId)
-            Credit.return_credit_items_to_inventory(creditItemsSkus)
-            Credit.drop_credit_database(creditId)
-        return
+        branchId = credit['branch_id']
+        creditItemsSkus = Credit.get_credit_items(creditId)
+        Credit.return_credit_items_to_inventory(creditItemsSkus, branchId)
+        Credit.drop_credit_database(creditId)
 
 
     def get_credit_items(creditId):
@@ -82,9 +82,7 @@ class Credit:
         return len(credit_id) + 1
 
 
-    def return_credit_items_to_inventory(creditItemsSkus):
-        branchId = 0
-        # add branch Id to credit database table
+    def return_credit_items_to_inventory(creditItemsSkus, branchId):
         db = get_db()
         for sku in creditItemsSkus:
             article = Article.get_article_by_sku(sku)
@@ -102,19 +100,43 @@ class Credit:
         db.commit()
         return
 
-    def delete_credit(remainingTime, credit):
-        if remainingTime <= 0:
-            creditId = credit['id']
-            db = get_db()
-            db.execute(f'DELETE FROM credit WHERE id={creditId}')
-            db.commit()
-            return
-
-    def save_overdue_credit_as_sale(remainingTime, credit):
-        if remainingTime <= 0:
-            db = get_db()
-            db.execute("INSERT INTO sale(user_id, client_id, total, pay_method_id, date) " \
-            f"VALUES( {credit['user_id']}, {credit['user_id']}, {credit['total']}, {credit['pay_method_id']}, '{credit['date']}')")
-            db.commit()
+    def delete_credit(credit):
+        creditId = credit['id']
+        db = get_db()
+        db.execute(f'DELETE FROM credit WHERE id={creditId}')
+        db.commit()
         return
 
+    def save_credit_as_sale(credit):
+        db = get_db()
+        db.execute("INSERT INTO sale(user_id, client_id, total, pay_method_id, date) " \
+        f"VALUES( {credit['user_id']}, {credit['user_id']}, {credit['total']}, {credit['pay_method_id']}, '{credit['date']}')")
+        db.commit()
+        return
+
+    def is_fully_payed(credit):
+        total = credit['total']
+        payed = credit['payed']
+        if (total - payed) == 0:
+            return True
+        else:
+            return False
+
+    def get_single_credit(id):
+        db = get_db()
+        credit = db.execute(f'SELECT * FROM credit WHERE id={id}').fetchone()
+        return credit
+
+    def is_pay_valid(total, payed, pay):
+        if payed+pay > total or pay == 0:
+            g.message = 'Invalid Pay'
+            g.messageColor = 'danger'
+            return False
+        else:
+            return True
+
+    def update_payed(id, payed):
+        db = get_db()
+        db.execute(f'UPDATE credit SET payed={payed} WHERE id={id}')
+        db.commit()
+        return

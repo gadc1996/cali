@@ -75,6 +75,7 @@ CREATE TABLE sale(
 CREATE TABLE credit(
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
 	user_id INTEGER,
+	branch_id INTEGER,
 	client_id INTEGER,
 	total INTEGER,
 	payed INTEGER,
@@ -82,6 +83,7 @@ CREATE TABLE credit(
 	date TEXT,
 	credit_time INTEGER,
 	FOREIGN KEY (user_id) REFERENCES user(id),
+	FOREIGN KEY (branch_id) REFERENCES branch(id),
 	FOREIGN KEY (client_id) REFERENCES client(id),
 	FOREIGN KEY (pay_method_id) REFERENCES pay_method(id)
 );
