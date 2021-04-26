@@ -22,7 +22,7 @@ def search():
 
     for credit in credits:
         remainingTime = Credit.get_remaining_time(credit)
-        if remainingTime <= 0:
+        if remainingTime <= 10:
             Credit.return_overdue_credit_items(credit)
             Credit.save_credit_as_sale(credit)
             Credit.delete_credit(credit)

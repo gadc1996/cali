@@ -1,3 +1,42 @@
+*{
+    font-family: 'Quicksand', sans-serif !important;
+}
 .card-img-top {
 	max-height: 250px !important;
+}
+
+body{
+	background-color: ##ffd3e72e;
+}
+.bg-dark{
+	background-color: #f1b2ec !important; 
+}
+
+.btn-primary, .btn-info {
+    background-color: #007bff26;
+    border-color: #007bff26;
+    color: black;
+}
+
+.btn-success {
+    color: black;
+    background-color: #8bf3a3;
+    border-color: #8bf3a3;
+}
+
+.btn-danger {
+    color: black;
+    background-color: #ff9fd0;
+    border-color: #ff9fd0;
+}
+.btn-warning {
+    color: black;
+    background-color: #ffd557;
+    border-color: #ffd557;
+}
+
+.btn-secondary {
+    color: #fff;
+    background-color: #000017;
+    border-color: #000017;
 }
