@@ -300,8 +300,8 @@ class Sale:
         c.drawString(0, 0, 'Id')
         c.drawString(10, 0, f'| Usuario' )
         c.drawString(50, 0, f'| Cliente' )
-        c.drawString(90, 0, f'| Total' )
-        c.drawString(140, 0, f'| Fecha' )
+        c.drawString(90, 0, f'| Fecha' )
+        c.drawString(140, 0, f'|  Total' )
 
         for sale in salesList:
             user = get_single_user(sale['user_id'])
