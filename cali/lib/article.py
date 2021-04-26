@@ -62,7 +62,7 @@ class Article:
 
     def get_article_by_sku(sku):
         db = get_db()
-        article = db.execute(f'SELECT * from article WHERE SKU={sku}').fetchone()
+        article = db.execute(f'SELECT * from article WHERE SKU="{sku}"').fetchone()
         return article
 
 def get_single_article(id):
