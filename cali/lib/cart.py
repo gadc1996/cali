@@ -60,7 +60,7 @@ class ShoppingCart:
         stock = article[f'on_branch_{int(branchId )+ 1}']
         return 'UPDATE article '\
             f'SET on_branch_{int(branchId) + 1}="{stock - quantity}"   '\
-            f'WHERE SKU={sku} '\
+            f'WHERE SKU="{sku}" '\
 
 class CartItem(ShoppingCart):
     """ A simple cart item class """
