@@ -32,7 +32,7 @@ class Article:
             f'SET name="{self.name}" ,  '\
             f'category_id=1 , '\
             f'price={self.price}, ' \
-            f'SKU={self.sku} , '\
+            f'SKU="{self.sku}", '\
             f'on_branch_1={self.on_branch_1} , '\
             f'on_branch_2={self.on_branch_2} , '\
             f'is_regular={self.is_regular} '\
@@ -62,7 +62,7 @@ class Article:
 
     def get_article_by_sku(sku):
         db = get_db()
-        article = db.execute(f'SELECT * from article WHERE SKU="{sku}"').fetchone()
+        article = db.execute(f"SELECT * from article WHERE SKU='{sku}'").fetchone()
         return article
 
 def get_single_article(id):
