@@ -6,7 +6,8 @@
 }
 
 body{
-	background-color: ##ffd3e72e;
+	background-color: #ffd3e72e;
+
 }
 .bg-dark{
 	background-color: #f1b2ec !important; 
@@ -39,4 +40,8 @@ body{
     color: #fff;
     background-color: #000017;
     border-color: #000017;
+}
+.dashboard {
+  min-height: 100vh;
+  background-image: url('../static/img/bg.jpeg');
 }
