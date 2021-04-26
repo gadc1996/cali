@@ -44,4 +44,6 @@ body{
 .dashboard {
   min-height: 100vh;
   background-image: url('../static/img/bg.jpeg');
+  background-repeat: no-repeat;
+  background-position: center;
 }
