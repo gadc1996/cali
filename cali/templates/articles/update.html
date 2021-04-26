@@ -17,10 +17,17 @@
   <label for="name" class="sr-only">{{configuration.dictionary['Name']}}</label>
 	<input  type="text" name="name" id="name" class="form-control my-2" placeholder="{{configuration.dictionary['Name']}}" autofocus required>
 
-  <input  type="text" name="category" id="category" class="form-control my-2" placeholder="{{configuration.dictionary['Category']}}" required>
+
+	<select name="category_id" id="category" class="form-select col-12" aria-label="Default select example">
+		<option value="" selected>Select a Category</option>
+
+		{% for category_id, category in categories.items() %}
+			<option value="{{category_id}}">{{category}}</option>
+		{% endfor %}
+	</select>
 
   <label for="description" class="sr-only">{{configuration.dictionary['Description']}}</label>
-  <input  type="text" name="description" id="description" class="form-control my-2" placeholder="{{configuration.dictionary['Password']}}" required>
+  <input  type="text" name="description" id="description" class="form-control my-2" placeholder="{{configuration.dictionary['Description']}}" required>
 
   <label for="price" class="sr-only">{{configuration.dictionary['Price']}}</label>
   <input  type="number" name="price" id="price" class="form-control my-2" placeholder="Password" required>

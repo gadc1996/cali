@@ -30,7 +30,7 @@ class Article:
     def update_article(self):
         return 'UPDATE article '\
             f'SET name="{self.name}" ,  '\
-            f'category_id=1 , '\
+            f'category_id={self.category_id} , '\
             f'price={self.price}, ' \
             f'SKU="{self.sku}", '\
             f'on_branch_1={self.on_branch_1} , '\
