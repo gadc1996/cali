@@ -36,14 +36,14 @@ def update(id):
         db = get_db()
         article = Article(get_single_article(id))
 
-        if article.article_exist():
-            g.message = 'article Exists'
-            g.messageColor = 'danger'
-        else:
-            g.message = 'article Updated'
-            g.messageColor = 'success'
-            db.execute(article.update_article())
-            db.commit()
+        #if article.article_exist():
+        #    g.message = 'article Exists'
+        #    g.messageColor = 'danger'
+        #else:
+        g.message = 'article Updated'
+        g.messageColor = 'success'
+        db.execute(article.update_article())
+        db.commit()
     else:
         article = Article(get_single_article(id))
 
