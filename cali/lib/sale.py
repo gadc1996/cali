@@ -1,4 +1,5 @@
 from datetime import date
+import os
 
 from reportlab.pdfgen import canvas
 
@@ -217,10 +218,51 @@ class Sale:
             filtered_sale = False
             return sales, filtered_sale
 
+    def print_sale_ticket(self, cart_items):
+        self.save_txt_ticket(cart_items)
+        os.system(f'cat cali/static/tickets/ticket-{self.id}.txt >> /dev/usb/lp0')
+        return
+
+    def print_sale_ticket_by_id(id):
+        os.system(f'cat cali/static/tickets/ticket-{id}.txt >> /dev/usb/lp0')
+        return
+
+    def print_report():
+        os.system(f'cat cali/static/reports/sale_report.txt >> /dev/usb/lp0')
+        return
+
+    def save_txt_ticket(self, cart_items):
+        with open(f'cali/static/tickets/ticket-{self.id}.txt', 'w+') as ticket:
+            ticket.write('\n\n Creaciones "KENDRA" \n')
+            ticket.write('ALEJANDRINA TORRES RASCON \n')
+            ticket.write('TORA-580520-538 \n')
+            ticket.write('CALLE 5 DE MAYO NO. 6 COL. CENTRO \n')
+            ticket.write('(652)57-20053 \n')
+            ticket.write(f'Vendedor: {self.user} \n' )
+            ticket.write(f'Cliente: {self.client} \n' )
+            ticket.write(f'Fecha: {self.date} \n' )
+            ticket.write(f'Folio: {self.id} \n' )
+            ticket.write('------------------------- \n' )
+            for count, item in enumerate(cart_items):
+                ticket.write(f'{item["id"]} \n' )
+                ticket.write(f'{item["name"]} \n' )
+                ticket.write(f'{item["price"]} \n' )
+
+            ticket.write('------------------------- \n' )
+
+            ticket.write(f'Total: {self.total} \n' )
+            ticket.write(f'Efectivo: {self.recivedCash} \n' )
+            ticket.write(f'Cambio: {self.change} \n' )
+
+            ticket.write('------------------------- \n' )
+
+            ticket.write('gracias por su compra \n\n\n\n')
+
+            return
+
     def create_sale_ticket(self, cart_items):
         pageHeight = (len(cart_items) * 10) + 250
         c = canvas.Canvas(f'cali/static/tickets/ticket-{self.id}.pdf', pagesize=(200, pageHeight), bottomup=0)
-        
         c.translate(100, 20)
         c.setFont('Helvetica-Bold', 8)
         c.drawCentredString(0, 0, 'Creaciones "KENDRA"')
@@ -263,6 +305,38 @@ class Sale:
         c.save()
 
         return
+
+    def create_txt_report(salesList, salesInformation):
+        with open(f'cali/static/reports/sale_report.txt', 'w+') as ticket:
+            ticket.write('\n\n Creaciones "KENDRA" \n')
+            ticket.write('ALEJANDRINA TORRES RASCON \n')
+            ticket.write('TORA-580520-538 \n')
+            ticket.write('CALLE 5 DE MAYO NO. 6 COL. CENTRO \n')
+            ticket.write('(652)57-20053 \n')
+            ticket.write('Reporte de Ventas \n')
+            ticket.write('------------------------- \n' )
+
+            ticket.write(f'Fecha: {salesInformation["date"]} \n' )
+            ticket.write(f'Ventas Totales: {salesInformation["total sales"]} \n' )
+            ticket.write(f'Ingreso Total: {salesInformation["total"]} \n' )
+            ticket.write(f'Ventas en Efectivo: {salesInformation["cash sales"]} \n' )
+            ticket.write(f'Total Ventas En Efectivo: {salesInformation["total cash sales"]} \n' )
+            ticket.write(f'Ventas Con Tarjeta: {salesInformation["credit card sales"]} \n' )
+            ticket.write(f'Total Ventas Con Tarjeta: {salesInformation["total credit card sales"]} \n' )
+
+            ticket.write('------------------------- \n' )
+            ticket.write('Ventas \n' )
+            ticket.write('Id|Usuario|Cliente|Fecha|Total \n' )
+
+
+            for sale in salesList:
+                user = get_single_user(sale['user_id'])
+                client = get_single_client(sale['client_id'])
+                ticket.write(f'{sale["id"]}|{user["username"]}|{client["name"]}|{sale["date"]}|{sale["total"]} \n')
+
+            ticket.write('\n\n\n\n')
+            return
+
 
     def create_report(salesList, salesInformation):
         pageHeight = (len(salesList) * 10) + 250

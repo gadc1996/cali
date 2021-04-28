@@ -23,8 +23,17 @@ def search():
 
     if salesInformation['date'] is not '-':
         Sale.create_report(sales, salesInformation)
+        Sale.create_txt_report(sales, salesInformation)
     
     return render_template('sales/search.html', sales=sales, configuration=configuration, salesInformation=salesInformation)
 
+@blueprint.route('/<int:id>/printTicket', methods=('GET',))
+def printTicket(id):
+    Sale.print_sale_ticket_by_id(id)
+    return redirect(url_for('sales.search'))
 
+@blueprint.route('/printreport', methods=('GET',))
+def printReport():
+    Sale.print_report()
+    return redirect(url_for('sales.search'))
 

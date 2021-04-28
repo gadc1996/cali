@@ -55,8 +55,11 @@
         </tr>
       </tbody>
     </table>
-    <a href="../../static/reports/sale_report.pdf" class="btn btn-lg btn-info btn-block my-4">
-      {{configuration.dictionary['Report']}}
+    <a href="../../static/reports/sale_report.pdf" class="btn btn-lg btn-info btn-block my-2">
+      {{configuration.dictionary['Download Report']}}
+    </a>
+    <a href="{{ url_for('sales.printReport') }}" class="btn btn-lg btn-success btn-block my-2">
+      {{configuration.dictionary['Print Report']}}
     </a>
 
   </div>
@@ -84,7 +87,10 @@
           <td>{{ sale.date }}</td>
           <td>
             <a href="../../static/tickets/ticket-{{sale.id}}.pdf" type="button" role="button" class="btn btn-info" aria-pressed="true">
-              <i class="fa fa-edit"></i>
+              <i class="fas fa-file-pdf"></i>
+            </a>
+            <a href="{{ url_for('sales.printTicket', id=sale.id) }}" type="button" role="button" class="btn btn-info" aria-pressed="true">
+              <i class="fa fa-print"></i>
             </a>
           </td>
         </tr>
