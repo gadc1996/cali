@@ -38,9 +38,17 @@ body{
 
 .btn-secondary {
     color: #fff;
-    background-color: #000017;
-    border-color: #000017;
+    background-color: #af5ace !important;
+    border-color: #af5ace !important;
+};
+
+.btn-secondary:not(:disabled):not(.disabled).active,
+.btn-secondary:not(:disabled):not(.disabled):active,
+.show>.btn-secondary.dropdown-toggle {
+ background-color:#af5ace !important;
+ border-color:#af5ace;
 }
+
 .dashboard {
   min-height: 100vh;
   background-image: url('../static/img/bg.jpeg');

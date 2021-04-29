@@ -32,7 +32,7 @@
 				<ul class="navbar-nav">
 
 					{% if g.user.is_super %}
-					<div class="dropdown show">
+					<div class="dropdown show col">
 						<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							{{ configuration.dictionary['Users'] }}	
 						</a>
@@ -46,7 +46,7 @@
 						</div>
 					</div>
 
-					<div class="dropdown show">
+					<div class="dropdown show col">
 						<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							{{ configuration.dictionary['Clients'] }}
 						</a>
@@ -60,7 +60,7 @@
 						</div>
 					</div>
 
-					<div class="dropdown show">
+					<div class="dropdown show col">
 						<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							{{ configuration.dictionary['Articles'] }}
 						</a>
@@ -74,7 +74,7 @@
 						</div>
 					</div>
 
-					<div class="dropdown show">
+					<div class="dropdown show col">
 						<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							{{ configuration.dictionary['Category'] }}
 						</a>
@@ -88,16 +88,12 @@
 						</div>
 					</div>
 
-					<a class="btn btn-secondary" href="{{ url_for('cart.info') }}" Role="button">
-						{{ configuration.dictionary['Cart'] }}
-					</a>
-
-					<div class="dropdown show">
+					<div class="dropdown show col">
 						<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							{{ configuration.dictionary['Category'] }}
+							{{ configuration.dictionary['Sales'] }}
 						</a>
 						<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-							<a class="btn btn-secondary" href="{{ url_for('sales.search') }}" >
+							<a class="dropdown-item" href="{{ url_for('sales.search') }}">
 								{{ configuration.dictionary['Sales'] }}
 							</a>
 							<a class="dropdown-item" href="{{ url_for('credits.search') }}">
@@ -105,6 +101,10 @@
 							</a>
 						</div>
 					</div>
+
+					<a class="btn btn-secondary col" href="{{ url_for('cart.info') }}" Role="button">
+						{{ configuration.dictionary['Cart'] }}
+					</a>
 
 					<li class="nav-item active">
 						<a class="nav-link" href="{{ url_for('authentication.logout') }} ">
@@ -114,6 +114,7 @@
 							</span>
 						</a>
 					</li>
+
 					{% elif g.user %}
 
 					<li class="nav-item active">

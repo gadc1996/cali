@@ -2,47 +2,80 @@
 
 {% block content %}
 <div class="text-center pt-5">
- <form class="form-signin col-6 offset-3" method="post">
-	{% if g.message %}
+	<form class="form-signin col-6 offset-3" method="post">
+		{% if g.message %}
 		<div class="alert alert-{{g.messageColor}}" role="alert">
 			{{ g.message }}
 		</div>
-	{% endif %}
-  <h1 class="h3 mb-3 font-weight-normal">
-		{% block title %}
+		{% endif %}
+		<h1 class="h3 mb-3 font-weight-normal">
+			{% block title %}
 			{{configuration.dictionary['Update Article']}}
-		{% endblock %}
-	</h1>
+			{% endblock %}
+		</h1>
 
-  <label for="name" class="sr-only">{{configuration.dictionary['Name']}}</label>
-	<input  type="text" name="name" id="name" class="form-control my-2" placeholder="{{configuration.dictionary['Name']}}" autofocus required>
+		<div class="form-group">
+			<label for="name" class="">{{configuration.dictionary['Name']}}</label>
+			<input  type="text" name="name" id="name" class="form-control my-2" placeholder="{{article.name}}" autofocus >
+		</div>
 
 
-	<select name="category_id" id="category" class="form-select col-12" aria-label="Default select example">
-		<option value="" selected>Select a Category</option>
+		<div class="form-group">
+			<label for="category_id" class="">{{configuration.dictionary['Category']}}</label>
+			<select name="category_id" id="category" class="form-select col-12" aria-label="Default select example">
+				<option value="" selected>Select a Category</option>
 
-		{% for category_id, category in categories.items() %}
-			<option value="{{category_id}}">{{category}}</option>
-		{% endfor %}
-	</select>
+				{% for category_id, category in categories.items() %}
+				<option value="{{category_id}}">{{category}}</option>
+				{% endfor %}
+			</select>
+		</div>
 
-  <label for="description" class="sr-only">{{configuration.dictionary['Description']}}</label>
-  <input  type="text" name="description" id="description" class="form-control my-2" placeholder="{{configuration.dictionary['Description']}}" required>
+		<div class="form-group">
+			<label for="description" class="">{{configuration.dictionary['Description']}}</label>
+			<input  type="text" name="description" id="description" class="form-control my-2" placeholder="{{article.description}}" >
+		</div>
 
-  <label for="price" class="sr-only">{{configuration.dictionary['Price']}}</label>
-  <input  type="number" name="price" id="price" class="form-control my-2" placeholder="Password" required>
+		<div class="form-group">
+			<label for="price" class="">{{configuration.dictionary['Price']}}</label>
+			<input  type="number" name="price" id="price" class="form-control my-2" placeholder="${{article.price}}" >
+		</div>
 
-  <input  type="text" name="sku" id="sku" class="form-control my-2" placeholder="{{configuration.dictionary['sku']}}" required>
-  <input  type="text" name="stock" id="stock" class="form-control my-2" placeholder="stock" required>
-  <input  type="text" name="on_branch_1" id="on_branch_1" class="form-control my-2" placeholder="on_branch_1" required>
-  <input  type="text" name="on_branch_2" id="on_branch_2" class="form-control my-2" placeholder="on_branch_2" required>
-  <input  type="text" name="is_regular" id="is_regular" class="form-control my-2" placeholder="is_regular" required>
+		<div class="form-group">
+			<label for="sku" class="">{{configuration.dictionary['SKU']}}</label>
+			<input  type="text" name="sku" id="sku" class="form-control my-2" placeholder="{{article.sku}}" >
+		</div>
 
-  <button class="btn btn-lg btn-primary btn-block" type="submit">{{configuration.dictionary['Update']}}</button>
+		<div class="form-group">
+			<label for="stock" class="">{{configuration.dictionary['Stock']}}</label>
+			<input  type="text" name="stock" id="stock" class="form-control my-2" placeholder="{{article.stock}}" >
+		</div>
 
-	<a href="{{ url_for('articles.search') }}" class="btn btn-lg btn-danger btn-block">
-		{{configuration.dictionary['Back']}}
-  </a>
-</form>
+		<div class="form-group">
+			<label for="on_branch_1" class="">{{configuration.dictionary['On Branch']}} 1</label>
+			<input  type="text" name="on_branch_1" id="on_branch_1" class="form-control my-2" placeholder="{{article.on_branch_1}}" >
+		</div>
+
+		<div class="">
+			<label for="on_branch_2" class="">{{configuration.dictionary['On Branch']}} 2</label>
+			<input  type="text" name="on_branch_2" id="on_branch_2" class="form-control my-2" placeholder="{{article.on_branch_2}}" >
+		</div>
+
+		<div class="form-group">
+			<label for="is_regular" class="">{{configuration.dictionary['Is Regular']}}</label>
+			<select name="is_regular" id="category" class="form-select col-12" aria-label="Default select example">
+				<option value="" selected></option>
+				<option value="0" >{{configuration.dictionary['No']}}</option>
+				<option value="1" >{{configuration.dictionary['Yes']}}</option>
+			</select>
+		</div>
+
+
+		<button class="btn btn-lg btn-primary btn-block" type="submit">{{configuration.dictionary['Update']}}</button>
+
+		<a href="{{ url_for('articles.search') }}" class="btn btn-lg btn-danger btn-block">
+			{{configuration.dictionary['Back']}}
+		</a>
+	</form>
 </div>
 {% endblock %}

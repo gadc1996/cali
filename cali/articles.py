@@ -32,20 +32,12 @@ def info(id):
 @blueprint.route('<int:id>/update', methods=('GET', 'POST'))
 def update(id):
     configuration = config.Config()
+    article = Article(get_single_article(id))
     if request.method == 'POST':
         db = get_db()
-        article = Article(get_single_article(id))
-
-        #if article.article_exist():
-        #    g.message = 'article Exists'
-        #    g.messageColor = 'danger'
-        #else:
+        article.update_article(request.form)
         g.message = 'article Updated'
         g.messageColor = 'success'
-        db.execute(article.update_article())
-        db.commit()
-    else:
-        article = Article(get_single_article(id))
 
     categories = get_all_categories()
     return render_template('articles/update.html', article=article, categories=categories, configuration=configuration)

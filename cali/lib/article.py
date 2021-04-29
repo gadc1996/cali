@@ -1,5 +1,6 @@
 from cali.lib.db import get_db
 from cali.lib.category import get_all_categories, get_single_category
+from flask import flash
 
 class Article:
     """ A simple article class """
@@ -27,7 +28,16 @@ class Article:
         return "INSERT INTO article (name, category_id, description, price, SKU, stock, on_branch_1, on_branch_2, is_regular) " \
         f"VALUES ('{self.name}', {self.category_id}, '{self.description}', {self.price}, '{self.sku}', {self.stock}, {self.on_branch_1}, {self.on_branch_2}, {self.is_regular})"
 
-    def update_article(self):
+    def update_article(self, form):
+        db = get_db()
+        for field in form:
+            if form[field] is '':
+                pass
+            else:
+                value = form[field]
+                db.execute(f'UPDATE article SET {field}=? WHERE id={self.id}', (value, ))
+                db.commit()
+        return
         return 'UPDATE article '\
             f'SET name="{self.name}" ,  '\
             f'category_id={self.category_id} , '\
