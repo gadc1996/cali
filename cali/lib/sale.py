@@ -241,19 +241,18 @@ class Sale:
 
     def save_txt_ticket(self, cart_items):
         with open(f'cali/static/tickets/ticket-{self.id}.txt', 'w+') as ticket:
-            ticket.write('\n\n Creaciones "KENDRA" \n')
-            ticket.write('ALEJANDRINA TORRES RASCON \n')
-            ticket.write('TORA-580520-538 \n')
-            ticket.write('CALLE 5 DE MAYO NO. 6 COL. CENTRO \n')
-            ticket.write('(652)57-20053 \n')
+            ticket.write('\n\n     Cali Boutique\n')
+            ticket.write('Ave. de la Cantera 9119. \n')
+            ticket.write('Plaza Poniente 2do piso. \n')
+            ticket.write('(614)184-1424 \n')
             ticket.write(f'Vendedor: {self.user} \n' )
             ticket.write(f'Cliente: {self.client} \n' )
             ticket.write(f'Fecha: {self.date} \n' )
             ticket.write(f'Folio: {self.id} \n' )
             ticket.write('------------------------- \n' )
             for count, item in enumerate(cart_items):
-                ticket.write(f'{item["id"]} \n' )
-                ticket.write(f'{item["name"]} \n' )
+                ticket.write(f'{item["id"]} ' )
+                ticket.write(f'{item["name"]} ' )
                 ticket.write(f'{item["price"]} \n' )
 
             ticket.write('------------------------- \n' )
@@ -263,8 +262,9 @@ class Sale:
             ticket.write(f'Cambio: {self.change} \n' )
 
             ticket.write('------------------------- \n' )
-
-            ticket.write('gracias por su compra \n\n\n\n')
+            ticket.write('Gracias por su compra \n')
+            ticket.write('Cambios Unicamente 7 dias\ndespues de la compra \n')
+            ticket.write('No Reembolsos \n\n\n\n')
 
             return
 
@@ -273,11 +273,10 @@ class Sale:
         c = canvas.Canvas(f'cali/static/tickets/ticket-{self.id}.pdf', pagesize=(200, pageHeight), bottomup=0)
         c.translate(100, 20)
         c.setFont('Helvetica-Bold', 8)
-        c.drawCentredString(0, 0, 'Creaciones "KENDRA"')
-        c.drawCentredString(0, 10, 'ALEJANDRINA TORRES RASCON')
-        c.drawCentredString(0, 20, 'TORA-580520-538')
-        c.drawCentredString(0, 30, 'CALLE 5 DE MAYO NO. 6 COL. CENTRO')
-        c.drawCentredString(0, 40, '(652)57-20053')
+        c.drawCentredString(0, 0, 'Cali Boutique')
+        c.drawCentredString(0, 10, 'Ave. de la Cantera 9119')
+        c.drawCentredString(0, 20, 'Plaza Poniente 2do piso.')
+        c.drawCentredString(0, 30, '(614)184-1424')
 
         c.translate(-80, 50)
         c.drawString(0, 10, f'Vendedor: {self.user}' )
@@ -316,11 +315,10 @@ class Sale:
 
     def create_txt_report(salesList, salesInformation):
         with open(f'cali/static/reports/sale_report.txt', 'w+') as ticket:
-            ticket.write('\n\n Creaciones "KENDRA" \n')
-            ticket.write('ALEJANDRINA TORRES RASCON \n')
-            ticket.write('TORA-580520-538 \n')
-            ticket.write('CALLE 5 DE MAYO NO. 6 COL. CENTRO \n')
-            ticket.write('(652)57-20053 \n')
+            ticket.write('\n\n     Cali Boutique \n')
+            ticket.write('Ave. de la Cantera 9119 \n')
+            ticket.write('Plaza Poniente 2do piso. \n')
+            ticket.write('(614)184-1424 \n')
             ticket.write('Reporte de Ventas \n')
             ticket.write('------------------------- \n' )
 
@@ -355,12 +353,11 @@ class Sale:
 
         c.translate(pageWidth/2, 20)
         c.setFont('Helvetica-Bold', 8)
-        c.drawCentredString(0, 0, 'Creaciones "KENDRA"')
-        c.drawCentredString(0, 10, 'ALEJANDRINA TORRES RASCON')
-        c.drawCentredString(0, 20, 'TORA-580520-538')
-        c.drawCentredString(0, 30, 'CALLE 5 DE MAYO NO. 6 COL. CENTRO')
-        c.drawCentredString(0, 40, '(652)57-20053')
-        c.translate(0, 60)
+        c.drawCentredString(0, 0, 'Cali Boutique')
+        c.drawCentredString(0, 10, 'Ave. de la Cantera 9119')
+        c.drawCentredString(0, 20, 'Plaza Poniente 2do piso.')
+        c.drawCentredString(0, 30, '(614)184-1424')
+        c.translate(0, 50)
 
         c.drawCentredString(0, 0, 'Reporte de Ventas')
         c.drawCentredString(0, 10, '------------------------------------------------------------' )

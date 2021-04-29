@@ -117,6 +117,23 @@
 
 					{% elif g.user %}
 
+					<div class="dropdown show col">
+						<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							{{ configuration.dictionary['Articles'] }}
+						</a>
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<a class="dropdown-item" href="{{ url_for('articles.search') }}">
+								{{ configuration.dictionary['Search Article'] }}
+							</a>
+							<a class="dropdown-item" href="{{ url_for('articles.create') }}">
+								{{ configuration.dictionary['Create Article'] }}
+							</a>
+						</div>
+					</div>
+					<a class="btn btn-secondary col" href="{{ url_for('cart.info') }}" Role="button">
+						{{ configuration.dictionary['Cart'] }}
+					</a>
+
 					<li class="nav-item active">
 						<a class="nav-link" href="{{ url_for('authentication.logout') }} ">
 							{{ configuration.dictionary['Log Out'] }}
