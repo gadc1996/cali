@@ -59,6 +59,18 @@
               <input type="number" name="recivedCash" id="recivedCash" class="" placeholder="{{configuration.dictionary['Recived Cash']}}">
             </td>
           </tr>
+          <tr>
+            <th scope="row">{{configuration.dictionary['Discount']}}</th>
+            <td>
+              <select name="Discount" id="Discount" class="form-select col-12" aria-label="Default select example">
+                <option value="" selected>{{configuration.dictionary['Select a Client']}}</option>
+                <option value="5"> 5%</option>
+                <option value="10">10%</option>
+                <option value="15">15%</option>
+                <option value="20">20%</option>
+              </select>
+            </td>
+          </tr>
 
           <tr>
             <th scope="row">{{configuration.dictionary['Client']}}</th>

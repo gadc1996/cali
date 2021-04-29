@@ -74,6 +74,11 @@ def checkout():
         g.messageColor = 'danger'
         return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients, configuration=configuration)
 
+    
+    if request.form['Discount'] is not '':
+        sale.apply_discount()
+
+
     sale.create_sale_ticket(cart_items)
     sale.print_sale_ticket(cart_items)
     db.execute(sale.create_sale(cart_items))

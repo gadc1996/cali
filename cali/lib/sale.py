@@ -18,6 +18,7 @@ class Sale:
         self.user =  get_single_user(self.userId)['username']
         self.client = get_single_client(self.clientId)['name']
         self.total = iterable['total']
+        self.discount = iterable['Discount']
         self.totalArticles = iterable['total_articles']
         self.recivedCash = self.get_recived_cash(iterable) 
         self.payMethodId = int(iterable['PayMethodId'])
@@ -102,6 +103,13 @@ class Sale:
             return 'Cash'
         else:
             return 'Credit Card'
+
+    def apply_discount(self):
+        total = float(self.total)
+        discount = int(self.discount)
+        self.total = total - (total * discount / 100) 
+        return
+
 
     def get_all_sales():
         db = get_db()
