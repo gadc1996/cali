@@ -17,7 +17,7 @@ class Sale:
         self.clientId = iterable['client_id']
         self.user =  get_single_user(self.userId)['username']
         self.client = get_single_client(self.clientId)['name']
-        self.total = iterable['total']
+        self.total = float(iterable['total'])
         self.discount = iterable['Discount']
         self.totalArticles = iterable['total_articles']
         self.recivedCash = self.get_recived_cash(iterable) 
@@ -78,7 +78,7 @@ class Sale:
         if iterable['recivedCash'] == '':
             return 0
         else:
-            return iterable['recivedCash']
+            return float(iterable['recivedCash'])
 
     def get_id(self):
         db = get_db()
@@ -108,7 +108,16 @@ class Sale:
         total = float(self.total)
         discount = int(self.discount)
         self.total = total - (total * discount / 100) 
+        self.change = self.get_change()
         return
+
+    def client_has_discount(self):
+        db = get_db()
+        client = db.execute(f'SELECT * FROM client WHERE id={self.clientId}').fetchone()
+        if client['has_credit']:
+            return True
+        else:
+            return False
 
 
     def get_all_sales():

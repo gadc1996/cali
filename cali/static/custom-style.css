@@ -1,5 +1,8 @@
 *{
     font-family: 'Quicksand', sans-serif !important;
+    color: black !important;
+    font-weight: 700 !important;
+    font-size: 1.05em !important;
 }
 .card-img-top {
 	max-height: 250px !important;
@@ -55,3 +58,11 @@ body{
   background-repeat: no-repeat;
   background-position: center;
 }
+.btn-secondary:not(:disabled):not(.disabled).active,
+.btn-secondary:not(:disabled):not(.disabled):active,
+.show>.btn-secondary.dropdown-toggle {
+ color:#000;
+ background-color:#545b62;
+ border-color:#4e555b
+}
+

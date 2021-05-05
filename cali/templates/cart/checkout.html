@@ -57,8 +57,11 @@
       </tr>
     </tbody>
   </table>
-  <a href="../../static/tickets/ticket-{{sale.id}}.pdf" class="btn btn-info col">
+  <a href="../../static/tickets/ticket-{{sale.id}}.pdf" class="btn btn-info col mb-4">
     {{configuration.dictionary['Download Ticket']}}
+  </a>
+  <a href="{{ url_for('sales.printTicket', id=sale.id) }}" class="btn btn-success col">
+    {{configuration.dictionary['Print Ticket']}}
   </a>
 </div>
 
