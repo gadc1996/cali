@@ -260,7 +260,6 @@ class Sale:
             ticket.write(f'Folio: {self.id} \n' )
             ticket.write('------------------------- \n' )
             for count, item in enumerate(cart_items):
-                ticket.write(f'{item["id"]} ' )
                 ticket.write(f'{item["name"]} ' )
                 ticket.write(f'{item["price"]} \n' )
 
