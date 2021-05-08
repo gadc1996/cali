@@ -1,58 +1,65 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1 class="text-center mt-4">
-  {% block title %}
-    {{configuration.dictionary['Search Client']}}
-  {% endblock %}
-</h1>
-<div class="container-fluid">
-  <form class="form-inline" method="post">
-    <label for="id" class="m-2">id</label>
-    <input name="id" type="text" class="form-control m-2" id="id">
+<div class="card-deck">
+  <div class="card col-3">
+    {% if g.message %}
+    <div class="alert alert-{{g.message_color}}" role="alert">
+      {{ g.message }}
+    </div>
+    {% endif %}
+    <h1 class="text-center mt-4">
+      {% block title %}
+      {{configuration.dictionary['Search Client']}}
+      {% endblock %}
+    </h1>
+    <form class="form-inline" method="post">
+      <label for="id" class="m-2">id</label>
+      <input name="id" type="text" class="form-control m-2" id="id">
 
-    <label for="name" class="m-2">{{configuration.dictionary['Name']}}</label>
-    <input name="name" type="text" class="form-control m-2" id="name">
+      <label for="name" class="m-2">{{configuration.dictionary['Name']}}</label>
+      <input name="name" type="text" class="form-control m-2" id="name">
 
-    <button type="submit" class="btn btn-primary m-2">{{configuration.dictionary['Submit']}}</button>
-  </form>
-</div>
+      <button type="submit" class="btn btn-primary m-2">{{configuration.dictionary['Submit']}}</button>
+    </form>
+  </div>
+  <div class="card col">
+    <table class="table mt-4">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">{{configuration.dictionary['Name']}}</th>
+          <th scope="col">{{configuration.dictionary['Contact Phone']}}</th>
+          <th scope="col">{{configuration.dictionary['Has Credit']}}</th>
+          <th scope="col">{{configuration.dictionary['Actions']}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for client in clients%}
+        <tr>
+          <th scope="row">{{ client.id }}</th>
+          <td>{{ client.name}}</td>
+          <td>{{ client.contact_phone}}</td>
 
-<div class="text-center container-fluid">
-	<table class="table mt-4">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">{{configuration.dictionary['Name']}}</th>
-      <th scope="col">{{configuration.dictionary['Contact Phone']}}</th>
-      <th scope="col">{{configuration.dictionary['Has Credit']}}</th>
-      <th scope="col">{{configuration.dictionary['Actions']}}</th>
-    </tr>
-  </thead>
-  <tbody>
-		{% for client in clients%}
-			<tr>
-				<th scope="row">{{ client.id }}</th>
-				<td>{{ client.name}}</td>
-				<td>{{ client.contact_phone}}</td>
-
-        {% if client.has_credit%}
+          {% if client.has_credit%}
           <td>{{configuration.dictionary['Yes']}}</td>
-        {% else %}
+          {% else %}
           <td>{{configuration.dictionary['No']}}</td>
-        {% endif %}
+          {% endif %}
 
-        <td>
-          <a href="{{ url_for('clients.delete', id=client.id) }}" type="button" role="button" class="btn btn-danger" aria-pressed="true">
-            <i class="fa fa-trash"></i>
-          </a>
+          <td>
+            <a href="{{ url_for('clients.delete', id=client.id) }}" type="button" role="button" class="btn btn-danger" aria-pressed="true">
+              <i class="fa fa-trash"></i>
+            </a>
 
-          <a href="{{ url_for('clients.update', id=client.id) }}" type="button" role="button" class="btn btn-info" aria-pressed="true">
-            <i class="fa fa-edit"></i>
-          </a>
-        </td>
-			</tr>
-		{% endfor %}
-  </tbody>
-</table>
+            <a href="{{ url_for('clients.update', id=client.id) }}" type="button" role="button" class="btn btn-info" aria-pressed="true">
+              <i class="fa fa-edit"></i>
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>
+
 {% endblock %}

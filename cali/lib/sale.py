@@ -4,7 +4,7 @@ import os
 from reportlab.pdfgen import canvas
 
 from cali.lib.db import get_db
-from cali.lib.client import get_single_client
+from cali.lib.client import Client
 #from cali.lib.user import get_single_user
 from cali.lib.credit import Credit
 
@@ -16,7 +16,7 @@ class Sale:
         self.userId = iterable['user_id']
         self.clientId = iterable['client_id']
         self.user =  get_single_user(self.userId)['username']
-        self.client = get_single_client(self.clientId)['name']
+        self.client = Client.get_single_client(self.clientId)['name']
         self.total = float(iterable['total'])
         self.discount = iterable['Discount']
         self.totalArticles = iterable['total_articles']
@@ -345,7 +345,7 @@ class Sale:
 
             for sale in salesList:
                 user = get_single_user(sale['user_id'])
-                client = get_single_client(sale['client_id'])
+                client = Client.get_single_client(sale['client_id'])
                 ticket.write(f'{sale["id"]}|{user["username"]}|{client["name"]}|{sale["date"]}|{sale["total"]} \n')
 
             ticket.write('\n\n\n\n')
@@ -392,7 +392,7 @@ class Sale:
 
         for sale in salesList:
             user = get_single_user(sale['user_id'])
-            client = get_single_client(sale['client_id'])
+            client = Client.get_single_client(sale['client_id'])
 
             c.translate(0, 10)
             c.drawString(0, 0, f'{sale["id"]}' )
@@ -406,47 +406,3 @@ class Sale:
         c.showPage()
         c.save()
         return
-#    def _is_valid(self, field, fieldName):
-#        if field is none:
-#            raise valueerror(f"{fieldName} Required, value: {field}")
-#
-#        return field
-#
-#    def update_sale(self, id):
-#        return 'update sale '\
-#            f'set name="{self.name}", '\
-#            f'contact_phone="{self.contactPhone}", '\
-#            f'has_credit={self.hasCredit} '\
-#            f'where id={id} '
-#
-#    def delete_sale(self, id):
-#        return f'DELETE FROM sale WHERE id={id}'
-#
-#def get_single_sale(id):
-#    db = get_db()
-#    sale = db.execute(f'SELECT name, contact_phone, has_credit FROM sale WHERE id={id}').fetchone()
-#    return sale
-#
-
-#def get_filtered_sales(form):
-#    db = get_db()
-#    for key,value in form.items():
-#        if value is '':
-#            continue
-#
-#        if key =='id':
-#            sales = db.execute(f'SELECT * FROM sale WHERE {key}={value}'
-#                ).fetchall()
-#            return sales
-#
-#        else:
-#            sales = db.execute(f'SELECT * FROM sale WHERE {key}="{value}"'
-#                ).fetchall()
-#            return sales
-#
-#def sale_exist(sale):
-#    db = get_db()
-#    if db.execute(f"SELECT name FROM sale WHERE name='{sale.name}'").fetchone() is not None:
-#        return True
-#    else:
-#        return False

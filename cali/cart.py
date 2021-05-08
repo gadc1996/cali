@@ -13,8 +13,8 @@ from config import config
 from cali.lib.db import get_db
 from cali.lib.article import get_single_article, Article
 from cali.lib.cart import CartItem, ShoppingCart
-from cali.lib.client import get_all_clients, get_single_client
 from cali.lib.sale import Sale
+from cali.lib.client import Client
 
 blueprint = Blueprint('cart', __name__, url_prefix='/cart')
 
@@ -37,7 +37,7 @@ def info():
     if request.method == 'POST':
         pass
     cart = ShoppingCart()
-    clients = get_all_clients()
+    clients = Client.get_all_clients()
     cart_items = cart.get_all_cart_items()
 
     return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients, configuration=configuration)
@@ -54,7 +54,7 @@ def checkout():
     db = get_db()
     cart = ShoppingCart()
     cart_items = cart.get_all_cart_items()
-    clients = get_all_clients()
+    clients = Client.get_all_clients()
     configuration = config.Config()
     sale = Sale(request.form)
     branchId = sale.branchId

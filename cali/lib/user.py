@@ -20,9 +20,9 @@ class User:
 
     def _get_user_by_name(name):
         db = get_db()
-        data_tuple = (name,)
-        query_string = 'SELECT * FROM user WHERE username=?'
-        user = db.execute(query_string, data_tuple).fetchone()
+        data = (name,)
+        query = 'SELECT * FROM user WHERE username=?'
+        user = db.execute(query, data).fetchone()
         return user
 
     def _is_valid_login(user, password):
@@ -47,22 +47,22 @@ class User:
 
     def create_user(self):
         db = get_db()
-        data_tuple = (self.username, self.password, self.isSuper,
+        data = (self.username, self.password, self.isSuper,
                       self.canDiscount, self.branchId)
-        query_string = """
+        query = """
             INSERT INTO user
             (username, password, is_super, can_discount, branch_id)
             VALUES(?,?,?,?,?)
             """
-        db.execute(query_string, data_tuple)
+        db.execute(query, data)
         db.commit()
         return
 
     def update_user(self, id):
         db = get_db()
-        data_tuple = (self.username, self.password, self.isSuper,
+        data = (self.username, self.password, self.isSuper,
                       self.canDiscount, self.branchId, id)
-        query_string = """
+        query = """
             UPDATE user
             SET username=?,
             password=?,
@@ -72,28 +72,27 @@ class User:
             WHERE id=?
             """
 
-        db.execute(query_string, data_tuple)
+        db.execute(query, data)
         db.commit()
         return
 
     def delete_user(id):
         db = get_db()
-        data_tuple = (id,)
-        query_string = 'DELETE FROM user WHERE id=?'
-
-        db.execute(query_string, data_tuple)
+        data = (id,)
+        query = 'DELETE FROM user WHERE id=?'
+        db.execute(query, data)
         db.commit()
         return
 
     def get_user_by_id(id):
         db = get_db()
-        data_tuple = (id,)
-        query_string = """
+        data = (id,)
+        query = """
             SELECT * from user
             JOIN branch on user.branch_id = branch.id
             WHERE user.id=?
             """
-        user = db.execute(query_string, data_tuple).fetchone()
+        user = db.execute(query, data).fetchone()
         return user
 
     def get_all_users():
@@ -111,11 +110,14 @@ class User:
                 continue
 
             else:
-                data_tuple = (value,)
+                data = (value,)
                 users = db.execute(' SELECT * FROM user '\
                     'JOIN branch on user.branch_id = branch.id '\
-                    f'WHERE user.{key}=?', data_tuple).fetchall()
+                    f'WHERE user.{key}=?', data).fetchall()
                 return users
+        else:
+            users = User.get_all_users()
+            return users
 
     def log_in_user(form):
         db = get_db()

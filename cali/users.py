@@ -26,7 +26,6 @@ def create():
         if user.is_valid():
             user.create_user()
             Alert.raise_success_alert('User Created')
-            return redirect(url_for('users.search'))
 
     return render_template('users/create.html', configuration=configuration)
 
@@ -34,19 +33,17 @@ def create():
 @blueprint.route('/<int:id>/delete', methods=('GET',))
 def delete(id):
     User.delete_user(id)
-    Alert.raise_success_alert('User Deleted')
     return redirect(url_for('users.search'))
 
 @blueprint.route('<int:id>/update', methods=('GET', 'POST'))
 def update(id):
     configuration = config.Config()
-
     if request.method == 'POST':
         user = User(request.form)
         user.update_user(id)
         Alert.raise_success_alert('User Updated')
-        return redirect(url_for('users.search'))
 
     else:
         user = User.get_user_by_id(id)
-        return render_template('users/update.html', user=user, configuration=configuration)
+
+    return render_template('users/update.html', user=user, configuration=configuration)

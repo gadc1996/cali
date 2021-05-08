@@ -2,62 +2,62 @@
 
 {% block content %}
 <div class="text-center pt-5">
- <form class="form-signin col-6 offset-3" method="post">
-	{% if g.message %}
+	<form class="form-signin col-6 offset-3" method="post">
+		{% if g.message %}
 		<div class="alert alert-{{g.message_color}}" role="alert">
 			{{ g.message }}
 		</div>
-	{% endif %}
-  <h1 class="h3 mb-3 font-weight-normal">
-		{% block title %}
+		{% endif %}
+		<h1 class="h3 mb-3 font-weight-normal">
+			{% block title %}
 			{{configuration.dictionary['Update User']}}
-		{% endblock %}
-	</h1>
+			{% endblock %}
+		</h1>
 
-  <label for="username" class="sr-only">Username</label>
-	<input value="{{user.username}}" type="text" name="username" id="username" class="form-control my-2" placeholder="Name" autofocus required>
+		<label for="username" class="sr-only">Username</label>
+		<input value="{{user.username}}" type="text" name="username" id="username" class="form-control my-2" placeholder="Name" autofocus required>
 
-  <label for="password" class="sr-only">Password</label>
-  <input value="{{user.password}}" type="password" name="password" id="password" class="form-control my-2" placeholder="Password" required>
+		<label for="password" class="sr-only">Password</label>
+		<input value="{{user.password}}" type="password" name="password" id="password" class="form-control my-2" placeholder="Password" required>
 
-  <label for="is_super" class="sr-only">{{configuration.dictionary['Is Super']}}?</label>
-	<select name="is_super" id="is_super" class="form-select my-2 col-12" aria-label="Default select example">
-		{% if user.is_super %}
+		<label for="is_super" class="sr-only">{{configuration.dictionary['Is Super']}}?</label>
+		<select name="is_super" id="is_super" class="form-select my-2 col-12" aria-label="Default select example">
+			{% if user.is_super %}
 			<option value="0">{{configuration.dictionary['Is Not Super']}}</option>
 			<option value="1" selected>{{configuration.dictionary['Is Super']}}</option>
-		{% else %}
+			{% else %}
 			<option value="0" selected>{{configuration.dictionary['Is Not Super']}}</option>
 			<option value="1">{{configuration.dictionary['Is Super']}}</option>
-		{% endif %}
-	</select>
+			{% endif %}
+		</select>
 
-  <label for="can_discount" class="sr-only">{{configuration.dictionary['Can Discount']}}?</label>
-	<select name="can_discount" id="can_discount" class="form-select my-2 col-12" aria-label="Default select example">
-		{% if user.can_discount %}
+		<label for="can_discount" class="sr-only">{{configuration.dictionary['Can Discount']}}?</label>
+		<select name="can_discount" id="can_discount" class="form-select my-2 col-12" aria-label="Default select example">
+			{% if user.can_discount %}
 			<option value="0">{{configuration.dictionary['Can Not Discount']}}</option>
 			<option value="1" selected>{{configuration.dictionary['Can Discount']}}</option>
-		{% else %}
+			{% else %}
 			<option value="0" selected>{{configuration.dictionary['Can Not Discount']}}</option>
 			<option value="1">{{configuration.dictionary['Can Discount']}}</option>
-		{% endif %}
-	</select>
+			{% endif %}
+		</select>
 
-  <label for="branch_id" class="sr-only">{{configuration.dictionary['Branch']}}</label>
-	<select name="branch_id" id="branch_id" class="form-select my-2 col-12" aria-label="Default select example">
-		{% if user.branch_id %}
+		<label for="branch_id" class="sr-only">{{configuration.dictionary['Branch']}}</label>
+		<select name="branch_id" id="branch_id" class="form-select my-2 col-12" aria-label="Default select example">
+			{% if user.branch_id %}
 			<option value="0">Chihuahua</option>
 			<option value="1" selected>Madera</option>
-		{% else %}
+			{% else %}
 			<option value="0" selected>Chihuahua</option>
 			<option value="1">Madera</option>
-		{% endif %}
-	</select>
+			{% endif %}
+		</select>
 
-	<button class="btn btn-lg btn-primary btn-block" type="submit">{{configuration.dictionary['Update']}}</button>
+		<button class="btn btn-lg btn-primary btn-block" type="submit">{{configuration.dictionary['Update']}}</button>
 
-	<a href="{{ url_for('users.search') }}" class="btn btn-lg btn-danger btn-block">
-	 	{{configuration.dictionary['Back']}}
-  </a>
-</form>
+		<a href="{{ url_for('users.search') }}" class="btn btn-lg btn-danger btn-block">
+			{{configuration.dictionary['Back']}}
+		</a>
+	</form>
 </div>
 {% endblock %}
