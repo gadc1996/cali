@@ -5,7 +5,7 @@ from reportlab.pdfgen import canvas
 
 from cali.lib.db import get_db
 from cali.lib.client import get_single_client
-from cali.lib.user import get_single_user
+#from cali.lib.user import get_single_user
 from cali.lib.credit import Credit
 
 class Sale:

@@ -7,7 +7,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from config import config
 from cali.lib.db import get_db
-from cali.lib.user import User, get_all_users, get_filtered_users, get_single_user, user_exist
+from cali.lib.user import User
 
 blueprint = Blueprint('users', __name__, url_prefix='/users')
 
@@ -15,9 +15,9 @@ blueprint = Blueprint('users', __name__, url_prefix='/users')
 def search():
     configuration = config.Config()
     if request.method == 'POST':
-        users = get_filtered_users(request.form) 
+        users = User.get_filtered_users(request.form) 
     else:
-        users = get_all_users()
+        users = User.get_all_users()
 
     return render_template('users/search.html', users=users, configuration=configuration)
 

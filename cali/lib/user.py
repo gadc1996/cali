@@ -10,6 +10,28 @@ class User:
         self.canDiscount = self._is_valid(iterable['can_discount'], 'can_discount')
         self.branchId = self._is_valid(iterable['branch_id'], 'branch_id')
 
+    def get_all_users():
+        db = get_db()
+        users = db.execute("""
+            SELECT * FROM user
+            JOIN branch on user.branch_id = branch.id
+            """).fetchall()
+        return users
+
+    def get_filtered_users(form):
+        db = get_db()
+        for key,value in form.items():
+            if value is '':
+                continue
+
+            else:
+                data_tuple = (value,)
+                users = db.execute(' SELECT * FROM user '\
+                    'JOIN branch on user.branch_id = branch.id '\
+                    f'WHERE user.{key}=?', data_tuple).fetchall()
+                return users
+
+    # Not used
     def _is_valid(self, field, fieldName):
         if field is None:
             raise ValueError(f"{fieldName} Required, value: {field}")
@@ -32,37 +54,12 @@ class User:
     def delete_user(self, id):
         return f'DELETE FROM user WHERE id={id}'
 
-def get_single_user(id):
-    db = get_db()
-    user = db.execute(f'SELECT username, password, is_super, can_discount, branch_id FROM user JOIN branch on user.branch_id = branch.id WHERE user.id={id}').fetchone()
-    return user
+    def get_single_user(id):
+        db = get_db()
+        user = db.execute(f'SELECT username, password, is_super, can_discount, branch_id FROM user JOIN branch on user.branch_id = branch.id WHERE user.id={id}').fetchone()
+        return user
 
-def get_all_users():
-    db = get_db()
-    users = db.execute("""
-        SELECT * FROM user
-        JOIN branch on user.branch_id = branch.id
-        """
-    ).fetchall()
-    return users
 
-def get_filtered_users(form):
-    db = get_db()
-    for key,value in form.items():
-        if value is '':
-            continue
-
-        if key =='id':
-            users = db.execute('SELECT * FROM user '\
-                'JOIN branch on user.branch_id = branch.id '\
-                f'WHERE user.{key}={value}'
-                ).fetchall()
-            return users
-
-        else:
-            users = db.execute(f'SELECT * FROM user JOIN branch on user.branch_id = branch.id WHERE user.{key}="{value}" '
-                ).fetchall()
-            return users
 
 
 def user_exist(user):
