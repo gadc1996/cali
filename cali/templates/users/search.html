@@ -1,69 +1,77 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1 class="text-center mt-4">{% block title %}{{ configuration.dictionary['Search User'] }}{% endblock %}</h1>
-<div class="container-fluid">
-  <form class="form-inline" method="post">
-    <label for="id" class="m-2">id</label>
-    <input name="id" type="text" class="form-control m-2" id="username">
+<div class="card-deck">
+  <div class="col-3 card">
+    <h1 class="text-center mt-4">
+      {% block title %}
+      {{ configuration.dictionary['Search User'] }}
+      {% endblock %}
+    </h1>
+    <form class="form-inline" method="post">
+      <label for="id" class="m-2">id</label>
+      <input name="id" type="text" class="form-control " id="username">
 
-    <label for="username" class="m-2">{{ configuration.dictionary['Name'] }}</label>
-    <input name="username" type="text" class="form-control m-2" id="username">
+      <label for="username" class="m-2">{{ configuration.dictionary['Name'] }}</label>
+      <input name="username" type="text" class="form-control " id="username">
 
-    <label for="branch_id" class="m-2">{{configuration.dictionary['Branch']}}</label>
-    <select name="branch_id" id="branch" class="form-select m-2" aria-label="Default select example">
-      <option value="" selected>{{configuration.dictionary['Select a Branch']}}</option>
-      <option value="0">Chihuahua</option>
-      <option value="1">Madera</option>
-    </select>
+      <label for="branch_id" class="m-2">{{configuration.dictionary['Branch']}}</label>
+      <select name="branch_id" id="branch" class="form-select " aria-label="Default select example">
+        <option value="" selected>{{configuration.dictionary['Select a Branch']}}</option>
+        <option value="0">Chihuahua</option>
+        <option value="1">Madera</option>
+      </select>
 
-    <button type="submit" class="btn btn-primary m-2">{{configuration.dictionary['Submit']}}</button>
-  </form>
-</div>
-
-<div class="text-center container-fluid">
-	<table class="table mt-4">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">{{configuration.dictionary['Name']}}</th>
-      <th scope="col">{{configuration.dictionary['Branch']}}</th>
-      <th scope="col">{{configuration.dictionary['Is Super']}}</th>
-      <th scope="col">{{configuration.dictionary['Can Discount']}}</th>
-      <th scope="col">{{configuration.dictionary['Actions']}}</th>
-    </tr>
-  </thead>
-  <tbody>
-		{% for user in users %}
-			<tr>
-				<th scope="row">{{ user.id }}</th>
-				<td>{{ user.username}}</td>
-				<td>{{ user.branch_name }}</td>
+      <button type="submit" class="btn btn-primary m-2">{{configuration.dictionary['Submit']}}</button>
+    </form>
+  </div>
 
 
-        {% if user.is_super%}
+  <div class="card text-center col">
+    <table class="table mt-4">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">{{configuration.dictionary['Name']}}</th>
+          <th scope="col">{{configuration.dictionary['Branch']}}</th>
+          <th scope="col">{{configuration.dictionary['Is Super']}}</th>
+          <th scope="col">{{configuration.dictionary['Can Discount']}}</th>
+          <th scope="col">{{configuration.dictionary['Actions']}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <th scope="row">{{ user.id }}</th>
+          <td>{{ user.username}}</td>
+          <td>{{ user.branch_name }}</td>
+
+
+          {% if user.is_super%}
           <td>{{configuration.dictionary['Yes']}}</td>
-        {% else %}
+          {% else %}
           <td>{{configuration.dictionary['No']}}</td>
-        {% endif %}
+          {% endif %}
 
-        {% if user.can_discount%}
+          {% if user.can_discount%}
           <td>{{configuration.dictionary['Yes']}}</td>
-        {% else %}
+          {% else %}
           <td><{{configuration.dictionary['No']}}/td>
-        {% endif %}
+            {% endif %}
 
-        <td>
-          <a href="{{ url_for('users.delete', id=user.id) }}" type="button" role="button" class="btn btn-danger" aria-pressed="true">
-            <i class="fa fa-trash"></i>
-          </a>
+            <td>
+              <a href="{{ url_for('users.delete', id=user.id) }}" type="button" role="button" class="btn btn-danger" aria-pressed="true">
+                <i class="fa fa-trash"></i>
+              </a>
 
-          <a href="{{ url_for('users.update', id=user.id) }}" type="button" role="button" class="btn btn-info" aria-pressed="true">
-            <i class="fa fa-edit"></i>
-          </a>
-        </td>
-			</tr>
-		{% endfor %}
-  </tbody>
-</table>
+              <a href="{{ url_for('users.update', id=user.id) }}" type="button" role="button" class="btn btn-info" aria-pressed="true">
+                <i class="fa fa-edit"></i>
+              </a>
+            </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endblock %}
 </div>
-{% endblock %}
+

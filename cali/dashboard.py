@@ -1,12 +1,7 @@
-import functools
-
-from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for, Flask
-)
-from werkzeug.security import check_password_hash, generate_password_hash
+from flask import (Blueprint, g, redirect, render_template, url_for)
 
 from config import config
-from cali.lib.db import get_db
+from cali.lib.alert import Alert
 
 blueprint = Blueprint('dashboard', __name__)
 
@@ -14,4 +9,10 @@ blueprint = Blueprint('dashboard', __name__)
 def dashboard():
     configuration = config.Config()
 
-    return render_template('dashboard/index.html', configuration=configuration)
+    if g.user is None:
+        Alert.raise_danger_alert('Not Logged In')
+        return redirect(url_for('authentication.login'))
+
+    else:
+        return render_template('dashboard/index.html', configuration=configuration)
+
