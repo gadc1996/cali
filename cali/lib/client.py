@@ -93,16 +93,16 @@ class Client:
     def get_filtered_clients(form):
         db = get_db()
         for key,value in form.items():
-            if value is '':
-                continue
-            else:
+            if value:
                 data = (value,)
-                clients = db.execute('SELECT * FROM client '
-                    f'WHERE {key}=?', data).fetchall()
-                return clients
+                query = 'SELECT * FROM client '\
+                        f'WHERE {key}=?'
+                clients = db.execute(query, data).fetchall()
+                break
         else:
             clients = Client.get_all_clients()
-            return clients
+
+        return clients
 
     def get_client_by_id(id):
         db = get_db()

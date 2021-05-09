@@ -1,5 +1,5 @@
 from cali.lib.db import get_db
-from cali.lib.category import get_all_categories, get_single_category
+from cali.lib.category import Category
 from flask import flash
 
 class Article:
@@ -16,7 +16,7 @@ class Article:
         self.stock = self.get_stock()
         self.is_regular = self._is_valid(iterable['is_regular'], 'is_regular')
         self.category_id = self._is_valid(iterable['category_id'], 'category_id')
-        self.category = get_single_category(self.category_id)
+        self.category = Category.get_single_category(self.category_id)
 
     def _is_valid(self, field, fieldName):
         if field is None:

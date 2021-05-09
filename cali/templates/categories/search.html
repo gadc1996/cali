@@ -1,50 +1,52 @@
 
 {% extends 'base.html' %}
 {% block content %}
-<h1 class="text-center mt-4">
-  {% block title %}
+<div class="card-deck">
+<div class="card col-3">
+  <h1 class="text-center mt-4">
+    {% block title %}
     {{configuration.dictionary['Search Category']}}
-  {% endblock %}
-</h1>
-<div class="container-fluid">
+    {% endblock %}
+  </h1>
   <form class="form-inline" method="post">
     <label for="id" class="m-2">id</label>
     <input name="id" type="text" class="form-control m-2" id="id">
 
-    <label for="name" class="m-2">{{configuration.dictionary['Name']}}</label>
-    <input name="name" type="text" class="form-control m-2" id="name">
+    <label for="category_name" class="m-2">{{configuration.dictionary['Name']}}</label>
+    <input name="category_name" type="text" class="form-control m-2" id="name">
 
     <button type="submit" class="btn btn-primary m-2">{{configuration.dictionary['Submit']}}</button>
   </form>
 </div>
-
-<div class="text-center container-fluid">
-	<table class="table mt-4">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">{{configuration.dictionary['Name']}}</th>
-      <th scope="col">{{configuration.dictionary['Actions']}}</th>
-    </tr>
-  </thead>
-  <tbody>
-		{% for  category_id, category in categories.items() %}
-			<tr>
-				<th scope="row">{{ category_id }}</th>
-				<td>{{ category}}</td>
+<div class="card col">
+  <table class="table mt-4">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">{{configuration.dictionary['Name']}}</th>
+        <th scope="col">{{configuration.dictionary['Actions']}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for category in categories %}
+      <tr>
+        <th scope="row">{{ category['id'] }}</th>
+        <td>{{ category['category_name']}}</td>
 
         <td>
-          <a href="{{ url_for('categories.delete', id=category_id) }}" type="button" role="button" class="btn btn-danger" aria-pressed="true">
+          <a href="{{ url_for('categories.delete', id=category['id']) }}" type="button" role="button" class="btn btn-danger" aria-pressed="true">
             <i class="fa fa-trash"></i>
           </a>
 
-          <a href="{{ url_for('categories.update', id=category_id) }}" type="button" role="button" class="btn btn-info" aria-pressed="true">
+          <a href="{{ url_for('categories.update', id=category['id']) }}" type="button" role="button" class="btn btn-info" aria-pressed="true">
             <i class="fa fa-edit"></i>
           </a>
         </td>
-			</tr>
-		{% endfor %}
-  </tbody>
-</table>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
+</div>
+
 {% endblock %}

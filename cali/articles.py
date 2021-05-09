@@ -8,7 +8,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from config import config
 from cali.lib.db import get_db
 from cali.lib.article import Article, get_all_articles, get_filtered_articles, get_single_article
-from cali.lib.category import get_single_category, get_all_categories
+from cali.lib.category import Category
 
 blueprint = Blueprint('articles', __name__, url_prefix='/articles')
 
@@ -39,7 +39,7 @@ def update(id):
         g.message = 'article Updated'
         g.messageColor = 'success'
 
-    categories = get_all_categories()
+    categories = Category.get_all_categories()
     return render_template('articles/update.html', article=article, categories=categories, configuration=configuration)
 
 @blueprint.route('/create', methods=('GET', 'POST'))
@@ -58,7 +58,7 @@ def create():
             db.execute(article.create_article())
             db.commit()
 
-    categories = get_all_categories()
+    categories = Category.get_all_categories()
     return render_template('articles/create.html', categories=categories, configuration=configuration)
 
 

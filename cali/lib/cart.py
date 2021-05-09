@@ -1,5 +1,5 @@
 from cali.lib.db import get_db
-from cali.lib.category import get_all_categories, get_single_category
+from cali.lib.category import Category
 from cali.lib.article import Article
 
 class ShoppingCart:

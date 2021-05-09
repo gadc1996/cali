@@ -106,18 +106,17 @@ class User:
     def get_filtered_users(form):
         db = get_db()
         for key,value in form.items():
-            if value is '':
-                continue
-
-            else:
+            if value:
                 data = (value,)
-                users = db.execute(' SELECT * FROM user '\
-                    'JOIN branch on user.branch_id = branch.id '\
-                    f'WHERE user.{key}=?', data).fetchall()
-                return users
+                query = 'SELECT * FROM user '\
+                        'JOIN branch on user.branch_id = branch.id '\
+                        f'WHERE user.{key}=?'
+                users = db.execute(query, data)
+                break
         else:
             users = User.get_all_users()
-            return users
+
+        return users
 
     def log_in_user(form):
         db = get_db()
