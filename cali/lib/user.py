@@ -1,4 +1,5 @@
 from flask import session, redirect, url_for
+from flask import flash
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from cali.lib.db import get_db
@@ -33,7 +34,6 @@ class User:
         elif not check_password_hash(user['password'], password):
             Alert.raise_danger_alert('Incorrect Password')
             return False
-
         else:
             return True
 
@@ -124,6 +124,7 @@ class User:
         password = form['password']
         user = User._get_user_by_name(username)
         if User._is_valid_login(user, password):
+            flash("inside login")
             session.clear()
             session['user_id'] = user['id']
         return

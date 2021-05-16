@@ -1,6 +1,7 @@
 import functools
 
 from flask import (Blueprint, g, redirect, render_template, request, session, url_for)
+from flask import flash
 
 from config import config
 from cali.lib.db import get_db
@@ -11,6 +12,7 @@ blueprint = Blueprint('authentication', __name__, url_prefix='/authentication')
 @blueprint.route('/login', methods=('GET', 'POST'))
 def login():
     configuration = config.Config()
+    flash(g.user)
 
     if request.method == 'POST':
         User.log_in_user(request.form)
