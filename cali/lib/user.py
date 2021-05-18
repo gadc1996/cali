@@ -95,6 +95,19 @@ class User:
         user = db.execute(query, data).fetchone()
         return user
 
+    def get_username_by_id(id):
+        db = get_db()
+        data = (id,)
+        query = """
+            SELECT username from user
+            JOIN branch on user.branch_id = branch.id
+            WHERE user.id=?
+            """
+        user = db.execute(query, data).fetchone()
+        return user['username']
+
+
+
     def get_all_users():
         db = get_db()
         users = db.execute("""

@@ -1,4 +1,5 @@
 from flask import g
+
 class Alert:
     """
     A Class used to raise a visual alert and a feedback message of what raised

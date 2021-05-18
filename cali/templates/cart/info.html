@@ -10,7 +10,7 @@
   <div class="col mb-4">
     <form class="form-signin col-6 offset-3" method="post" action="{{url_for('cart.checkout')}}">
       {% if g.message %}
-      <div class="alert alert-{{g.messageColor}}" role="alert">
+      <div class="alert alert-{{g.message_color}}" role="alert">
         {{ g.message }}
       </div>
       {% endif %}
@@ -26,7 +26,7 @@
             <th scope="row">{{configuration.dictionary['Total Price']}}</th>
             <td>
               <label for="total" ></label>
-              <input name="total" class="form-control col-6 align-right" type="text" value="{{ cart.get_cart_total_price() }}" readonly>
+              <input name="total" class="form-control col-6 align-right" type="text" value="{{ cart.price }}" readonly>
             </td>
           </tr>
           <tr>
@@ -98,7 +98,7 @@
           <tr>
             <th scope="row">{{configuration.dictionary['Credit Time']}}</th>
             <td>
-              <select name="creditTime" id="creditTime" class="form-select col-12" aria-label="Default select example" required>
+              <select name="creditTime" id="creditTime" class="form-select col-12" aria-label="Default select example">
                 <option value="" selected>{{configuration.dictionary['Select a Client']}}</option>
                 <option value="10">10 {{configuration.dictionary['Days']}}</option>
                 <option value="20">20 {{configuration.dictionary['Days']}}</option>

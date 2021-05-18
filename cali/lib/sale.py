@@ -5,46 +5,136 @@ from reportlab.pdfgen import canvas
 
 from cali.lib.db import get_db
 from cali.lib.client import Client
-#from cali.lib.user import get_single_user
 from cali.lib.credit import Credit
+from cali.lib.alert import Alert
+from cali.lib.user import User
+from cali.lib.cart import ShoppingCart
 
 class Sale:
     """ A simple sale class """
 
     def __init__(self, iterable):
-        self.id = self.get_id()
         self.userId = iterable['user_id']
         self.clientId = iterable['client_id']
-        self.user =  get_single_user(self.userId)['username']
-        self.client = Client.get_single_client(self.clientId)['name']
-        self.total = float(iterable['total'])
         self.discount = iterable['Discount']
         self.totalArticles = iterable['total_articles']
-        self.recivedCash = self.get_recived_cash(iterable) 
-        self.payMethodId = int(iterable['PayMethodId'])
-        self.payMethod = self.get_pay_method()
-        self.branchId = iterable['branch_id']
-        self.change = self.get_change()
-        self.date = self.get_date()
         self.operationType = iterable['operation_type']
         self.creditTime = iterable['creditTime']
 
-    def create_sale(self, cartItems):
+        self.total = Sale._get_total(iterable)
+        self.branchId = Sale._get_branch_id(iterable)
+        self.recivedCash = Sale._get_recived_cash(iterable)
+        self.payMethodId = Sale._get_pay_method_id(iterable)
+
+        self.id = self._get_id()
+        self.date = self._get_date()
+        self.payMethod = self._get_pay_method()
+        self.change = self._get_change()
+
+        self.user =  User.get_username_by_id(self.userId)
+        self.client = Client.get_name_by_id(self.clientId)
+
+    def _get_branch_id(iterable):
+        return int(iterable['branch_id']) + 1
+
+    def _get_total(iterable):
+        return float(iterable['total'])
+
+    def _get_pay_method_id(iterable):
+        return int(iterable['PayMethodId'])
+
+    def _get_recived_cash(iterable):
+        if iterable['recivedCash'] == '':
+            return 0
+        else:
+            return float(iterable['recivedCash'])
+
+    def _get_pay_method(self):
+        if self.payMethodId == 0:
+            return 'Cash'
+        else:
+            return 'Credit Card'
+
+    def _get_date(self):
+        today = date.today()
+        return  str(today.strftime('%d/%m/%Y'))
+
+    def _get_change(self):
+        if self.payMethod == 'Cash':
+            return float(self.recivedCash) - float(self.total)
+        else:
+            return 0
+
+    def _get_id(self):
+        db = get_db()
+        sale_id = db.execute(f"SELECT id FROM sale" ).fetchall()
+        if sale_id == None:
+            sale_id = 1
+        return len(sale_id) + 1
+
+    def _client_has_discount(self):
+        db = get_db()
+        client = db.execute(f'SELECT * FROM client WHERE id={self.clientId}').fetchone()
+        return client['has_credit']
+
+    def _cash_is_enough(self):
+        return self.recivedCash < self.total
+
+    def _is_empty_sale(self):
+        return self.total == 0
+
+
+
+    def is_valid(self, branchId):
+        cart = ShoppingCart()
+        if self.operationType == 'credit' and not self._client_has_discount():
+            Alert.raise_danger_alert("Client has no Discount")
+            return False
+        elif self._is_empty_sale():
+            Alert.raise_danger_alert('Empty Sale')
+            return False
+        elif self.payMethod == 'Cash' and not self._cash_is_enough():
+            Alert.raise_danger_alert('Cash is Not Enought')
+            return False
+        elif not cart.there_is_enought_stock(branchId):
+            Alert.raise_danger_alert('Not Enought Stock')
+            return False
+        else:
+            return True
+
+    def create_sale(self, cartItems, branchId):
+        db = get_db()
+
         if self.operationType == 'credit':
             self.create_items_database(cartItems)
-            return "INSERT INTO credit(user_id, branch_id, client_id, total, payed, pay_method_id, date, credit_time ) " \
-            f"VALUES( {self.userId},{self.branchId}, {self.clientId}, {self.total}, {self.recivedCash}, {self.payMethodId}, '{self.date}', {self.creditTime})"
-        else:
-            return "INSERT INTO sale(user_id, client_id, total, pay_method_id, date) " \
-            f"VALUES( {self.userId}, {self.clientId}, {self.total}, {self.payMethodId}, '{self.date}')"
 
+            data = (self.userId, branchId, self.clientId,
+                    self.total, self.payMethodId, self.recivedCash,
+                    self.date, self.creditTime)
+            query = """
+                INSERT INTO credit(user_id, branch_id, client_id,  total, pay_method_id, date, payed, credit_time )
+                VALUES(?, ?, ?, ?, ?, ?, ?, ?)"
+                """
+        else:
+            data = (self.userId, branchId, self.clientId,
+                    self.total, self.payMethodId, self.date)
+            query = """
+                INSERT INTO  sale(user_id, branch_id, client_id,  total, pay_method_id, date)
+                VALUES(?, ?, ?, ?, ?, ? )
+                """
+
+        db.execute(query, data)
+        db.commit()
+        return
+
+    # Not Used
     def create_items_database(self, cartItems):
         db = get_db()
         tableQuery = self.get_items_database_query(cartItems)
         itemsQuery = self.get_items_query(cartItems)
         try:
             db.execute(tableQuery)
-        except: 
+        except:
             db.execute(f'DROP TABLE credit_{self.id}_items')
             db.execute(tableQuery)
         db.execute(itemsQuery)
@@ -68,28 +158,9 @@ class Sale:
         itemsQuery += ')'
         return itemsQuery
 
-    def get_change(self):
-        try:
-            return float(self.recivedCash) - float(self.total)
-        except ValueError:
-            return 0
 
-    def get_recived_cash(self, iterable):
-        if iterable['recivedCash'] == '':
-            return 0
-        else:
-            return float(iterable['recivedCash'])
 
-    def get_id(self):
-        db = get_db()
-        sale_id = db.execute(f"SELECT id FROM sale" ).fetchall()
-        if sale_id == None:
-            sale_id = 1
-        return len(sale_id) + 1
 
-    def get_date(self):
-        today = date.today()
-        return  str(today.strftime('%d/%m/%Y'))
 
     def format_date(date):
         day = date[-2:]
@@ -98,26 +169,14 @@ class Sale:
         date = f'{day}/{month}/{year}'
         return date
 
-    def get_pay_method(self):
-        if self.payMethodId == 0:
-            return 'Cash'
-        else:
-            return 'Credit Card'
 
     def apply_discount(self):
         total = float(self.total)
         discount = int(self.discount)
-        self.total = total - (total * discount / 100) 
+        self.total = total - (total * discount / 100)
         self.change = self.get_change()
         return
 
-    def client_has_discount(self):
-        db = get_db()
-        client = db.execute(f'SELECT * FROM client WHERE id={self.clientId}').fetchone()
-        if client['has_credit']:
-            return True
-        else:
-            return False
 
 
     def get_all_sales():
@@ -191,11 +250,6 @@ class Sale:
         total = Sale.get_sales_total(cardSales)
         return total
 
-    def cash_is_enough(self):
-        if self.recivedCash < self.total:
-            return False
-        else:
-            return True
 
     def get_filtered_sales(form):
         db = get_db()
@@ -344,8 +398,8 @@ class Sale:
 
 
             for sale in salesList:
-                user = get_single_user(sale['user_id'])
-                client = Client.get_single_client(sale['client_id'])
+                user = User.get_user_by_id(sale['user_id'])
+                client = Client.get_client_by_id(sale['client_id'])
                 ticket.write(f'{sale["id"]}|{user["username"]}|{client["name"]}|{sale["date"]}|{sale["total"]} \n')
 
             ticket.write('\n\n\n\n')
@@ -391,8 +445,8 @@ class Sale:
         c.drawString(140, 0, f'|  Total' )
 
         for sale in salesList:
-            user = get_single_user(sale['user_id'])
-            client = Client.get_single_client(sale['client_id'])
+            user = User.get_user_by_id(sale['user_id'])
+            client = Client.get_client_by_id(sale['client_id'])
 
             c.translate(0, 10)
             c.drawString(0, 0, f'{sale["id"]}' )

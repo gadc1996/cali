@@ -15,84 +15,54 @@ from cali.lib.article import Article
 from cali.lib.cart import CartItem, ShoppingCart
 from cali.lib.sale import Sale
 from cali.lib.client import Client
+from cali.lib.alert import Alert
 
 blueprint = Blueprint('cart', __name__, url_prefix='/cart')
 
-@blueprint.route('/add?id=<int:id>', methods=('GET', 'POST'))
+@blueprint.route('/add?id=<int:id>', methods=('GET',))
 def add(id):
-    if request.method == 'POST':
-        pass
-
-    db = get_db()
-    article = Article.get_article_by_id(id)
-    cartItem = CartItem(article)
-    db.execute(cartItem.add_cart_item())
-    db.commit()
+    CartItem.add_cart_item(id)
     return redirect(url_for('articles.search'))
 
 
-@blueprint.route('/info', methods=('GET', 'POST'))
+@blueprint.route('/info', methods=('GET',))
 def info():
     configuration = config.Config()
-    if request.method == 'POST':
-        pass
     cart = ShoppingCart()
     clients = Client.get_all_clients()
-    cart_items = cart.get_all_cart_items()
+
+    cart_items = cart.cart_items
 
     return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients, configuration=configuration)
 
 @blueprint.route('/<int:id>/delete', methods=('GET',))
 def delete(id):
-    db = get_db()
-    db.execute(CartItem.delete_cart_item(id))
-    db.commit()
+    CartItem.delete_cart_item(id)
     return redirect(url_for('cart.info'))
 
 @blueprint.route('/checkout', methods=('POST',))
 def checkout():
-    db = get_db()
-    cart = ShoppingCart()
-    cart_items = cart.get_all_cart_items()
-    clients = Client.get_all_clients()
-    configuration = config.Config()
     sale = Sale(request.form)
+    configuration = config.Config()
+    cart = ShoppingCart()
+    cart_items = cart.cart_items
+
+    clients = Client.get_all_clients()
     branchId = sale.branchId
 
-    if not sale.client_has_discount():
-        g.message = "Cliente Sin Descuento"
-        g.messageColor = "danger"
-        return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients, configuration=configuration)
 
     if request.form['Discount'] is not '':
         sale.apply_discount()
 
-    if not cart.there_is_enought_stock(branchId):
-        g.message = 'Not enought stock available'
-        g.messageColor = 'danger'
-        return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients, configuration=configuration)
+    if sale.is_valid(branchId):
+        sale.create_sale(cart_items, branchId)
+        cart.update_cart_items_stock(branchId)
+        cart.clear_cart()
+        sale.create_sale_ticket(cart_items)
+        sale.print_sale_ticket(cart_items)
+        Alert.raise_success_alert('Sale Created')
+        return render_template('cart/checkout.html', sale=sale, configuration=configuration)
 
-    if sale.payMethod == 'Cash' and not sale.cash_is_enough(): 
-        g.message = 'Not enought cash received'
-        g.messageColor = 'danger'
-        return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients, configuration=configuration)
-
-    if sale.total == '0':
-        g.message = 'Empty Sale'
-        g.messageColor = 'danger'
-        return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients, configuration=configuration)
-
-    sale.create_sale_ticket(cart_items)
-    sale.print_sale_ticket(cart_items)
-    db.execute(sale.create_sale(cart_items))
-    db.execute(cart.clear_cart())
-
-    for sku, quantity in cart.ticket.items():
-        db.execute(cart.update_cartItem_stock(sku, quantity, branchId))
-
-    db.commit()
-
-
-    return render_template('cart/checkout.html', sale=sale, configuration=configuration)
+    return render_template('cart/info.html', cart=cart, cart_items=cart_items, clients=clients, configuration=configuration)
 
 

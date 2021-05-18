@@ -53,13 +53,17 @@ class Article:
         else:
             return True
 
+    def get_article_object_by_id(id):
+        article = Article.get_article_by_id(id)
+        return Article(article)
+
     def get_all_articles():
         db = get_db()
-        articles = db.execute("""
-            SELECT * FROM article
-            JOIN category ON article.category_id = category.id
+        query = """ 
+            SELECT * FROM article 
+            JOIN category ON article.category_id = category.id 
             """
-        ).fetchall()
+        articles = db.execute(query).fetchall()
         return articles
 
     def get_filtered_articles(form):
@@ -142,8 +146,18 @@ class Article:
             SELECT * FROM article
             WHERE SKU = ?
             """
-        article = db.execute(query, data)
+        article = db.execute(query, data).fetchone()
         return article
+
+    def get_article_object_by_sku(sku):
+        db = get_db()
+        data = (sku,)
+        query = """
+            SELECT * FROM article
+            WHERE SKU = ?
+            """
+        article = db.execute(query, data).fetchone()
+        return Article(article)
 
 
 

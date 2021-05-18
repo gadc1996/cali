@@ -63,6 +63,7 @@ CREATE TABLE cart(
 CREATE TABLE sale(
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
 	user_id INTEGER,
+	branch_id INTEGER,
 	client_id INTEGER,
 	total INTEGER,
 	pay_method_id INTEGER,
@@ -78,9 +79,9 @@ CREATE TABLE credit(
 	branch_id INTEGER,
 	client_id INTEGER,
 	total INTEGER,
-	payed INTEGER,
 	pay_method_id INTEGER,
 	date TEXT,
+	payed INTEGER,
 	credit_time INTEGER,
 	FOREIGN KEY (user_id) REFERENCES user(id),
 	FOREIGN KEY (branch_id) REFERENCES branch(id),

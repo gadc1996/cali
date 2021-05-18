@@ -110,3 +110,11 @@ class Client:
         query = 'SELECT * FROM client WHERE id=?'
         client = db.execute(query, data).fetchone()
         return client
+
+    def get_name_by_id(id):
+        db = get_db()
+        data = (id,)
+        query = 'SELECT name FROM client WHERE id=?'
+        client = db.execute(query, data).fetchone()
+        return client['name']
+
