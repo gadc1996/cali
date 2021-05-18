@@ -1,5 +1,6 @@
 from datetime import date
 import os
+from flask import flash
 
 from reportlab.pdfgen import canvas
 
@@ -127,6 +128,48 @@ class Sale:
         db.commit()
         return
 
+    def get_filtered_sales(form):
+        db = get_db()
+        search_date = form['date']
+        if search_date:
+            search_date = Sale.format_date(search_date)
+            data = (search_date,)
+            query = """
+                    SELECT * FROM sale
+                    JOIN user on sale.user_id = user.id
+                    JOIN client on sale.client_id = client.id
+                    JOIN pay_method on sale.pay_method_id = pay_method.id
+                    WHERE date = ?
+                """
+            sales = db.execute(query, data).fetchall()
+            return sales
+
+        for key, value in form.items():
+            if value:
+                data = (value,)
+                query = 'SELECT * FROM sale '\
+                        'JOIN user on sale.user_id = user.id '\
+                        'JOIN client on sale.client_id = client.id '\
+                        'JOIN pay_method on sale.pay_method_id = pay_method.id '\
+                        f'WHERE sale.{key} = ?'
+                sales = db.execute(query, data).fetchall()
+                return sales
+
+            else:
+                sales = Sale.get_all_sales()
+        return sales
+
+    def get_all_sales():
+        db = get_db()
+        query = """
+            SELECT * FROM sale
+            JOIN user on sale.user_id = user.id
+            JOIN client on sale.client_id = client.id
+            JOIN pay_method on sale.pay_method_id = pay_method.id
+            """
+        sales = db.execute(query).fetchall()
+        return sales
+
     # Not Used
     def create_items_database(self, cartItems):
         db = get_db()
@@ -158,10 +201,6 @@ class Sale:
         itemsQuery += ')'
         return itemsQuery
 
-
-
-
-
     def format_date(date):
         day = date[-2:]
         month = date[-5:-3]
@@ -178,22 +217,9 @@ class Sale:
         return
 
 
-
-    def get_all_sales():
-        db = get_db()
-        sales = db.execute("""
-            SELECT * FROM sale
-            JOIN user on sale.user_id = user.id
-            JOIN client on sale.client_id = client.id
-            JOIN pay_method on sale.pay_method_id = pay_method.id
-            """
-        ).fetchall()
-        filtered_sale = False
-        return sales, filtered_sale
-
-    def get_sales_information(salesList, filtered_sale):
+    def get_sales_information(salesList):
         saleInformation = {}
-        saleInformation['date'] = Sale.get_sales_date(salesList, filtered_sale)
+        saleInformation['date'] = Sale.get_sales_date(salesList)
         saleInformation['total sales'] = Sale.get_total_sales(salesList)
         saleInformation['total'] = Sale.get_sales_total(salesList)
         saleInformation['cash sales'] = Sale.get_cash_sales(salesList)
@@ -203,12 +229,9 @@ class Sale:
 
         return saleInformation
 
-    def get_sales_date(salesList, filtered_sale):
-        if filtered_sale:
-            try:
-                return salesList[0]['date']
-            except IndexError:
-                return '-'
+    def get_sales_date(salesList):
+        if salesList[0]['date'] != "0":
+            return salesList[0]['date']
         else:
             return '-'
 
@@ -251,43 +274,6 @@ class Sale:
         return total
 
 
-    def get_filtered_sales(form):
-        db = get_db()
-        search_date = form['date']
-        search_date = Sale.format_date(search_date)
-
-        for key, value in form.items():
-            if value is '':
-                continue
-
-            if key =='id':
-                sales = db.execute('SELECT * FROM sale '
-                                   'JOIN user on sale.user_id = user.id '
-                                   'JOIN client on sale.client_id = client.id '
-                                   'JOIN pay_method on sale.pay_method_id = pay_method.id '
-                                   f'WHERE {key}={value}'
-                    ).fetchall()
-                filtered_sale = True
-                return sales, filtered_sale
-
-            elif key =='date':
-                sales = db.execute('SELECT * FROM sale '
-                                   'JOIN user on sale.user_id = user.id '
-                                   'JOIN client on sale.client_id = client.id '
-                                   'JOIN pay_method on sale.pay_method_id = pay_method.id '
-                                   f'WHERE {key}="{search_date}"'
-                    ).fetchall()
-                filtered_sale = True
-                return sales, filtered_sale
-
-        else:
-            sales = db.execute(f'SELECT * FROM sale '
-                                'JOIN user on sale.user_id = user.id '
-                                'JOIN client on sale.client_id = client.id '
-                                'JOIN pay_method on sale.pay_method_id = pay_method.id '
-                               ).fetchall()
-            filtered_sale = False
-            return sales, filtered_sale
 
     def print_sale_ticket(self, cart_items):
         self.save_txt_ticket(cart_items)

@@ -124,7 +124,7 @@ class User:
                 query = 'SELECT * FROM user '\
                         'JOIN branch on user.branch_id = branch.id '\
                         f'WHERE user.{key}=?'
-                users = db.execute(query, data)
+                users = db.execute(query, data).fetchall()
                 break
         else:
             users = User.get_all_users()
