@@ -39,6 +39,7 @@ def create():
 def info(id):
     configuration = config.Config()
     article = Article.get_article_by_id(id)
+    
     return render_template('articles/info.html', article=article, configuration=configuration)
 
 @blueprint.route('<int:id>/update', methods=('GET', 'POST'))

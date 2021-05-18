@@ -12,14 +12,12 @@ blueprint = Blueprint('authentication', __name__, url_prefix='/authentication')
 @blueprint.route('/login', methods=('GET', 'POST'))
 def login():
     configuration = config.Config()
-    flash(g.user)
 
     if request.method == 'POST':
         User.log_in_user(request.form)
         return redirect(url_for('index'))
 
-    else:
-        return render_template('authentication/login.html', configuration=configuration)
+    return render_template('authentication/login.html', configuration=configuration)
 
 @blueprint.route('/logout')
 def logout():

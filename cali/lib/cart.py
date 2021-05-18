@@ -55,6 +55,7 @@ class ShoppingCart:
         return
 
     def get_cartItem_stock_on_branch(self, cartItem, branchId):
+        branchId += 1
         return cartItem[f'on_branch_{branchId}']
 
     def get_cartItem_stock(self, cartItem):
@@ -72,12 +73,11 @@ class ShoppingCart:
 
             data = (new_stock_on_branch, new_stock, sku)
             query = 'UPDATE article ' \
-                    f'SET on_branch_{branchId}=?, '\
+                    f'SET on_branch_{branchId + 1}=?, '\
                     f'stock =? '\
                     'WHERE SKU=?'
 
             db.execute(query, data)
-
         db.commit()
         return
 

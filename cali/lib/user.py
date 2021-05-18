@@ -137,7 +137,6 @@ class User:
         password = form['password']
         user = User._get_user_by_name(username)
         if User._is_valid_login(user, password):
-            flash("inside login")
             session.clear()
             session['user_id'] = user['id']
         return

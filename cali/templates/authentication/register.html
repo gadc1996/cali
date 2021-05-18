@@ -2,6 +2,11 @@
 
 {% block content %}
 <div class="text-center col-6 offset-3">
+	{% if g.message %}
+		<div class="alert alert-{{g.message_color}}" role="alert">
+			{{ g.message }}
+		</div>
+	{% endif %}
 	{% if registerSucceded %}
 	<div class="alert alert-success" role="alert">
 		Register Succesfull

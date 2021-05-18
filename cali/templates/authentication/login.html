@@ -3,6 +3,11 @@
 {% block content %}
 <div class="text-center mt-5">
 	<form class="form-signin col-6 offset-3" method="post">
+	{% if g.message %}
+		<div class="alert alert-{{g.message_color}}" role="alert">
+			{{ g.message }}
+		</div>
+	{% endif %}
 		<h1 class="h3 mb-3 font-weight-normal">
 			{% block title %}
 			{{ configuration.dictionary['Log In'] }}

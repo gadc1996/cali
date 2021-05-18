@@ -1,6 +1,5 @@
-from datetime import date
 import os
-from flask import flash
+from datetime import date
 
 from reportlab.pdfgen import canvas
 
@@ -36,7 +35,7 @@ class Sale:
         self.client = Client.get_name_by_id(self.clientId)
 
     def _get_branch_id(iterable):
-        return int(iterable['branch_id']) + 1
+        return int(iterable['branch_id'])
 
     def _get_total(iterable):
         return float(iterable['total'])
@@ -84,7 +83,89 @@ class Sale:
     def _is_empty_sale(self):
         return self.total == 0
 
+    def _get_items_query(self, cartItems):
+        itemsQuery = f'INSERT INTO credit_{self.id}_items VALUES ('
+        for item in cartItems:
+            itemsQuery += f'{item["SKU"]}, '
+        itemsQuery = itemsQuery[:-2]
+        itemsQuery += ')'
+        return itemsQuery
 
+    def _get_items_database_query(self, cartItems):
+        creditId = Credit.get_id()
+        tableQuery = f'CREATE TABLE credit_{self.id}_items('
+        for count, item in enumerate(cartItems):
+            tableQuery += f'item_{count}_sku TEXT, '
+        tableQuery = tableQuery[:-2]
+        tableQuery += ')'
+        return tableQuery
+
+    def _create_credit_database(self, cartItems):
+        db = get_db()
+        tableQuery = self._get_items_database_query(cartItems)
+        itemsQuery = self._get_items_query(cartItems)
+        try:
+            db.execute(tableQuery)
+        except:
+            db.execute(f'DROP TABLE credit_{self.id}_items')
+            db.execute(tableQuery)
+        db.execute(itemsQuery)
+        db.commit()
+        return
+
+    def _format_date(date):
+        day = date[-2:]
+        month = date[-5:-3]
+        year = date[:4]
+        date = f'{day}/{month}/{year}'
+        return date
+
+    def _get_sales_date(salesList):
+        try:
+            if salesList[0]['date'] != "0":
+                return salesList[0]['date']
+            else:
+                return '-'
+        except:
+            return '-'
+
+    def _get_total_sales(salesList):
+        return len(salesList)
+
+    def _get_sales_total(salesList):
+        total = 0
+        for sale in salesList:
+           total += sale['total']
+        return total
+
+    def _filter_sales_by_pay_method(salesList, payMethodId):
+        filteredSales = []
+        for sale in salesList:
+            if sale['pay_method_id'] == payMethodId:
+                filteredSales.append(sale)
+        return filteredSales
+
+    def _get_cash_sales(salesList):
+        payMethodId = 0
+        cashSales = Sale._filter_sales_by_pay_method(salesList, payMethodId)
+        return len(cashSales)
+
+    def _get_cash_sales_total(salesList):
+        payMethodId = 0
+        cashSales = Sale._filter_sales_by_pay_method(salesList, payMethodId)
+        total = Sale._get_sales_total(cashSales)
+        return total
+
+    def _get_credit_card_sales(salesList):
+        payMethodId = 1
+        cardSales = Sale._filter_sales_by_pay_method(salesList, payMethodId)
+        return len(cardSales)
+
+    def _get_total_credit_card_sales(salesList):
+        payMethodId = 1
+        cardSales = Sale._filter_sales_by_pay_method(salesList, payMethodId)
+        total = Sale._get_sales_total(cardSales)
+        return total
 
     def is_valid(self, branchId):
         cart = ShoppingCart()
@@ -105,16 +186,14 @@ class Sale:
 
     def create_sale(self, cartItems, branchId):
         db = get_db()
-
         if self.operationType == 'credit':
-            self.create_items_database(cartItems)
-
+            self._create_credit_database(cartItems)
             data = (self.userId, branchId, self.clientId,
                     self.total, self.payMethodId, self.recivedCash,
                     self.date, self.creditTime)
             query = """
-                INSERT INTO credit(user_id, branch_id, client_id,  total, pay_method_id, date, payed, credit_time )
-                VALUES(?, ?, ?, ?, ?, ?, ?, ?)"
+                INSERT INTO credit(user_id, branch_id, client_id,  total, pay_method_id, payed, date, credit_time )
+                VALUES(?, ?, ?, ?, ?, ?, ?, ?)
                 """
         else:
             data = (self.userId, branchId, self.clientId,
@@ -132,7 +211,7 @@ class Sale:
         db = get_db()
         search_date = form['date']
         if search_date:
-            search_date = Sale.format_date(search_date)
+            search_date = Sale._format_date(search_date)
             data = (search_date,)
             query = """
                     SELECT * FROM sale
@@ -161,53 +240,15 @@ class Sale:
 
     def get_all_sales():
         db = get_db()
-        query = """
-            SELECT * FROM sale
-            JOIN user on sale.user_id = user.id
-            JOIN client on sale.client_id = client.id
-            JOIN pay_method on sale.pay_method_id = pay_method.id
-            """
+        query = """ SELECT * FROM sale"""
         sales = db.execute(query).fetchall()
         return sales
 
-    # Not Used
-    def create_items_database(self, cartItems):
-        db = get_db()
-        tableQuery = self.get_items_database_query(cartItems)
-        itemsQuery = self.get_items_query(cartItems)
-        try:
-            db.execute(tableQuery)
-        except:
-            db.execute(f'DROP TABLE credit_{self.id}_items')
-            db.execute(tableQuery)
-        db.execute(itemsQuery)
-        db.commit
+    def create_sales_reports(sales, salesInformation):
+        if salesInformation['date'] is not '-':
+            Sale.create_report(sales, salesInformation)
+            Sale.create_txt_report(sales, salesInformation)
         return
-
-    def get_items_database_query(self, cartItems):
-        creditId = Credit.get_id()
-        tableQuery = f'CREATE TABLE credit_{self.id}_items('
-        for count, item in enumerate(cartItems):
-            tableQuery += f'item_{count}_sku TEXT, ' 
-        tableQuery = tableQuery[:-2]
-        tableQuery += ')'
-        return tableQuery
-
-    def get_items_query(self, cartItems):
-        itemsQuery = f'INSERT INTO credit_{self.id}_items VALUES ('
-        for item in cartItems:
-            itemsQuery += f'{item["SKU"]}, '
-        itemsQuery = itemsQuery[:-2]
-        itemsQuery += ')'
-        return itemsQuery
-
-    def format_date(date):
-        day = date[-2:]
-        month = date[-5:-3]
-        year = date[:4]
-        date = f'{day}/{month}/{year}'
-        return date
-
 
     def apply_discount(self):
         total = float(self.total)
@@ -216,64 +257,16 @@ class Sale:
         self.change = self.get_change()
         return
 
-
     def get_sales_information(salesList):
         saleInformation = {}
-        saleInformation['date'] = Sale.get_sales_date(salesList)
-        saleInformation['total sales'] = Sale.get_total_sales(salesList)
-        saleInformation['total'] = Sale.get_sales_total(salesList)
-        saleInformation['cash sales'] = Sale.get_cash_sales(salesList)
-        saleInformation['total cash sales'] = Sale.get_cash_sales_total(salesList)
-        saleInformation['credit card sales'] = Sale.get_credit_card_sales(salesList)
-        saleInformation['total credit card sales'] = Sale.get_total_credit_card_sales(salesList)
-
+        saleInformation['date'] = Sale._get_sales_date(salesList)
+        saleInformation['total sales'] = Sale._get_total_sales(salesList)
+        saleInformation['total'] = Sale._get_sales_total(salesList)
+        saleInformation['cash sales'] = Sale._get_cash_sales(salesList)
+        saleInformation['total cash sales'] = Sale._get_cash_sales_total(salesList)
+        saleInformation['credit card sales'] = Sale._get_credit_card_sales(salesList)
+        saleInformation['total credit card sales'] = Sale._get_total_credit_card_sales(salesList)
         return saleInformation
-
-    def get_sales_date(salesList):
-        if salesList[0]['date'] != "0":
-            return salesList[0]['date']
-        else:
-            return '-'
-
-    def get_total_sales(salesList):
-        return len(salesList)
-
-    def get_sales_total(salesList):
-        total = 0
-        for sale in salesList:
-           total += sale['total']
-        return total
-
-    def filter_sale_pay_method(salesList, payMethodId):
-        filteredSales = []
-        for sale in salesList:
-            if sale['pay_method_id'] == payMethodId:
-                filteredSales.append(sale)
-        return filteredSales
-
-    def get_cash_sales(salesList):
-        payMethodId = 0
-        cashSales = Sale.filter_sale_pay_method(salesList, payMethodId)
-        return len(cashSales)
-
-    def get_cash_sales_total(salesList):
-        payMethodId = 0
-        cashSales = Sale.filter_sale_pay_method(salesList, payMethodId)
-        total = Sale.get_sales_total(cashSales)
-        return total
-
-    def get_credit_card_sales(salesList):
-        payMethodId = 1
-        cardSales = Sale.filter_sale_pay_method(salesList, payMethodId)
-        return len(cardSales)
-
-    def get_total_credit_card_sales(salesList):
-        payMethodId = 1
-        cardSales = Sale.filter_sale_pay_method(salesList, payMethodId)
-        total = Sale.get_sales_total(cardSales)
-        return total
-
-
 
     def print_sale_ticket(self, cart_items):
         self.save_txt_ticket(cart_items)
@@ -313,10 +306,9 @@ class Sale:
             ticket.write('Gracias por su compra \n')
             ticket.write('Cambios Unicamente 7 dias\ndespues de la compra \n')
             ticket.write('No Reembolsos \n\n\n\n')
-
             return
 
-    def create_sale_ticket(self, cart_items):
+    def save_sale_ticket(self, cart_items):
         pageHeight = (len(cart_items) * 10) + 250
         c = canvas.Canvas(f'cali/static/tickets/ticket-{self.id}.pdf', pagesize=(200, pageHeight), bottomup=0)
         c.translate(100, 20)
@@ -358,7 +350,6 @@ class Sale:
 
         c.showPage()
         c.save()
-
         return
 
     def create_txt_report(salesList, salesInformation):
@@ -381,7 +372,6 @@ class Sale:
             ticket.write('------------------------- \n' )
             ticket.write('Ventas \n' )
             ticket.write('Id|Usuario|Cliente|Fecha|Total \n' )
-
 
             for sale in salesList:
                 user = User.get_user_by_id(sale['user_id'])

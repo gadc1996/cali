@@ -48,7 +48,7 @@
           <td>{{ credit[-1]}}</td>
           <td>{{ credit.date }}</td>
           <td>{{ credit.credit_time}}</td>
-          <td>{{ Credit.get_remaining_time(credit) }}</td>
+          <td>{{ Credit._get_remaining_time_in_days(credit) }}</td>
           <td>
             <a href="{{ url_for('credits.pay', id=credit.id) }}" type="button" role="button" class="btn btn-info" aria-pressed="true">
               <i class="fa fa-edit"></i>

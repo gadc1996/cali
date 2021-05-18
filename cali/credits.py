@@ -1,4 +1,3 @@
-
 import functools
 
 from flask import (
@@ -16,41 +15,19 @@ blueprint = Blueprint('credits', __name__, url_prefix='/credits')
 def search():
     configuration = config.Config()
     if request.method == 'POST':
-        credits, filtered_credit = Credit.get_filtered_credits(request.form)
+        credits = Credit.get_filtered_credits(request.form)
     else:
-        credits, filtered_credit = Credit.get_all_credits()
+        credits = Credit.get_all_credits()
 
-    for credit in credits:
-        remainingTime = Credit.get_remaining_time(credit)
-        if remainingTime <= 10:
-            Credit.return_overdue_credit_items(credit)
-            Credit.save_credit_as_sale(credit)
-            Credit.delete_credit(credit)
-
-        if Credit.is_fully_payed(credit):
-            Credit.save_credit_as_sale(credit)
-            Credit.delete_credit(credit)
-
+    Credit.update_credits_status(credits)
     return render_template('credits/search.html', credits=credits, configuration=configuration, Credit=Credit)
 
 
 @blueprint.route('<int:id>/pay', methods=('GET','POST'))
 def pay(id):
     configuration = config.Config()
-    credit = Credit.get_single_credit(id)
-    total = credit['total']
-    payed = credit['payed']
+    credit = Credit.get_credit_by_id(id)
     if request.method == 'POST':
-        try:
-            pay = int(request.form['pay'])
-        except:
-            pay = 0
-        if Credit.is_pay_valid(total, payed, pay):
-            payed += pay
-            Credit.update_payed(id, payed)
-        #credit = Credit.is_pay_valid(total, payed, pay)
-        pass
-    else:
-        pass
-    return render_template('credits/pay.html', credits=credits, configuration=configuration)
+        Credit.pay_credit(credit, request.form)
+    return render_template('credits/pay.html', credit=credit, configuration=configuration)
 

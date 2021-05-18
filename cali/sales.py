@@ -18,12 +18,8 @@ def search():
         sales = Sale.get_filtered_sales(request.form)
     else:
         sales = Sale.get_all_sales()
-
     salesInformation = Sale.get_sales_information(sales)
-
-    if salesInformation['date'] is not '-':
-        Sale.create_report(sales, salesInformation)
-        Sale.create_txt_report(sales, salesInformation)
+    Sale.create_sales_reports(sales, salesInformation)
     return render_template('sales/search.html', sales=sales, configuration=configuration, salesInformation=salesInformation)
 
 @blueprint.route('/<int:id>/printTicket', methods=('GET',))

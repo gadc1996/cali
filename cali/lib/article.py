@@ -59,9 +59,9 @@ class Article:
 
     def get_all_articles():
         db = get_db()
-        query = """ 
-            SELECT * FROM article 
-            JOIN category ON article.category_id = category.id 
+        query = """
+            SELECT * FROM article
+            JOIN category ON article.category_id = category.id
             """
         articles = db.execute(query).fetchall()
         return articles
