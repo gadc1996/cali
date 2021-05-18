@@ -7,8 +7,9 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from config import config
 from cali.lib.db import get_db
-from cali.lib.article import Article, get_all_articles, get_filtered_articles, get_single_article
+from cali.lib.article import Article 
 from cali.lib.category import Category
+from cali.lib.alert import Alert
 
 blueprint = Blueprint('articles', __name__, url_prefix='/articles')
 
@@ -16,57 +17,47 @@ blueprint = Blueprint('articles', __name__, url_prefix='/articles')
 def search():
     configuration = config.Config()
     if request.method == 'POST':
-        articles = get_filtered_articles(request.form)
+        articles = Article.get_filtered_articles(request.form)
     else:
-        articles = get_all_articles()
+        articles = Article.get_all_articles()
 
     return render_template('articles/search.html', articles=articles, configuration=configuration)
-
-
-@blueprint.route('<int:id>/info', methods=('GET',))
-def info(id):
-    article = Article(get_single_article(id))
-    configuration = config.Config()
-    return render_template('articles/info.html', article=article, configuration=configuration)
-
-@blueprint.route('<int:id>/update', methods=('GET', 'POST'))
-def update(id):
-    configuration = config.Config()
-    article = Article(get_single_article(id))
-    if request.method == 'POST':
-        db = get_db()
-        article.update_article(request.form)
-        g.message = 'article Updated'
-        g.messageColor = 'success'
-
-    categories = Category.get_all_categories()
-    return render_template('articles/update.html', article=article, categories=categories, configuration=configuration)
 
 @blueprint.route('/create', methods=('GET', 'POST'))
 def create():
     configuration = config.Config()
     if request.method == 'POST':
-        db = get_db()
         article = Article(request.form)
+        if article._is_valid():
+            article.create_article()
+            Alert.raise_success_alert('Article Created')
+    categories = Category.get_all_categories()
 
-        if article.article_exist():
-            g.message = 'article Exists'
-            g.messageColor = 'danger'
-        else:
-            g.message = 'article Created'
-            g.messageColor = 'success'
-            db.execute(article.create_article())
-            db.commit()
+    return render_template('articles/create.html', categories=categories, configuration=configuration)
+
+@blueprint.route('<int:id>/info', methods=('GET',))
+def info(id):
+    configuration = config.Config()
+    article = Article.get_article_by_id(id)
+    return render_template('articles/info.html', article=article, configuration=configuration)
+
+@blueprint.route('<int:id>/update', methods=('GET', 'POST'))
+def update(id):
+    configuration = config.Config()
+    article = Article.get_article_by_id(id)
+    if request.method == 'POST':
+        article = Article(request.form)
+        article.update_article(id)
+        Alert.raise_success_alert('Article Updated')
 
     categories = Category.get_all_categories()
-    return render_template('articles/create.html', categories=categories, configuration=configuration)
+
+    return render_template('articles/update.html', article=article, categories=categories, configuration=configuration)
+
 
 
 @blueprint.route('/<int:id>/delete', methods=('GET',))
 def delete(id):
-    db = get_db()
-    article = Article(get_single_article(id))
-    db.execute(article.delete_article())
-    db.commit()
+    Article.delete_article(id)
     return redirect(url_for('articles.search'))
 

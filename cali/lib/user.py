@@ -61,7 +61,7 @@ class User:
     def update_user(self, id):
         db = get_db()
         data = (self.username, self.password, self.isSuper,
-                      self.canDiscount, self.branchId, id)
+                self.canDiscount, self.branchId, id)
         query = """
             UPDATE user
             SET username=?,

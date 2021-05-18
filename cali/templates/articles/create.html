@@ -15,9 +15,8 @@
 
 	<select name="category_id" id="category" class="form-select col-12" aria-label="Default select example">
 		<option value="" selected>Select a Category</option>
-
-		{% for category_id, category in categories.items() %}
-			<option value="{{category_id}}">{{category}}</option>
+		{% for category in categories %}
+			<option value="{{category['id']}}">{{category['category_name']}}</option>
 		{% endfor %}
 	</select>
 
@@ -30,13 +29,12 @@
   <input  type="text" name="sku" id="sku" class="form-control my-2" placeholder="sku" required>
   <input  type="text" name="on_branch_1" id="on_branch_1" class="form-control my-2" placeholder="on_branch_1" required>
   <input  type="text" name="on_branch_2" id="on_branch_2" class="form-control my-2" placeholder="on_branch_2" required>
-	<select name="is_regular" id="is_regular" class="form-select col-12" aria-label="Default select example">
+	<select name="is_regular" id="is_regular" class="form-select col-12 my-2" aria-label="Default select example">
 		<option value="" selected>Is Regular?</option>
 		<option value="0">No</option>
 		<option value="1">Yes</option>
 	</select>
-
-  <button class="btn btn-lg btn-primary btn-block" type="submit">Update</button>
+	<button class="btn btn-lg btn-primary btn-block" type="submit">{{  configuration.dictionary["Create"]}}</button>
 
 	<a href="{{ url_for('articles.search') }}" class="btn btn-lg btn-danger btn-block">
 		back

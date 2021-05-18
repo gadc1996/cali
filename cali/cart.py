@@ -11,7 +11,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from config import config
 from cali.lib.db import get_db
-from cali.lib.article import get_single_article, Article
+from cali.lib.article import Article
 from cali.lib.cart import CartItem, ShoppingCart
 from cali.lib.sale import Sale
 from cali.lib.client import Client
@@ -24,7 +24,7 @@ def add(id):
         pass
 
     db = get_db()
-    article = get_single_article(id)
+    article = Article.get_article_by_id(id)
     cartItem = CartItem(article)
     db.execute(cartItem.add_cart_item())
     db.commit()

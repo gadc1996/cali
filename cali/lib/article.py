@@ -1,111 +1,149 @@
 from cali.lib.db import get_db
 from cali.lib.category import Category
+from cali.lib.alert import Alert
 from flask import flash
 
 class Article:
     """ A simple article class """
 
     def __init__(self, iterable):
-        self.name = self._is_valid(iterable['name'], 'name')
-        self.id = self.get_article_id()
-        self.description = self._is_valid(iterable['description'], 'description')
-        self.price = self._is_valid(iterable['price'], 'price')
-        self.sku = self._is_valid(iterable['sku'], 'sku')
-        self.on_branch_1 = self._is_valid(iterable['on_branch_1'], 'on_branch_1')
-        self.on_branch_2 = self._is_valid(iterable['on_branch_2'], 'on_branch_2')
-        self.stock = self.get_stock()
-        self.is_regular = self._is_valid(iterable['is_regular'], 'is_regular')
-        self.category_id = self._is_valid(iterable['category_id'], 'category_id')
-        self.category = Category.get_single_category(self.category_id)
+        self.name = iterable['name']
+        self.description = iterable['description']
+        self.price = iterable['price']
+        self.sku = iterable['sku']
+        self.on_branch_1 = iterable['on_branch_1']
+        self.on_branch_2 = iterable['on_branch_2']
+        self.is_regular = iterable['is_regular']
+        self.category_id = iterable['category_id']
 
-    def _is_valid(self, field, fieldName):
-        if field is None:
-            raise ValueError(f"{fieldName} Required, value: {field}")
+        self.stock = self._get_stock()
+        self.id = self._get_article_id()
 
-        return field
+        self.category = Category.get_category_by_id(self.category_id)
 
-    def create_article(self):
-        return "INSERT INTO article (name, category_id, description, price, SKU, stock, on_branch_1, on_branch_2, is_regular) " \
-        f"VALUES ('{self.name}', {self.category_id}, '{self.description}', {self.price}, '{self.sku}', {self.stock}, {self.on_branch_1}, {self.on_branch_2}, {self.is_regular})"
+    def _get_stock(self):
+        return int(self.on_branch_1) + int(self.on_branch_2)
 
-    def update_article(self, form):
+    def _get_article_id(self):
         db = get_db()
-        for field in form:
-            if form[field] is '':
-                pass
-            else:
-                value = form[field]
-                db.execute(f'UPDATE article SET {field}=? WHERE id={self.id}', (value, ))
-                db.commit()
-        return
-        return 'UPDATE article '\
-            f'SET name="{self.name}" ,  '\
-            f'category_id={self.category_id} , '\
-            f'price={self.price}, ' \
-            f'SKU="{self.sku}", '\
-            f'on_branch_1={self.on_branch_1} , '\
-            f'on_branch_2={self.on_branch_2} , '\
-            f'is_regular={self.is_regular} '\
-            f'WHERE id={self.id} '
-
-    def delete_article(self):
-     return f'DELETE FROM article WHERE article.id={self.id}'
-
-    def get_article_id(self):
-        db = get_db()
-        article_id = db.execute(f"SELECT id FROM article WHERE name='{self.name}'").fetchone()
+        data = (self.name,)
+        query = 'SELECT id FROM article WHERE name = ?'
+        article_id = db.execute(query, data).fetchone()
         if article_id is not None:
             return article_id['id']
         else:
             article_id = db.execute(f"SELECT id FROM article").fetchall()
             return article_id[-1]['id'] + 1
 
-    def article_exist(self):
+    def _get_article_by_name(name):
         db = get_db()
-        if db.execute(f"SELECT name FROM article WHERE name='{self.name}'").fetchone() is not None:
-            return True
-        else:
+        data = (name,)
+        query = 'SELECT * FROM article WHERE name=?'
+        article = db.execute(query, data).fetchone()
+        return article
+
+    def _article_name_exists(self):
+        article = Article._get_article_by_name(self.name)
+        return article is not None
+
+    def _is_valid(self):
+        if self._article_name_exists():
+            Alert.raise_danger_alert("Article Exist")
             return False
-    
-    def get_stock(self):
-        return int(self.on_branch_1) + int(self.on_branch_2)
+        else:
+            return True
+
+    def get_all_articles():
+        db = get_db()
+        articles = db.execute("""
+            SELECT * FROM article
+            JOIN category ON article.category_id = category.id
+            """
+        ).fetchall()
+        return articles
+
+    def get_filtered_articles(form):
+        db = get_db()
+        for key,value in form.items():
+            if value:
+                data = (value,)
+                query = 'SELECT * FROM article '\
+                        'JOIN category ON article.category_id = category.id ' \
+                        f'WHERE article.{key}=?'
+                flash(query)
+                articles = db.execute(query, data)
+                break
+        else:
+            articles = Article.get_all_articles()
+
+        return articles
+
+
+    def create_article(self):
+        db = get_db()
+        data = (self.name, self.category_id, self.description,
+                self.price, self.sku, self.stock,
+                self.on_branch_1, self.on_branch_2, self.is_regular)
+        query = """
+            INSERT INTO article
+            (name, category_id, description,
+             price, SKU, stock,
+             on_branch_1, on_branch_2, is_regular)
+            VALUES(?,?,?,?,?,?,?,?,?)
+            """
+        db.execute(query, data)
+        db.commit()
+        return
+
+    def get_article_by_id(id):
+        db = get_db()
+        data = (id,)
+        query = """
+            SELECT * FROM article
+            JOIN category on article.category_id = category.id
+            WHERE article.id = ?
+        """
+        article = db.execute(query, data).fetchone()
+        return article
+
+    def delete_article(id):
+        db = get_db()
+        data = (id,)
+        query = 'DELETE FROM article WHERE id=?'
+        db.execute(query, data)
+        db.commit()
+        return
+
+    def update_article(self, id):
+        db = get_db()
+        data = (self.name, self.category_id, self.price,
+                self.sku, self.on_branch_1, self.on_branch_2,
+                self.is_regular, id)
+        query = """
+            UPDATE article
+            SET name=?,
+            category_id=?,
+            price=?,
+            SKU=?,
+            on_branch_1=?,
+            on_branch_2=?,
+            is_regular=?
+            WHERE id=?
+            """
+
+        db.execute(query, data)
+        db.commit()
+        return
 
     def get_article_by_sku(sku):
         db = get_db()
-        article = db.execute(f"SELECT * from article WHERE SKU='{sku}'").fetchone()
+        data = (sku,)
+        query = """
+            SELECT * FROM article
+            WHERE SKU = ?
+            """
+        article = db.execute(query, data)
         return article
 
-def get_single_article(id):
-    db = get_db()
-    article = db.execute(f'SELECT * FROM article JOIN category on article.category_id = category.id WHERE article.id={id}').fetchone()
-    return article
 
-def get_all_articles():
-    db = get_db()
-    articles = db.execute("""
-        SELECT * FROM article
-        JOIN category ON article.category_id = category.id
-        """
-    ).fetchall()
-    return articles
-
-def get_filtered_articles(form):
-    db = get_db()
-    for key,value in form.items():
-        if value is '':
-            continue
-
-        if key =='id':
-            articles = db.execute(f'SELECT * FROM article WHERE {key}={value}'
-                ).fetchall()
-            return articles
-
-        else:
-            articles = db.execute(f'SELECT * FROM article WHERE {key}="{value}"'
-                ).fetchall()
-            return articles
-
-    articles = db.execute(f'SELECT * FROM article'
-        ).fetchall()
-    return articles
 
