@@ -78,7 +78,7 @@ class Sale:
         return client['has_credit']
 
     def _cash_is_enough(self):
-        return self.recivedCash < self.total
+        return self.recivedCash >= self.total
 
     def _is_empty_sale(self):
         return self.total == 0
