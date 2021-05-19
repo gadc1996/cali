@@ -39,20 +39,19 @@ def create():
 def info(id):
     configuration = config.Config()
     article = Article.get_article_by_id(id)
-    
     return render_template('articles/info.html', article=article, configuration=configuration)
 
 @blueprint.route('<int:id>/update', methods=('GET', 'POST'))
 def update(id):
     configuration = config.Config()
     article = Article.get_article_by_id(id)
+
     if request.method == 'POST':
         article = Article(request.form)
         article.update_article(id)
         Alert.raise_success_alert('Article Updated')
 
     categories = Category.get_all_categories()
-
     return render_template('articles/update.html', article=article, categories=categories, configuration=configuration)
 
 

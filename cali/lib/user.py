@@ -30,7 +30,6 @@ class User:
         if user is None:
             Alert.raise_danger_alert('Incorrect User')
             return False
-
         elif not check_password_hash(user['password'], password):
             Alert.raise_danger_alert('Incorrect Password')
             return False

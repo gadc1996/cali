@@ -1,5 +1,6 @@
 import os
 from datetime import date
+from flask import flash
 
 from reportlab.pdfgen import canvas
 
@@ -120,13 +121,10 @@ class Sale:
         date = f'{day}/{month}/{year}'
         return date
 
-    def _get_sales_date(salesList):
-        try:
-            if salesList[0]['date'] != "0":
-                return salesList[0]['date']
-            else:
-                return '-'
-        except:
+    def _get_sales_date(salesList, filtered_sale):
+        if filtered_sale and len(salesList) != 0 :
+            return salesList[0]['date']
+        else:
             return '-'
 
     def _get_total_sales(salesList):
@@ -221,7 +219,8 @@ class Sale:
                     WHERE date = ?
                 """
             sales = db.execute(query, data).fetchall()
-            return sales
+            filtered_sale = True
+            return sales, filtered_sale
 
         for key, value in form.items():
             if value:
@@ -232,17 +231,20 @@ class Sale:
                         'JOIN pay_method on sale.pay_method_id = pay_method.id '\
                         f'WHERE sale.{key} = ?'
                 sales = db.execute(query, data).fetchall()
-                return sales
+                filtered_sale = True
+                return sales, filtered_sale
+
 
             else:
-                sales = Sale.get_all_sales()
-        return sales
+                sales, filtered_sale = Sale.get_all_sales()
+        return sales, filtered_sale
 
     def get_all_sales():
         db = get_db()
         query = """ SELECT * FROM sale"""
         sales = db.execute(query).fetchall()
-        return sales
+        filtered_sale = False
+        return sales, filtered_sale
 
     def create_sales_reports(sales, salesInformation):
         if salesInformation['date'] is not '-':
@@ -257,9 +259,9 @@ class Sale:
         self.change = self.get_change()
         return
 
-    def get_sales_information(salesList):
+    def get_sales_information(salesList, filtered_sale):
         saleInformation = {}
-        saleInformation['date'] = Sale._get_sales_date(salesList)
+        saleInformation['date'] = Sale._get_sales_date(salesList, filtered_sale)
         saleInformation['total sales'] = Sale._get_total_sales(salesList)
         saleInformation['total'] = Sale._get_sales_total(salesList)
         saleInformation['cash sales'] = Sale._get_cash_sales(salesList)

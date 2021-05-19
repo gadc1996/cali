@@ -1,7 +1,6 @@
 from cali.lib.db import get_db
 from cali.lib.category import Category
 from cali.lib.alert import Alert
-from flask import flash
 
 class Article:
     """ A simple article class """
@@ -11,18 +10,25 @@ class Article:
         self.description = iterable['description']
         self.price = iterable['price']
         self.sku = iterable['sku']
-        self.on_branch_1 = iterable['on_branch_1']
-        self.on_branch_2 = iterable['on_branch_2']
         self.is_regular = iterable['is_regular']
         self.category_id = iterable['category_id']
 
-        self.stock = self._get_stock()
         self.id = self._get_article_id()
+        self.on_branch_1 = self._get_stock_on_branch(iterable, 1)
+        self.on_branch_2 = self._get_stock_on_branch(iterable, 2)
+        self.stock = self._get_stock()
 
         self.category = Category.get_category_by_id(self.category_id)
 
     def _get_stock(self):
         return int(self.on_branch_1) + int(self.on_branch_2)
+
+    def _get_stock_on_branch(self, iterable, branch_id):
+        stock_on_branch = iterable[f'on_branch_{branch_id}']
+        try:
+            return int(stock_on_branch)
+        except ValueError:
+            return 0
 
     def _get_article_id(self):
         db = get_db()
@@ -74,7 +80,6 @@ class Article:
                 query = 'SELECT * FROM article '\
                         'JOIN category ON article.category_id = category.id ' \
                         f'WHERE article.{key}=?'
-                flash(query)
                 articles = db.execute(query, data)
                 break
         else:
@@ -121,14 +126,15 @@ class Article:
     def update_article(self, id):
         db = get_db()
         data = (self.name, self.category_id, self.price,
-                self.sku, self.on_branch_1, self.on_branch_2,
-                self.is_regular, id)
+                self.sku, self.stock, self.on_branch_1,
+                self.on_branch_2, self.is_regular, id)
         query = """
             UPDATE article
             SET name=?,
             category_id=?,
             price=?,
             SKU=?,
+            stock=?,
             on_branch_1=?,
             on_branch_2=?,
             is_regular=?
